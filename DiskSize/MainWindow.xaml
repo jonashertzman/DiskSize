@@ -1,0 +1,54 @@
+﻿<Window
+	x:Class="DiskSize.MainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:DiskSize"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	Title="MainWindow"
+	Width="800"
+	Height="450"
+	ResizeMode="CanResizeWithGrip"
+	mc:Ignorable="d">
+	<Grid>
+		<DockPanel>
+			<Menu Margin="2" VerticalAlignment="Center" DockPanel.Dock="Top" Background="LightGray">
+				<MenuItem Header="File">
+					<!--<MenuItem Header="Exit" Command="local:Commands.Exit" />-->
+				</MenuItem>
+				<MenuItem Header="Edit">
+					<!--<MenuItem Header="Find" Command="local:Commands.Find" />
+					<MenuItem Header="Find Next" Command="local:Commands.FindNext" />
+					<MenuItem Header="Find Previous" Command="local:Commands.FindPrevious" />-->
+				</MenuItem>
+				<MenuItem Header="View">
+					<!--<MenuItem Header="Zoom In" Command="local:Commands.ZoomIn" />
+					<MenuItem Header="Zoom Out" Command="local:Commands.ZoomOut" />
+					<MenuItem Header="Reset Zoom" Command="local:Commands.ResetZoom" />-->
+				</MenuItem>
+				<MenuItem Header="Tools">
+					<!--<MenuItem Header="Options" Command="local:Commands.Options" />-->
+				</MenuItem>
+				<MenuItem Header="Help">
+					<!--<MenuItem Header="About" Command="local:Commands.About" />-->
+				</MenuItem>
+			</Menu>
+
+			<Grid DockPanel.Dock="Bottom">
+
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="*" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<Border Grid.Row="2" Background="LightGray">
+					<TextBlock Text="Status" />
+				</Border>
+
+			</Grid>
+
+		</DockPanel>
+
+	</Grid>
+</Window>
