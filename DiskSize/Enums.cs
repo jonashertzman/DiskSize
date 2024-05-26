@@ -1,0 +1,21 @@
+﻿namespace DiskSize;
+
+public enum TextState
+{
+	FullMatch,
+	PartialMatch,
+	Deleted,
+	New,
+	Filler,
+	Ignored,
+	MovedFrom,
+	MovedTo,
+	MovedFiller,
+}
+
+public enum Themes
+{
+	Light,
+	Dark,
+}
+
