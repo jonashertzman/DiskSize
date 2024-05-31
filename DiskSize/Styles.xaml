@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Style x:Key="StyledTextBlock" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+		<Setter Property="Foreground" Value="{StaticResource Theme.NormalText}" />
+	</Style>
+	<Style x:Key="CommonGridSpliter" TargetType="GridSplitter">
+		<Setter Property="BorderBrush" Value="{StaticResource Theme.NormalText}" />
+		<Setter Property="Background" Value="{StaticResource Theme.NormalText}" />
+	</Style>
+</ResourceDictionary>

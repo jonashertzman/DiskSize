@@ -10,7 +10,47 @@
 	Height="350"
 	ResizeMode="CanResizeWithGrip"
 	mc:Ignorable="d">
+
+	<Window.Resources>
+		<ContextMenu x:Key="ContextMenuFileItem">
+			<MenuItem Command="local:Commands.OpenContainingFolder" />
+			<MenuItem Command="local:Commands.CopyPathToClipboard" />
+		</ContextMenu>
+		
+	</Window.Resources>
 	<Grid>
+		<Grid.CommandBindings>
+			<CommandBinding Command="local:Commands.Compare" Executed="CommandCompare_Executed" />
+			<CommandBinding Command="local:Commands.ExperimentalCompare" Executed="CommandCompare_Executed" />
+			<CommandBinding Command="local:Commands.SaveLeftFile" Executed="CommandSaveLeftFile_Executed" CanExecute="CommandSaveLeftFile_CanExecute" />
+			<CommandBinding Command="local:Commands.SaveRightFile" Executed="CommandSaveRightFile_Executed" CanExecute="CommandSaveRightFile_CanExecute" />
+			<CommandBinding Command="local:Commands.Edit" CanExecute="CommandEdit_CanExecute" />
+			<CommandBinding Command="local:Commands.Swap" Executed="CommandSwap_Executed" />
+			<CommandBinding Command="local:Commands.Up" Executed="CommandUp_Executed" />
+			<CommandBinding Command="local:Commands.PreviousDiff" Executed="CommandPreviousDiff_Executed" CanExecute="CommandPreviousDiff_CanExecute" />
+			<CommandBinding Command="local:Commands.NextDiff" Executed="CommandNextDiff_Executed" CanExecute="CommandNextDiff_CanExecute" />
+			<CommandBinding Command="local:Commands.CurrentDiff" Executed="CommandCurrentDiff_Executed" CanExecute="CommandCurrentDiff_CanExecute" />
+			<CommandBinding Command="local:Commands.FirstDiff" Executed="CommandFirstDiff_Executed" CanExecute="CommandFirstDiff_CanExecute" />
+			<CommandBinding Command="local:Commands.LastDiff" Executed="CommandLastDiff_Executed" CanExecute="CommandLastDiff_CanExecute" />
+			<CommandBinding Command="local:Commands.NextFile" Executed="CommandNextFile_Executed" CanExecute="CommandNextFile_CanExecute" />
+			<CommandBinding Command="local:Commands.PreviousFile" Executed="CommandPreviousFile_Executed" CanExecute="CommandPreviousFile_CanExecute" />
+			<CommandBinding Command="local:Commands.CopyLeftDiff" Executed="CommandCopyLeftDiff_Executed" CanExecute="CommandCopyLeftDiff_CanExecute" />
+			<CommandBinding Command="local:Commands.CopyRightDiff" Executed="CommandCopyRightDiff_Executed" CanExecute="CommandCopyRightDiff_CanExecute" />
+			<CommandBinding Command="local:Commands.Exit" Executed="CommandExit_Executed" />
+			<CommandBinding Command="local:Commands.About" Executed="CommandAbout_Executed" />
+			<CommandBinding Command="local:Commands.BrowseLeft" Executed="CommandBrowseLeft_Executed" />
+			<CommandBinding Command="local:Commands.BrowseRight" Executed="CommandBrowseRight_Executed" />
+			<CommandBinding Command="local:Commands.Options" Executed="CommandOptions_Executed" />
+			<CommandBinding Command="local:Commands.Find" Executed="CommandFind_Executed" />
+			<CommandBinding Command="local:Commands.FindNext" Executed="CommandFindNext_Executed" CanExecute="CommandFindNext_CanExecute" />
+			<CommandBinding Command="local:Commands.FindPrevious" Executed="CommandFindPrevious_Executed" CanExecute="CommandFindPrevious_CanExecute_1" />
+			<CommandBinding Command="local:Commands.CloseFind" Executed="CommandCloseFind_Executed" />
+			<CommandBinding Command="local:Commands.ZoomIn" Executed="CommandZoomIn_Executed" />
+			<CommandBinding Command="local:Commands.ZoomOut" Executed="CommandZoomOut_Executed" />
+			<CommandBinding Command="local:Commands.ResetZoom" Executed="CommandResetZoom_Executed" />
+			<CommandBinding Command="local:Commands.OpenContainingFolder" Executed="CommandOpenContainingFolder_Executed" CanExecute="CommandOpenContainingFolder_CanExecute" />
+			<CommandBinding Command="local:Commands.CopyPathToClipboard" Executed="CommandCopyPathToClipboard_Executed" CanExecute="CommandCopyPathToClipboard_CanExecute" />
+		</Grid.CommandBindings>
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -39,6 +79,50 @@
 				<!--<MenuItem Header="About" Command="local:Commands.About" />-->
 			</MenuItem>
 		</Menu>
+
+		<!-- Tree -->
+		<Border Grid.Row="1" Grid.Column="0" BorderThickness="0,1,1,1" PreviewDragOver="LeftSide_PreviewDragOver" PreviewDrop="LeftSide_DragDrop" AllowDrop="True">
+			<Grid Name="LeftFolderGrid" MouseWheel="FolderDiff_MouseWheel">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto" />
+					<RowDefinition Height="*" />
+					<RowDefinition Height="auto" />
+				</Grid.RowDefinitions>
+
+				<ScrollViewer Name="LeftColumnScroll" ScrollChanged="LeftColumnScroll_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+					<Grid Name="LeftColumns" HorizontalAlignment="Left">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="{Binding NameColumnWidth}" />
+							<ColumnDefinition Width="4" />
+							<ColumnDefinition Width="{Binding SizeColumnWidth}" />
+							<ColumnDefinition Width="4" />
+							<ColumnDefinition Width="{Binding DateColumnWidth}" />
+							<ColumnDefinition Width="4" />
+						</Grid.ColumnDefinitions>
+
+						<TextBlock Grid.Column="0" Padding="3,2" Text="Name" TextTrimming="CharacterEllipsis" SizeChanged="LeftColumns_Resized" Style="{StaticResource StyledTextBlock}" />
+						<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
+						<TextBlock Grid.Column=" 2" Padding="3,2" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="LeftColumns_Resized" TextAlignment="Right" Style="{StaticResource StyledTextBlock}" />
+						<GridSplitter Grid.Column=" 3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
+						<TextBlock Grid.Column="4" Padding="3,2" Text="Date" TextTrimming="CharacterEllipsis" SizeChanged="LeftColumns_Resized" Style="{StaticResource StyledTextBlock}" />
+						<GridSplitter Grid.Column=" 5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
+					</Grid>
+				</ScrollViewer>
+
+				<Border Grid.Row="1" Grid.Column="0" Background="{StaticResource Theme.Window}" BorderThickness="0,1,0,0">
+					<local:TreeControl x:Name="LeftFolder" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="LeftFolder_SelectionChanged" Lines="{Binding LeftFolder}" HorizontalOffset="{Binding Value, ElementName=LeftFolderHorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" />
+				</Border>
+				<ScrollBar Name="HorizontalScrollbar" Grid.Row="2" ValueChanged="LeftFolderHorizontalScrollbar_ValueChanged" Orientation="Horizontal" SmallChange="10" />
+				<ScrollBar Name="VerticalScrollbar" Grid.Column="1" Grid.Row="1" Orientation="Vertical" SmallChange="10" />
+				
+
+			</Grid>
+		</Border>
+
 
 		<Border Grid.Row="2" Padding="4" Background="LightGray" BorderBrush="Gray" BorderThickness="0,1,0,0">
 			<TextBlock Text="Status" />
