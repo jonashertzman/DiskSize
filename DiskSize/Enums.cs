@@ -18,4 +18,3 @@ public enum Themes
 	Light,
 	Dark,
 }
-
