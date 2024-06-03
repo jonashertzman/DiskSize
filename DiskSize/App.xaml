@@ -10,6 +10,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Templates\ThemedColors.xaml" />
 				<ResourceDictionary Source="Graphics.xaml" />
+				<ResourceDictionary Source="Styles.xaml" />
 				<ResourceDictionary Source="Templates\ButtonTemplate.xaml" />
 				<ResourceDictionary Source="Templates\TextBoxTemplate.xaml" />
 				<ResourceDictionary Source="Templates\CheckBoxTemplate.xaml" />
@@ -21,7 +22,6 @@
 				<ResourceDictionary Source="Templates\TabControlTemplate.xaml" />
 				<ResourceDictionary Source="Templates\ToolbarSeparatorTemplate.xaml" />
 				<ResourceDictionary Source="Templates\TreeViewTemplate.xaml" />
-				<ResourceDictionary Source="Styles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 

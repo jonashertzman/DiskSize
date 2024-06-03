@@ -6,8 +6,8 @@
 	xmlns:local="clr-namespace:DiskSize"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	Title="MainWindow"
-	Width="800"
-	Height="350"
+	Width="500"
+	Height="250"
 	UseLayoutRounding="True"
 	Background="{StaticResource Theme.Dialog}"
 	ResizeMode="CanResizeWithGrip"
@@ -101,6 +101,7 @@
 				<Button Style="{StaticResource ToolbarButton}" Command="local:Commands.Analyze">
 					<StackPanel Orientation="Horizontal">
 						<ContentPresenter ContentTemplate="{StaticResource CompareIcon}" Style="{StaticResource CommonButtonIcon}" />
+						<TextBlock Text="Analyze" Style="{StaticResource CommonButtonLabel}" />
 					</StackPanel>
 					<Button.ToolTip>
 						<ToolTip DataContext="{Binding Path=PlacementTarget, RelativeSource={x:Static RelativeSource.Self}}">
