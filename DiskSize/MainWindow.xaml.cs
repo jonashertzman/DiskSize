@@ -21,6 +21,11 @@ public partial class MainWindow : Window
 		this.Close();
 	}
 
+	private void CommandAnalyze_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+
+	}
+
 	private void FolderDiff_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
 	{
 

@@ -11,16 +11,12 @@ public static class Commands
 
 	public static readonly RoutedUICommand About = new("About", "About", typeof(Commands));
 
-	public static readonly RoutedUICommand Compare = new("Compare", "Compare", typeof(Commands),
+	public static readonly RoutedUICommand Analyze = new("Analyze", "Analyze", typeof(Commands),
 		[new KeyGesture(Key.F5)]
 	);
 
 	public static readonly RoutedUICommand CancelCompare = new("Cancel Compare", "CancelCompare", typeof(Commands),
 		[new KeyGesture(Key.Escape)]
-	);
-
-	public static readonly RoutedUICommand ExperimentalCompare = new("Compare", "Compare", typeof(Commands),
-		[new KeyGesture(Key.F5, ModifierKeys.Shift)]
 	);
 
 	public static readonly RoutedUICommand SaveLeftFile = new("Save Left File", "SaveLeftFile", typeof(Commands));

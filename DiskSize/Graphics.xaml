@@ -5,22 +5,6 @@
 	<DataTemplate x:Key="CompareIcon">
 		<Viewbox>
 			<Canvas Width="160" Height="160">
-				<Rectangle Canvas.Left="60" Canvas.Top="20" Width="100" Height="140" StrokeThickness="0">
-					<Rectangle.Fill>
-						<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-							<GradientStop Offset="0" Color="LightGreen" />
-							<GradientStop Offset="1" Color="#FF03C203" />
-						</LinearGradientBrush>
-					</Rectangle.Fill>
-				</Rectangle>
-				<Rectangle Canvas.Left="0" Canvas.Top="0" Width="100" Height="140" StrokeThickness="0">
-					<Rectangle.Fill>
-						<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-							<GradientStop Offset="0" Color="LightPink" />
-							<GradientStop Offset="1" Color="#FFFF5252" />
-						</LinearGradientBrush>
-					</Rectangle.Fill>
-				</Rectangle>
 				<Path StrokeThickness="23">
 					<Path.Stroke>
 						<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
