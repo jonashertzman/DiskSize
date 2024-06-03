@@ -15,7 +15,7 @@ public partial class MainWindow : Window
 	}
 
 	private bool CompareCancelled = false;
-	private void MatchDirectories(string leftPath, ObservableCollection<FileItem> leftItems, string rightPath, ObservableCollection<FileItem> rightItems, int level)
+	private void MatchDirectories(string leftPath, ObservableCollection<FileItem> leftItems, int level)
 	{
 		if (CompareCancelled)
 		{
@@ -34,123 +34,47 @@ public partial class MainWindow : Window
 		//	}
 		//}
 
-		if (leftPath?.Length > 259 || rightPath?.Length > 259)
+		if (leftPath?.Length > 259)
 		{
 			return;
 		}
 
-		if (Directory.Exists(leftPath) && !Utils.DirectoryAllowed(leftPath) || Directory.Exists(rightPath) && !Utils.DirectoryAllowed(rightPath))
+		if (Directory.Exists(leftPath) && !Utils.DirectoryAllowed(leftPath))
 		{
 			return;
 		}
 
-		// Sorted dictionary holding matched pairs of files and folders in the current directory.
-		// Folders are prefixed with "*" to not get conflict between a file named "X" to the left, and a folder named "X" to the right.
-		SortedDictionary<string, FileItemPair> allItems = [];
+		List<FileItem> allItems = [];
 
 		if (leftPath != null)
 		{
 			foreach (FileItem f in SearchDirectory(leftPath, level))
 			{
-				f.Type = TextState.Deleted;
-				allItems.Add(f.Key, new FileItemPair(f, new FileItem() { IsFolder = f.IsFolder, Type = TextState.Filler, Level = level }));
+				allItems.Add(new FileItem() { IsFolder = f.IsFolder, Level = level });
 			}
 		}
 
-		if (rightPath != null)
-		{
-			foreach (FileItem f in SearchDirectory(rightPath, level))
-			{
-				if (!allItems.ContainsKey(f.Key))
-				{
-					f.Type = TextState.New;
-					allItems.Add(f.Key, new FileItemPair(new FileItem() { IsFolder = f.IsFolder, Type = TextState.Filler, Level = level }, f));
-				}
-				else
-				{
-					allItems[f.Key].RightItem = f;
-					allItems[f.Key].LeftItem.Type = TextState.FullMatch;
-				}
-			}
-		}
 
-		foreach (KeyValuePair<string, FileItemPair> pair in allItems)
+		foreach (FileItem fileItem in allItems)
 		{
 			if (CompareCancelled)
 			{
 				return;
 			}
 
-			FileItem leftItem = pair.Value.LeftItem;
-			FileItem rightItem = pair.Value.RightItem;
-
-			leftItem.CorrespondingItem = rightItem;
-			rightItem.CorrespondingItem = leftItem;
-
-			if (leftItem.IsFolder)
+			if (fileItem.IsFolder)
 			{
 				//leftItem.IsExpanded = true;
-
-				// TODO: Refactor this
-				if (DirectoryIsIgnored(leftItem.Name) || DirectoryIsIgnored(rightItem.Name))
 				{
-					if (DirectoryIsIgnored(leftItem.Name))
+					MatchDirectories(Path.Combine(Utils.FixRootPath(leftPath), fileItem.Name), fileItem.Children, level + 1);
+					foreach (FileItem child in fileItem.Children)
 					{
-						leftItem.Type = TextState.Ignored;
-					}
-					if (DirectoryIsIgnored(rightItem.Name))
-					{
-						rightItem.Type = TextState.Ignored;
-					}
-				}
-				else
-				{
-					MatchDirectories(leftItem.Name == "" ? null : Path.Combine(Utils.FixRootPath(leftPath), leftItem.Name), leftItem.Children, rightItem.Name == "" ? null : Path.Combine(Utils.FixRootPath(rightPath), rightItem.Name), rightItem.Children, level + 1);
-					foreach (FileItem child in leftItem.Children)
-					{
-						child.Parent = leftItem;
-					}
-					foreach (FileItem child in rightItem.Children)
-					{
-						child.Parent = rightItem;
-					}
-
-					if (leftItem.Type == TextState.FullMatch && leftItem.ChildDiffExists)
-					{
-						leftItem.Type = TextState.PartialMatch;
-						rightItem.Type = TextState.PartialMatch;
-					}
-				}
-			}
-			else
-			{
-				// TODO: Refactor this
-				if (FileIsIgnored(leftItem.Name) || FileIsIgnored(rightItem.Name))
-				{
-					if (FileIsIgnored(leftItem.Name))
-					{
-						leftItem.Type = TextState.Ignored;
-					}
-					if (FileIsIgnored(rightItem.Name))
-					{
-						rightItem.Type = TextState.Ignored;
-					}
-				}
-				else
-				{
-					if (leftItem.Type == TextState.FullMatch)
-					{
-						if (leftItem.Size != rightItem.Size || (leftItem.Date != rightItem.Date && leftItem.Checksum != rightItem.Checksum))
-						{
-							leftItem.Type = TextState.PartialMatch;
-							rightItem.Type = TextState.PartialMatch;
-						}
+						child.Parent = fileItem;
 					}
 				}
 			}
 
-			leftItems.Add(leftItem);
-			rightItems.Add(rightItem);
+			leftItems.Add(fileItem);
 		}
 	}
 

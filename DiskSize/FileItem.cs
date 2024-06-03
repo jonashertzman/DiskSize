@@ -1,9 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using System.Windows;
-using System.Windows.Media;
 
 namespace DiskSize;
 
@@ -39,7 +35,7 @@ public class FileItem
 
 	public override string ToString()
 	{
-		return $"{Name}  {Type}";
+		return $"{Name}";
 	}
 
 	#endregion
@@ -75,8 +71,6 @@ public class FileItem
 
 	public bool IsFolder { get; set; }
 
-	public TextState Type { get; set; }
-
 	private bool isExpanded;
 	public bool IsExpanded
 	{
@@ -88,72 +82,6 @@ public class FileItem
 				this.isExpanded = value;
 				CorrespondingItem.IsExpanded = value;
 			}
-		}
-	}
-
-	public SolidColorBrush BackgroundBrush
-	{
-		get
-		{
-			return AppSettings.GetFolderBackground(Type);
-		}
-	}
-
-	public SolidColorBrush ForegroundBrush
-	{
-		get
-		{
-			return AppSettings.GetFolderForeground(Type);
-		}
-	}
-
-	public Visibility Visible { get { return Type == TextState.Filler ? Visibility.Hidden : Visibility.Visible; } }
-
-	public bool ChildDiffExists
-	{
-		get
-		{
-			foreach (FileItem i in Children)
-			{
-				if (i.Type != TextState.FullMatch && !(i.Type == TextState.Ignored || i.CorrespondingItem.Type == TextState.Ignored))
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-	public string Checksum
-	{
-		get
-		{
-			if (IsFolder || Type == TextState.Filler)
-				return "";
-
-			StringBuilder s = new StringBuilder();
-
-			using (MD5 md5 = MD5.Create())
-			{
-				try
-				{
-					using FileStream stream = File.OpenRead(Path);
-					foreach (byte b in md5.ComputeHash(stream))
-					{
-						s.Append(b.ToString("x2"));
-					}
-				}
-				catch (IOException)
-				{
-					return "";
-				}
-				catch (Exception e)
-				{
-					MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				}
-			}
-
-			return s.ToString();
 		}
 	}
 
