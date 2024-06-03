@@ -18,13 +18,12 @@
 			<!--<MenuItem Command="local:Commands.OpenContainingFolder" />
 			<MenuItem Command="local:Commands.CopyPathToClipboard" />-->
 		</ContextMenu>
-
 	</Window.Resources>
+
 	<Grid>
 		<Grid.CommandBindings>
 			<CommandBinding Command="local:Commands.Analyze" Executed="CommandAnalyze_Executed" />
 			<CommandBinding Command="local:Commands.Exit" Executed="CommandExit_Executed" />
-
 			<!--
 			<CommandBinding Command="local:Commands.ExperimentalCompare" Executed="CommandCompare_Executed" />
 			<CommandBinding Command="local:Commands.SaveLeftFile" Executed="CommandSaveLeftFile_Executed" CanExecute="CommandSaveLeftFile_CanExecute" />
@@ -155,12 +154,10 @@
 				</Border>
 				<ScrollBar Name="HorizontalScrollbar" Grid.Row="2" ValueChanged="LeftFolderHorizontalScrollbar_ValueChanged" Orientation="Horizontal" SmallChange="10" />
 				<ScrollBar Name="VerticalScrollbar" Grid.Row="1" Grid.Column="1" Orientation="Vertical" SmallChange="10" />
-
-
 			</Grid>
 		</Border>
 
-
+		<!--  Status Bar  -->
 		<Border Grid.Row="3" Padding="4" BorderThickness="0">
 			<TextBlock Text="Status" />
 		</Border>
