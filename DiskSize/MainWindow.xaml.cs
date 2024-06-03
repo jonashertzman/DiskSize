@@ -14,6 +14,16 @@ public partial class MainWindow : Window
 		InitializeComponent();
 	}
 
+	#endregion
+
+	#region Properties
+
+	MainWindowViewModel ViewModel { get; set; } = new();
+
+	#endregion
+
+	#region Methods
+
 	private bool CompareCancelled = false;
 	private void MatchDirectories(string leftPath, ObservableCollection<FileItem> leftItems, int level)
 	{
@@ -50,7 +60,7 @@ public partial class MainWindow : Window
 		{
 			foreach (FileItem f in SearchDirectory(leftPath, level))
 			{
-				allItems.Add(new FileItem() { IsFolder = f.IsFolder, Level = level });
+				allItems.Add(new FileItem() { Name = f.Name, IsFolder = f.IsFolder, Level = level });
 			}
 		}
 
@@ -117,6 +127,11 @@ public partial class MainWindow : Window
 
 	private void CommandAnalyze_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
 	{
+		ObservableCollection<FileItem> items = [];
+
+		MatchDirectories(@"c:\temp\", items, 0);
+
+		ViewModel.LeftFolder = items;
 
 	}
 
