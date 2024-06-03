@@ -8,6 +8,8 @@
 	Title="MainWindow"
 	Width="800"
 	Height="350"
+	UseLayoutRounding="True"
+	Background="{StaticResource Theme.Dialog}"
 	ResizeMode="CanResizeWithGrip"
 	mc:Ignorable="d">
 
@@ -54,11 +56,13 @@
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
-		<Menu Grid.Row="0" Padding="3" Background="LightGray" BorderThickness="0,0,0,1" BorderBrush="Gray">
+		<!--  Menu  -->
+		<Menu Grid.Row="0" Padding="3" BorderThickness="0,0,0,1" BorderBrush="{StaticResource Theme.BorderLight}">
 			<MenuItem Header="File">
 				<MenuItem Header="Exit" Command="local:Commands.Exit" />
 			</MenuItem>
@@ -80,8 +84,35 @@
 			</MenuItem>
 		</Menu>
 
+		<!--  Main Toolbar  -->
+		<WrapPanel x:Name="ToolbarMain" Grid.Row="1" DockPanel.Dock="Top" Orientation="Horizontal">
+			<WrapPanel.Background>
+				<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+					<GradientStop Offset="0" Color="{Binding WindowBackground.Color, FallbackValue=White}" />
+					<GradientStop Offset="1" Color="{Binding DialogBackground.Color, FallbackValue=#FFF0F0F0}" />
+				</LinearGradientBrush>
+			</WrapPanel.Background>
+
+			<StackPanel Orientation="Horizontal">
+
+				<Button Style="{StaticResource ToolbarButton}" Command="local:Commands.Compare">
+					<StackPanel Orientation="Horizontal">
+						<ContentPresenter ContentTemplate="{StaticResource CompareIcon}" Style="{StaticResource CommonButtonIcon}" />
+					</StackPanel>
+					<Button.ToolTip>
+						<ToolTip DataContext="{Binding Path=PlacementTarget, RelativeSource={x:Static RelativeSource.Self}}">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Path=Command.Text}" />
+								<TextBlock Text="F5" Style="{StaticResource ShortcutTooltip}" />
+							</StackPanel>
+						</ToolTip>
+					</Button.ToolTip>
+				</Button>
+			</StackPanel>
+		</WrapPanel>
+
 		<!--  Tree  -->
-		<Border Grid.Row="1" Grid.Column="0" BorderThickness="0,1,1,1" PreviewDragOver="LeftSide_PreviewDragOver" PreviewDrop="LeftSide_DragDrop" AllowDrop="True">
+		<Border Grid.Row="2" Grid.Column="0" BorderThickness="0,1" BorderBrush="{StaticResource Theme.BorderLight}" PreviewDragOver="LeftSide_PreviewDragOver" PreviewDrop="LeftSide_DragDrop" AllowDrop="True">
 			<Grid Name="LeftFolderGrid" MouseWheel="FolderDiff_MouseWheel">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
@@ -93,27 +124,29 @@
 					<RowDefinition Height="auto" />
 				</Grid.RowDefinitions>
 
-				<ScrollViewer Name="LeftColumnScroll" ScrollChanged="LeftColumnScroll_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
-					<Grid Name="LeftColumns" HorizontalAlignment="Left">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="{Binding NameColumnWidth}" />
-							<ColumnDefinition Width="4" />
-							<ColumnDefinition Width="{Binding SizeColumnWidth}" />
-							<ColumnDefinition Width="4" />
-							<ColumnDefinition Width="{Binding DateColumnWidth}" />
-							<ColumnDefinition Width="4" />
-						</Grid.ColumnDefinitions>
+				<Border Grid.ColumnSpan="2" BorderThickness="0,0,0,1" BorderBrush="{StaticResource Theme.BorderLight}">
+					<ScrollViewer Name="LeftColumnScroll" ScrollChanged="LeftColumnScroll_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+						<Grid Name="LeftColumns" HorizontalAlignment="Left">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="{Binding NameColumnWidth}" />
+								<ColumnDefinition Width="4" />
+								<ColumnDefinition Width="{Binding SizeColumnWidth}" />
+								<ColumnDefinition Width="4" />
+								<ColumnDefinition Width="{Binding DateColumnWidth}" />
+								<ColumnDefinition Width="4" />
+							</Grid.ColumnDefinitions>
 
-						<TextBlock Grid.Column="0" Padding="3,2" Text="Name" TextTrimming="CharacterEllipsis" Style="{StaticResource StyledTextBlock}" />
-						<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
-						<TextBlock Grid.Column=" 2" Padding="3,2" Text="Size" TextTrimming="CharacterEllipsis" TextAlignment="Right" Style="{StaticResource StyledTextBlock}" />
-						<GridSplitter Grid.Column=" 3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
-						<TextBlock Grid.Column="4" Padding="3,2" Text="Date" TextTrimming="CharacterEllipsis" Style="{StaticResource StyledTextBlock}" />
-						<GridSplitter Grid.Column=" 5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
-					</Grid>
-				</ScrollViewer>
+							<TextBlock Grid.Column="0" Padding="3,2" Text="Name" TextTrimming="CharacterEllipsis" Style="{StaticResource StyledTextBlock}" />
+							<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
+							<TextBlock Grid.Column=" 2" Padding="3,2" Text="Size" TextTrimming="CharacterEllipsis" TextAlignment="Right" Style="{StaticResource StyledTextBlock}" />
+							<GridSplitter Grid.Column=" 3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
+							<TextBlock Grid.Column="4" Padding="3,2" Text="Date" TextTrimming="CharacterEllipsis" Style="{StaticResource StyledTextBlock}" />
+							<GridSplitter Grid.Column=" 5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
+						</Grid>
+					</ScrollViewer>
+				</Border>
 
-				<Border Grid.Row="1" Grid.Column="0" Background="{StaticResource Theme.Window}" BorderThickness="0,1,0,0">
+				<Border Grid.Row="1" Grid.Column="0" BorderThickness="0" Background="{StaticResource Theme.Window}">
 					<local:TreeControl x:Name="LeftFolder" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="LeftFolder_SelectionChanged" Lines="{Binding LeftFolder}" HorizontalOffset="{Binding Value, ElementName=LeftFolderHorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" />
 				</Border>
 				<ScrollBar Name="HorizontalScrollbar" Grid.Row="2" ValueChanged="LeftFolderHorizontalScrollbar_ValueChanged" Orientation="Horizontal" SmallChange="10" />
@@ -124,7 +157,7 @@
 		</Border>
 
 
-		<Border Grid.Row="2" Padding="4" Background="LightGray" BorderBrush="Gray" BorderThickness="0,1,0,0">
+		<Border Grid.Row="3" Padding="4" BorderThickness="0">
 			<TextBlock Text="Status" />
 		</Border>
 
