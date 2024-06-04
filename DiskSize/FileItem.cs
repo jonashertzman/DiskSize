@@ -46,8 +46,6 @@ public class FileItem
 
 	public ObservableCollection<FileItem> Children { get; set; } = [];
 
-	public FileItem CorrespondingItem { get; set; }
-
 	public string Path { get; set; } = "";
 
 	public string Name { get; set; } = "";
@@ -80,7 +78,6 @@ public class FileItem
 			if (value != this.isExpanded)
 			{
 				this.isExpanded = value;
-				CorrespondingItem.IsExpanded = value;
 			}
 		}
 	}

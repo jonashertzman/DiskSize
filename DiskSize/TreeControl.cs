@@ -41,7 +41,7 @@ public class TreeControl : Control
 		Debug.Print("TreeControl OnRender");
 
 		// Fill background
-		drawingContext.DrawRectangle(AppSettings.FolderFullMatchBackground, null, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
+		drawingContext.DrawRectangle(AppSettings.WindowBackground, null, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
 
 		if (Lines.Count == 0)
 			return;
@@ -67,7 +67,7 @@ public class TreeControl : Control
 		selectionPen.Freeze();
 		GuidelineSet selectionGuide = CreateGuidelineSet(selectionPen);
 
-		Pen expanderPen = new Pen(new SolidColorBrush(AppSettings.FolderFullMatchForeground.Color), 1 * dpiScale);
+		Pen expanderPen = new Pen(new SolidColorBrush(AppSettings.WindowForegroundColor), 1 * dpiScale);
 		expanderPen.Freeze();
 		GuidelineSet expanderGuide = CreateGuidelineSet(expanderPen);
 
@@ -94,7 +94,7 @@ public class TreeControl : Control
 
 				{
 					// Draw line background
-					drawingContext.DrawRectangle(AppSettings.FolderFullMatchBackground, null, new Rect(0, 0, Math.Max(this.ActualWidth, 0), itemHeight));
+					drawingContext.DrawRectangle(AppSettings.WindowBackground, null, new Rect(0, 0, Math.Max(this.ActualWidth, 0), itemHeight));
 
 					// Horizontal offset
 					drawingContext.PushTransform(new TranslateTransform(-HorizontalOffset, 0));
@@ -120,7 +120,7 @@ public class TreeControl : Control
 								}
 								drawingContext.Pop();
 							}
-							drawingContext.DrawText(new FormattedText(line.Name, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.FullMatchForeground, null, TextFormattingMode.Display, dpiScale), new Point(line.Level * itemHeight, itemMargin));
+							drawingContext.DrawText(new FormattedText(line.Name, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(line.Level * itemHeight, itemMargin));
 						}
 						drawingContext.Pop();
 
@@ -130,7 +130,7 @@ public class TreeControl : Control
 							drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine1 + textMargin, 0, AppSettings.SizeColumnWidth - textMargin * 2, itemHeight)));
 							{
 								string sizeText = line.Size.ToString("N0");
-								drawingContext.DrawText(new FormattedText(sizeText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.FullMatchForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine1 + AppSettings.SizeColumnWidth - textMargin - MeasureString(sizeText).Width - 1, itemMargin));
+								drawingContext.DrawText(new FormattedText(sizeText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine1 + AppSettings.SizeColumnWidth - textMargin - MeasureString(sizeText).Width - 1, itemMargin));
 							}
 							drawingContext.Pop();
 						}
@@ -138,7 +138,7 @@ public class TreeControl : Control
 						// Date column
 						drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine2 + textMargin, 0, AppSettings.DateColumnWidth - textMargin * 2, itemHeight)));
 						{
-							drawingContext.DrawText(new FormattedText(line.Date.ToString("g"), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.FullMatchForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine2 + textMargin, itemMargin));
+							drawingContext.DrawText(new FormattedText(line.Date.ToString("g"), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine2 + textMargin, itemMargin));
 						}
 						drawingContext.Pop();
 
@@ -209,22 +209,22 @@ public class TreeControl : Control
 	{
 		int lineIndex = (int)(e.GetPosition(this).Y / itemHeight) + VerticalOffset;
 
-		if (e.ChangedButton == MouseButton.Left && lineIndex < visibleItems.Count && Lines.Count > 0)
-		{
-			using Process p = new Process();
+		//if (e.ChangedButton == MouseButton.Left && lineIndex < visibleItems.Count && Lines.Count > 0)
+		//{
+		//	using Process p = new Process();
 
-			p.StartInfo.FileName = Environment.ProcessPath;
+		//	p.StartInfo.FileName = Environment.ProcessPath;
 
-			if (this.Name == "LeftFolder")
-			{
-				p.StartInfo.Arguments = $"\"{visibleItems[lineIndex].Path}\" \"{visibleItems[lineIndex].CorrespondingItem.Path}\"";
-			}
-			else
-			{
-				p.StartInfo.Arguments = $"\"{visibleItems[lineIndex].CorrespondingItem.Path}\" \"{visibleItems[lineIndex].Path}\"";
-			}
-			p.Start();
-		}
+		//	if (this.Name == "LeftFolder")
+		//	{
+		//		p.StartInfo.Arguments = $"\"{visibleItems[lineIndex].Path}\" \"{visibleItems[lineIndex].CorrespondingItem.Path}\"";
+		//	}
+		//	else
+		//	{
+		//		p.StartInfo.Arguments = $"\"{visibleItems[lineIndex].CorrespondingItem.Path}\" \"{visibleItems[lineIndex].Path}\"";
+		//	}
+		//	p.Start();
+		//}
 
 		base.OnMouseDoubleClick(e);
 	}

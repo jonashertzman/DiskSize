@@ -12,6 +12,8 @@ public partial class MainWindow : Window
 	public MainWindow()
 	{
 		InitializeComponent();
+
+		DataContext = ViewModel;
 	}
 
 	#endregion
@@ -25,6 +27,7 @@ public partial class MainWindow : Window
 	#region Methods
 
 	private bool CompareCancelled = false;
+
 	private void MatchDirectories(string leftPath, ObservableCollection<FileItem> leftItems, int level)
 	{
 		if (CompareCancelled)
@@ -63,7 +66,6 @@ public partial class MainWindow : Window
 				allItems.Add(new FileItem() { Name = f.Name, IsFolder = f.IsFolder, Level = level });
 			}
 		}
-
 
 		foreach (FileItem fileItem in allItems)
 		{
@@ -129,7 +131,7 @@ public partial class MainWindow : Window
 	{
 		ObservableCollection<FileItem> items = [];
 
-		MatchDirectories(@"c:\temp\", items, 0);
+		MatchDirectories(@"c:\temp\", items, 1);
 
 		ViewModel.LeftFolder = items;
 
