@@ -12,13 +12,18 @@ public static class AppSettings
 
 	#region Members
 
-	private static SettingsData Settings = new SettingsData();
+	private static readonly SettingsData Settings = new();
 
 	private static readonly string AppDataDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FileDiff");
 	public static readonly string SettingsPath = Path.Combine(AppDataDirectory, "Settings.xml");
 	public static readonly string LogPath = Path.Combine(AppDataDirectory, "FileDiff.log");
 
 	#endregion
+
+	static AppSettings()
+	{
+		UpdateCachedSettings();
+	}
 
 	#region Properies
 
@@ -166,42 +171,6 @@ public static class AppSettings
 
 
 	// Editor colors
-	private static SolidColorBrush lineNumberColor;
-	public static SolidColorBrush LineNumberColor
-	{
-		get { return lineNumberColor; }
-		set
-		{
-			lineNumberColor = value;
-			lineNumberColor.Freeze();
-			CurrentTheme.LineNumberColor = value.Color.ToString();
-		}
-	}
-
-	private static SolidColorBrush currentDiffColor;
-	public static SolidColorBrush CurrentDiffColor
-	{
-		get { return currentDiffColor; }
-		set
-		{
-			currentDiffColor = value;
-			currentDiffColor.Freeze();
-			CurrentTheme.CurrentDiffColor = value.Color.ToString();
-		}
-	}
-
-	private static SolidColorBrush snakeColor;
-	public static SolidColorBrush SnakeColor
-	{
-		get { return snakeColor; }
-		set
-		{
-			snakeColor = value;
-			snakeColor.Freeze();
-			CurrentTheme.SnakeColor = value.Color.ToString();
-		}
-	}
-
 	private static SolidColorBrush selectionBackground;
 	public static SolidColorBrush SelectionBackground
 	{
@@ -536,9 +505,6 @@ public static class AppSettings
 			Font = new FontFamily(Settings.Font);
 
 			// Editor colors
-			LineNumberColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(CurrentTheme.LineNumberColor));
-			CurrentDiffColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(CurrentTheme.CurrentDiffColor));
-			SnakeColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(CurrentTheme.SnakeColor));
 			SelectionBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(CurrentTheme.SelectionBackground));
 
 			// UI colors

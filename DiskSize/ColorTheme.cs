@@ -7,45 +7,7 @@ public class ColorTheme
 
 	#region Properties
 
-	// Folder diff colors
-	public required string FolderFullMatchForeground { get; set; }
-	public required string FolderFullMatchBackground { get; set; }
-
-	public required string FolderPartialMatchForeground { get; set; }
-	public required string FolderPartialMatchBackground { get; set; }
-
-	public required string FolderDeletedForeground { get; set; }
-	public required string FolderDeletedBackground { get; set; }
-
-	public required string FolderNewForeground { get; set; }
-	public required string FolderNewBackground { get; set; }
-
-	public required string FolderIgnoredForeground { get; set; }
-	public required string FolderIgnoredBackground { get; set; }
-
-	// File diff colors
-	public required string FullMatchForeground { get; set; }
-	public required string FullMatchBackground { get; set; }
-
-	public required string PartialMatchForeground { get; set; }
-	public required string PartialMatchBackground { get; set; }
-
-	public required string DeletedForeground { get; set; }
-	public required string DeletedBackground { get; set; }
-
-	public required string NewForeground { get; set; }
-	public required string NewBackground { get; set; }
-
-	public required string IgnoredForeground { get; set; }
-	public required string IgnoredBackground { get; set; }
-
-	public required string MovedFromBackground { get; set; }
-	public required string MovedToBackground { get; set; }
-
 	// Editor colors
-	public required string LineNumberColor { get; set; }
-	public required string CurrentDiffColor { get; set; }
-	public required string SnakeColor { get; set; }
 	public required string SelectionBackground { get; set; }
 
 	// UI colors

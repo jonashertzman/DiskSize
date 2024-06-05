@@ -50,17 +50,6 @@ public class FileItem
 
 	public string Name { get; set; } = "";
 
-	public string Key
-	{
-		get
-		{
-			if (IsFolder)
-				return "*" + Name;
-
-			return Name;
-		}
-	}
-
 	public DateTime Date { get; set; }
 
 	public long Size { get; set; }
