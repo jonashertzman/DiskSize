@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace DiskSize;
 
@@ -118,6 +119,26 @@ public partial class MainWindow : Window
 		return items;
 	}
 
+
+	private void UpdateColumnWidths(Grid columnGrid)
+	{
+		ViewModel.NameColumnWidth = Math.Max(columnGrid.ColumnDefinitions[0].Width.Value, 20);
+		ViewModel.SizeColumnWidth = Math.Max(columnGrid.ColumnDefinitions[2].Width.Value, 20);
+		ViewModel.DateColumnWidth = Math.Max(columnGrid.ColumnDefinitions[4].Width.Value, 20);
+
+		double totalWidth = 0;
+
+		foreach (ColumnDefinition d in columnGrid.ColumnDefinitions)
+		{
+			totalWidth += d.Width.Value;
+		}
+
+		LeftColumns.Width = totalWidth;
+		HorizontalScrollbar.ViewportSize = LeftFolder.ActualWidth;
+		HorizontalScrollbar.Maximum = totalWidth - LeftFolder.ActualWidth;
+		HorizontalScrollbar.LargeChange = LeftFolder.ActualWidth;
+	}
+
 	#endregion
 
 	#region Event Handlers
@@ -139,12 +160,13 @@ public partial class MainWindow : Window
 
 	private void FolderDiff_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
 	{
-
+		int lines = SystemParameters.WheelScrollLines * e.Delta / 120;
+		VerticalTreeScrollbar.Value -= lines;
 	}
 
 	private void LeftColumnScroll_ScrollChanged(object sender, System.Windows.Controls.ScrollChangedEventArgs e)
 	{
-
+		UpdateColumnWidths(LeftColumns);
 	}
 
 	private void LeftFolderHorizontalScrollbar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

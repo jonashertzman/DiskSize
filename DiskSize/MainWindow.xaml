@@ -151,10 +151,10 @@
 				</Border>
 
 				<Border Grid.Row="1" Grid.Column="0" BorderThickness="0" Background="{StaticResource Theme.Window}">
-					<local:TreeControl x:Name="LeftFolder" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="LeftFolder_SelectionChanged" Lines="{Binding LeftFolder}" HorizontalOffset="{Binding Value, ElementName=LeftFolderHorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" />
+					<local:TreeControl x:Name="LeftFolder" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="LeftFolder_SelectionChanged" Lines="{Binding LeftFolder}" HorizontalOffset="{Binding Value, ElementName=HorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" />
 				</Border>
 				<ScrollBar Name="HorizontalScrollbar" Grid.Row="2" ValueChanged="LeftFolderHorizontalScrollbar_ValueChanged" Orientation="Horizontal" SmallChange="10" />
-				<ScrollBar Name="VerticalTreeScrollbar" Grid.Row="1" Grid.Column="2" SmallChange="1" LargeChange="{Binding ElementName=RightFolder, Path=VisibleLines}" ViewportSize="{Binding ElementName=RightFolder, Path=VisibleLines, Mode=TwoWay}" Maximum="{Binding ElementName=RightFolder, Path=MaxVerticalScroll, Mode=TwoWay}" />
+				<ScrollBar Name="VerticalTreeScrollbar" Grid.Row="1" Grid.Column="2" SmallChange="1" LargeChange="{Binding ElementName=LeftFolder, Path=VisibleLines}" ViewportSize="{Binding ElementName=LeftFolder, Path=VisibleLines, Mode=TwoWay}" Maximum="{Binding ElementName=LeftFolder, Path=MaxVerticalScroll, Mode=TwoWay}" />
 			</Grid>
 		</Border>
 
