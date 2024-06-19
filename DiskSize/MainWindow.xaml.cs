@@ -8,6 +8,12 @@ namespace DiskSize;
 public partial class MainWindow : Window
 {
 
+	#region Members
+
+	bool renderComplete = false;
+
+	#endregion
+
 	#region Constructor
 
 	public MainWindow()
@@ -29,7 +35,7 @@ public partial class MainWindow : Window
 
 	private bool CompareCancelled = false;
 
-	private void MatchDirectories(string leftPath, ObservableCollection<FileItem> leftItems, int level)
+	private void AnalyzeDirectory(string leftPath, ObservableCollection<FileItem> leftItems, int level)
 	{
 		if (CompareCancelled)
 		{
@@ -79,7 +85,7 @@ public partial class MainWindow : Window
 			{
 				//leftItem.IsExpanded = true;
 				{
-					MatchDirectories(Path.Combine(Utils.FixRootPath(leftPath), fileItem.Name), fileItem.Children, level + 1);
+					AnalyzeDirectory(Path.Combine(Utils.FixRootPath(leftPath), fileItem.Name), fileItem.Children, level + 1);
 					foreach (FileItem child in fileItem.Children)
 					{
 						child.Parent = fileItem;
@@ -120,15 +126,18 @@ public partial class MainWindow : Window
 	}
 
 
-	private void UpdateColumnWidths(Grid columnGrid)
+	private void UpdateColumnWidths()
 	{
-		ViewModel.NameColumnWidth = Math.Max(columnGrid.ColumnDefinitions[0].Width.Value, 20);
-		ViewModel.SizeColumnWidth = Math.Max(columnGrid.ColumnDefinitions[2].Width.Value, 20);
-		ViewModel.DateColumnWidth = Math.Max(columnGrid.ColumnDefinitions[4].Width.Value, 20);
+		if (!renderComplete)
+			return;
+
+		ViewModel.NameColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[0].Width.Value, 20);
+		ViewModel.SizeColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[2].Width.Value, 20);
+		ViewModel.DateColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[4].Width.Value, 20);
 
 		double totalWidth = 0;
 
-		foreach (ColumnDefinition d in columnGrid.ColumnDefinitions)
+		foreach (ColumnDefinition d in LeftColumns.ColumnDefinitions)
 		{
 			totalWidth += d.Width.Value;
 		}
@@ -152,7 +161,7 @@ public partial class MainWindow : Window
 	{
 		ObservableCollection<FileItem> items = [];
 
-		MatchDirectories(@"c:\temp\", items, 1);
+		AnalyzeDirectory(@"c:\temp\", items, 1);
 
 		ViewModel.LeftFolder = items;
 
@@ -164,9 +173,14 @@ public partial class MainWindow : Window
 		VerticalTreeScrollbar.Value -= lines;
 	}
 
+	private void LeftColumns_Resized(object sender, SizeChangedEventArgs e)
+	{
+		UpdateColumnWidths();
+	}
+
 	private void LeftColumnScroll_ScrollChanged(object sender, System.Windows.Controls.ScrollChangedEventArgs e)
 	{
-		UpdateColumnWidths(LeftColumns);
+		UpdateColumnWidths();
 	}
 
 	private void LeftFolderHorizontalScrollbar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -174,19 +188,16 @@ public partial class MainWindow : Window
 
 	}
 
-	private void LeftSide_DragDrop(object sender, DragEventArgs e)
-	{
-
-	}
-
-	private void LeftSide_PreviewDragOver(object sender, DragEventArgs e)
-	{
-
-	}
-
 	private void LeftFolder_SelectionChanged(FileItem file)
 	{
 
+	}
+
+	private void Window_ContentRendered(object sender, EventArgs e)
+	{
+		renderComplete = true;
+
+		UpdateColumnWidths();
 	}
 
 	#endregion
