@@ -14,16 +14,11 @@ public static class AppSettings
 
 	private static readonly SettingsData Settings = new();
 
-	private static readonly string AppDataDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FileDiff");
+	private static readonly string AppDataDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DiskSize");
 	public static readonly string SettingsPath = Path.Combine(AppDataDirectory, "Settings.xml");
-	public static readonly string LogPath = Path.Combine(AppDataDirectory, "FileDiff.log");
+	public static readonly string LogPath = Path.Combine(AppDataDirectory, "DiskSize.log");
 
 	#endregion
-
-	static AppSettings()
-	{
-		UpdateCachedSettings();
-	}
 
 	#region Properies
 
@@ -59,12 +54,6 @@ public static class AppSettings
 		set { Settings.ShowWhiteSpaceCharacters = value; }
 	}
 
-	public static bool MasterDetail
-	{
-		get { return Settings.MasterDetail; }
-		set { Settings.MasterDetail = value; }
-	}
-
 	public static double PositionLeft
 	{
 		get { return Settings.PositionLeft; }
@@ -87,12 +76,6 @@ public static class AppSettings
 	{
 		get { return Settings.Height; }
 		set { Settings.Height = value; }
-	}
-
-	public static double FolderRowHeight
-	{
-		get { return Settings.FolderRowHeight; }
-		set { Settings.FolderRowHeight = value; }
 	}
 
 	public static WindowState WindowState

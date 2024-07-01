@@ -33,11 +33,20 @@ public partial class MainWindow : Window
 
 	#region Methods
 
-	private bool CompareCancelled = false;
+	private bool analyzeCancelled = false;
 
-	private void AnalyzeDirectory(string leftPath, ObservableCollection<FileItem> leftItems, int level)
+	private void Analyze()
 	{
-		if (CompareCancelled)
+		ObservableCollection<FileItem> items = [];
+
+		AnalyzeDirectory(@"c:\temp\", items, 1);
+
+		ViewModel.LeftFolder = items;
+	}
+
+	private void AnalyzeDirectory(string path, ObservableCollection<FileItem> items, int level)
+	{
+		if (analyzeCancelled)
 		{
 			return;
 		}
@@ -54,21 +63,21 @@ public partial class MainWindow : Window
 		//	}
 		//}
 
-		if (leftPath?.Length > 259)
+		if (path?.Length > 259)
 		{
 			return;
 		}
 
-		if (Directory.Exists(leftPath) && !Utils.DirectoryAllowed(leftPath))
+		if (Directory.Exists(path) && !Utils.DirectoryAllowed(path))
 		{
 			return;
 		}
 
 		List<FileItem> allItems = [];
 
-		if (leftPath != null)
+		if (path != null)
 		{
-			foreach (FileItem f in SearchDirectory(leftPath, level))
+			foreach (FileItem f in SearchDirectory(path, level))
 			{
 				allItems.Add(new FileItem() { Name = f.Name, IsFolder = f.IsFolder, Level = level });
 			}
@@ -76,7 +85,7 @@ public partial class MainWindow : Window
 
 		foreach (FileItem fileItem in allItems)
 		{
-			if (CompareCancelled)
+			if (analyzeCancelled)
 			{
 				return;
 			}
@@ -85,7 +94,7 @@ public partial class MainWindow : Window
 			{
 				//leftItem.IsExpanded = true;
 				{
-					AnalyzeDirectory(Path.Combine(Utils.FixRootPath(leftPath), fileItem.Name), fileItem.Children, level + 1);
+					AnalyzeDirectory(Path.Combine(Utils.FixRootPath(path), fileItem.Name), fileItem.Children, level + 1);
 					foreach (FileItem child in fileItem.Children)
 					{
 						child.Parent = fileItem;
@@ -93,7 +102,7 @@ public partial class MainWindow : Window
 				}
 			}
 
-			leftItems.Add(fileItem);
+			items.Add(fileItem);
 		}
 	}
 
@@ -125,15 +134,41 @@ public partial class MainWindow : Window
 		return items;
 	}
 
+	private void CheckForNewVersion()
+	{
+
+	}
+
+	private void LoadSettings()
+	{
+		AppSettings.LoadSettings();
+
+		this.Left = AppSettings.PositionLeft;
+		this.Top = AppSettings.PositionTop;
+		this.Width = AppSettings.Width;
+		this.Height = AppSettings.Height;
+		this.WindowState = AppSettings.WindowState;
+	}
+
+	private void SaveSettings()
+	{
+		AppSettings.PositionLeft = this.Left;
+		AppSettings.PositionTop = this.Top;
+		AppSettings.Width = this.Width;
+		AppSettings.Height = this.Height;
+		AppSettings.WindowState = this.WindowState;
+
+		AppSettings.WriteSettingsToDisk();
+	}
 
 	private void UpdateColumnWidths()
 	{
 		if (!renderComplete)
 			return;
 
-		ViewModel.NameColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[0].Width.Value, 20);
-		ViewModel.SizeColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[2].Width.Value, 20);
-		ViewModel.DateColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[4].Width.Value, 20);
+		ViewModel.NameColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[0].Width.Value, 50);
+		ViewModel.SizeColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[2].Width.Value, 50);
+		ViewModel.DateColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[4].Width.Value, 50);
 
 		double totalWidth = 0;
 
@@ -159,12 +194,7 @@ public partial class MainWindow : Window
 
 	private void CommandAnalyze_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
 	{
-		ObservableCollection<FileItem> items = [];
-
-		AnalyzeDirectory(@"c:\temp\", items, 1);
-
-		ViewModel.LeftFolder = items;
-
+		Analyze();
 	}
 
 	private void FolderDiff_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
@@ -195,9 +225,26 @@ public partial class MainWindow : Window
 
 	private void Window_ContentRendered(object sender, EventArgs e)
 	{
+		if (Environment.GetCommandLineArgs().Length > 2)
+		{
+			ViewModel.LeftPath = Environment.GetCommandLineArgs()[1];
+			Analyze();
+		}
+
 		renderComplete = true;
 
 		UpdateColumnWidths();
+	}
+
+	private void Window_Initialized(object sender, EventArgs e)
+	{
+		LoadSettings();
+		CheckForNewVersion();
+	}
+
+	private void Window_Closed(object sender, EventArgs e)
+	{
+		SaveSettings();
 	}
 
 	#endregion
