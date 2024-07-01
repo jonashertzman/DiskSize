@@ -33,7 +33,7 @@ public partial class MainWindow : Window
 
 	#region Methods
 
-	private bool analyzeCancelled = false;
+	private readonly bool analyzeCancelled = false;
 
 	private void Analyze()
 	{
@@ -111,7 +111,7 @@ public partial class MainWindow : Window
 		path = Utils.FixRootPath(path);
 		List<FileItem> items = [];
 
-		IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
+		IntPtr INVALID_HANDLE_VALUE = new(-1);
 		IntPtr findHandle = WinApi.FindFirstFile(Path.Combine(path, "*"), out WIN32_FIND_DATA findData);
 
 		string newPath;
@@ -134,9 +134,27 @@ public partial class MainWindow : Window
 		return items;
 	}
 
-	private void CheckForNewVersion()
+	private void CheckForNewVersion(bool forced = false)
 	{
+		if (AppSettings.CheckForUpdates && AppSettings.LastUpdateTime < DateTime.Now.AddDays(-5) || forced)
+		{
+			try
+			{
+				Debug.Print("Checking for new version...");
 
+				//HttpClient httpClient = new();
+				//string result = await httpClient.GetStringAsync("https://jonashertzman.github.io/zzzzzzzzzzz/download/version.txt");
+
+				//Debug.Print($"Latest version found: {result}");
+				//ViewModel.NewBuildAvailable = int.Parse(result) > int.Parse(ViewModel.BuildNumber);
+			}
+			catch (Exception exception)
+			{
+				Debug.Print($"Version check failed: {exception.Message}");
+			}
+
+			AppSettings.LastUpdateTime = DateTime.Now;
+		}
 	}
 
 	private void LoadSettings()
