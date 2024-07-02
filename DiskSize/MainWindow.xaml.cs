@@ -79,7 +79,7 @@ public partial class MainWindow : Window
 		{
 			foreach (FileItem f in SearchDirectory(path, level))
 			{
-				allItems.Add(new FileItem() { Name = f.Name, IsFolder = f.IsFolder, Level = level });
+				allItems.Add(new FileItem() { Name = f.Name, Size = f.Size, Date = f.Date, IsFolder = f.IsFolder, Level = level });
 			}
 		}
 
@@ -106,7 +106,7 @@ public partial class MainWindow : Window
 		}
 	}
 
-	private static List<FileItem> SearchDirectory(string path, int level)
+	private List<FileItem> SearchDirectory(string path, int level)
 	{
 		path = Utils.FixRootPath(path);
 		List<FileItem> items = [];
