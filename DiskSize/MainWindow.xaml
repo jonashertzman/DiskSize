@@ -5,7 +5,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:DiskSize"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	Title="MainWindow"
+	Title="Disk Size - Alpha 1"
 	Width="550"
 	Height="350"
 	d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"

@@ -123,15 +123,12 @@ public class TreeControl : Control
 					drawingContext.Pop();
 
 					// Size column
-					if (!line.IsFolder)
+					drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine1 + textMargin, 0, AppSettings.SizeColumnWidth - textMargin * 2, itemHeight)));
 					{
-						drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine1 + textMargin, 0, AppSettings.SizeColumnWidth - textMargin * 2, itemHeight)));
-						{
-							string sizeText = line.Size.ToString("N0");
-							drawingContext.DrawText(new FormattedText(sizeText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine1 + AppSettings.SizeColumnWidth - textMargin - MeasureString(sizeText).Width - 1, itemMargin));
-						}
-						drawingContext.Pop();
+						string sizeText = line.Size.ToString("N0");
+						drawingContext.DrawText(new FormattedText(sizeText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine1 + AppSettings.SizeColumnWidth - textMargin - MeasureString(sizeText).Width - 1, itemMargin));
 					}
+					drawingContext.Pop();
 
 					// Date column
 					drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine2 + textMargin, 0, AppSettings.DateColumnWidth - textMargin * 2, itemHeight)));

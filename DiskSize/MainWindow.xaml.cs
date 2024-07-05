@@ -51,18 +51,6 @@ public partial class MainWindow : Window
 			return;
 		}
 
-		//if (level == 2)
-		//{
-		//	if (leftPath != null)
-		//	{
-		//		progressHandler.Report(Char.ToUpper(leftPath[leftRoot.Length]) - 'A');
-		//	}
-		//	else if (rightPath != null)
-		//	{
-		//		progressHandler.Report(Char.ToUpper(rightPath[rightRoot.Length]) - 'A');
-		//	}
-		//}
-
 		if (path?.Length > 259)
 		{
 			return;
@@ -73,17 +61,7 @@ public partial class MainWindow : Window
 			return;
 		}
 
-		List<FileItem> allItems = [];
-
-		if (path != null)
-		{
-			foreach (FileItem f in SearchDirectory(path, level))
-			{
-				allItems.Add(new FileItem() { Name = f.Name, Size = f.Size, Date = f.Date, IsFolder = f.IsFolder, Level = level });
-			}
-		}
-
-		foreach (FileItem fileItem in allItems)
+		foreach (FileItem fileItem in SearchDirectory(path, level))
 		{
 			if (analyzeCancelled)
 			{
@@ -92,13 +70,17 @@ public partial class MainWindow : Window
 
 			if (fileItem.IsFolder)
 			{
-				//leftItem.IsExpanded = true;
+				fileItem.IsExpanded = true;
 				{
 					AnalyzeDirectory(Path.Combine(Utils.FixRootPath(path), fileItem.Name), fileItem.Children, level + 1);
+
+					long size = 0;
 					foreach (FileItem child in fileItem.Children)
 					{
+						size += child.Size;
 						child.Parent = fileItem;
 					}
+					fileItem.Size = size;
 				}
 			}
 
