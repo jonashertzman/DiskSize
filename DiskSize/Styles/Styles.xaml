@@ -85,7 +85,6 @@
 
 	<Style TargetType="Border">
 		<Setter Property="BorderBrush" Value="{StaticResource Theme.BorderLight}" />
-		<Setter Property="BorderThickness" Value="1" />
 	</Style>
 
 </ResourceDictionary>
