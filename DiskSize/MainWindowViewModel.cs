@@ -11,7 +11,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	#region Members
 
-	readonly DispatcherTimer timer = new DispatcherTimer();
+	readonly DispatcherTimer timer = new();
 
 	#endregion
 
@@ -119,14 +119,14 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 
 
-	string leftPath = "";
-	public string LeftPath
+	string path = "";
+	public string Path
 	{
-		get { return leftPath; }
+		get { return path; }
 		set
 		{
-			leftPath = value;
-			OnPropertyChangedRepaint(nameof(LeftPath));
+			path = value;
+			OnPropertyChangedRepaint(nameof(Path));
 		}
 	}
 

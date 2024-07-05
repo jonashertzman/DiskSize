@@ -70,7 +70,7 @@
 		</Grid.RowDefinitions>
 
 		<!--  Menu  -->
-		<Menu Grid.Row="0" Padding="3" BorderBrush="{StaticResource Theme.BorderLight}">
+		<Menu Grid.Row="0" Padding="3">
 			<MenuItem Header="File">
 				<MenuItem Header="Exit" Command="local:Commands.Exit" />
 			</MenuItem>
@@ -93,7 +93,7 @@
 		</Menu>
 
 		<!--  Main Toolbar  -->
-		<Border x:Name="ToolbarMain" Grid.Row="1" DockPanel.Dock="Top" BorderThickness="0,1" BorderBrush="{StaticResource Theme.BorderLight}">
+		<Border x:Name="ToolbarMain" Grid.Row="1" DockPanel.Dock="Top" BorderThickness="0,1">
 			<Border.Background>
 				<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
 					<GradientStop Offset="0" Color="{Binding WindowBackground.Color, FallbackValue=White}" />
@@ -105,7 +105,7 @@
 
 				<Button Style="{StaticResource ToolbarButton}" Command="local:Commands.Analyze">
 					<StackPanel Orientation="Horizontal">
-						<ContentPresenter ContentTemplate="{StaticResource CompareIcon}" Style="{StaticResource CommonButtonIcon}" />
+						<ContentPresenter ContentTemplate="{StaticResource AnalyzeIcon}" Style="{StaticResource CommonButtonIcon}" />
 						<TextBlock Text="Analyze" Style="{StaticResource CommonButtonLabel}" />
 					</StackPanel>
 					<Button.ToolTip>
@@ -122,10 +122,19 @@
 		</Border>
 
 		<!--  Address Bar  -->
-		<TextBox Grid.Row="2" Padding="3" Text="C:\temp" BorderThickness="0" />
+
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<local:ErrorTextBox x:Name="AddressTextBox" d:Text="C:\temp" Text="{Binding Path, UpdateSourceTrigger=LostFocus}" BorderThickness="0" />
+			<Button x:Name="BrowseButton" Grid.Column="1" Width="20" Height="21" HorizontalAlignment="Right" VerticalAlignment="Center" Content="..." BorderThickness="0" Click="BrowseButton_Click" />
+		</Grid>
 
 		<!--  Tree  -->
-		<Border Grid.Row="3" Grid.Column="0" BorderThickness="0,1" BorderBrush="{StaticResource Theme.BorderLight}" AllowDrop="True">
+		<Border Grid.Row="3" Grid.Column="0" BorderThickness="0,1" AllowDrop="True">
 			<Grid Name="LeftFolderGrid" MouseWheel="FolderDiff_MouseWheel">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
@@ -137,7 +146,7 @@
 					<RowDefinition Height="auto" />
 				</Grid.RowDefinitions>
 
-				<Border Grid.ColumnSpan="2" BorderThickness="0,0,0,1" BorderBrush="{StaticResource Theme.BorderLight}">
+				<Border Grid.ColumnSpan="2" BorderThickness="0,0,0,1">
 					<ScrollViewer Name="LeftColumnScroll" ScrollChanged="LeftColumnScroll_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
 						<Grid Name="LeftColumns" HorizontalAlignment="Left">
 							<Grid.ColumnDefinitions>

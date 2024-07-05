@@ -227,7 +227,7 @@ public partial class MainWindow : Window
 	{
 		if (Environment.GetCommandLineArgs().Length > 2)
 		{
-			ViewModel.LeftPath = Environment.GetCommandLineArgs()[1];
+			ViewModel.Path = Environment.GetCommandLineArgs()[1];
 			Analyze();
 		}
 
@@ -245,6 +245,17 @@ public partial class MainWindow : Window
 	private void Window_Closed(object sender, EventArgs e)
 	{
 		SaveSettings();
+	}
+
+	private void BrowseButton_Click(object sender, RoutedEventArgs e)
+	{
+		BrowseFolderWindow browseFolderWindow = new() { DataContext = ViewModel, Owner = this, SelectedPath = ViewModel.Path };
+		browseFolderWindow.ShowDialog();
+
+		if (browseFolderWindow.DialogResult == true)
+		{
+			ViewModel.Path = browseFolderWindow.SelectedPath;
+		}
 	}
 
 	#endregion

@@ -107,7 +107,7 @@ public class TreeControl : Control
 						{
 							drawingContext.PushGuidelineSet(expanderGuide);
 							{
-								Rect expanderRect = new Rect(expanderMargin + ((line.Level - 1) * itemHeight), expanderMargin, expanderMargin * 2, expanderMargin * 2);
+								Rect expanderRect = new(expanderMargin + ((line.Level - 1) * itemHeight), expanderMargin, expanderMargin * 2, expanderMargin * 2);
 
 								drawingContext.DrawRectangle(Brushes.Transparent, expanderPen, expanderRect);
 								drawingContext.DrawLine(expanderPen, new Point(expanderRect.Left, expanderMargin * 2), new Point(expanderRect.Right, expanderMargin * 2));
@@ -158,7 +158,7 @@ public class TreeControl : Control
 		// Draw grid lines
 		if (AppSettings.DrawGridLines)
 		{
-			Pen gridPen = new Pen(new SolidColorBrush(Color.FromArgb(20, 0, 0, 0)), RoundToWholePixels(1));
+			Pen gridPen = new(new SolidColorBrush(Color.FromArgb(20, 0, 0, 0)), RoundToWholePixels(1));
 			gridPen.Freeze();
 			GuidelineSet gridGuide = CreateGuidelineSet(gridPen);
 
@@ -341,7 +341,7 @@ public class TreeControl : Control
 
 	private static GuidelineSet CreateGuidelineSet(Pen pen)
 	{
-		GuidelineSet guidelineSet = new GuidelineSet();
+		GuidelineSet guidelineSet = new();
 		guidelineSet.GuidelinesX.Add(pen.Thickness / 2);
 		guidelineSet.GuidelinesY.Add(pen.Thickness / 2);
 		guidelineSet.Freeze();
@@ -391,7 +391,7 @@ public class TreeControl : Control
 
 	private Size MeasureString(string text)
 	{
-		FormattedText formattedText = new FormattedText(
+		FormattedText formattedText = new(
 			text,
 			CultureInfo.CurrentCulture,
 			FlowDirection.LeftToRight,
