@@ -79,11 +79,11 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 
 
-	ObservableCollection<FileItem> leftFolder = [];
-	public ObservableCollection<FileItem> LeftFolder
+	ObservableCollection<FileItem> fileItems = [];
+	public ObservableCollection<FileItem> FileItems
 	{
-		get { return leftFolder; }
-		set { leftFolder = value; OnPropertyChangedRepaint(nameof(LeftFolder)); }
+		get { return fileItems; }
+		set { fileItems = value; OnPropertyChangedRepaint(nameof(FileItems)); }
 	}
 
 

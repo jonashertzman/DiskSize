@@ -37,11 +37,25 @@ public partial class MainWindow : Window
 
 	private void Analyze()
 	{
+		Tree.Focus();
+
+		if (ViewModel.Path == "")
+		{
+			BrowseFolderWindow browseLeft = new() { DataContext = ViewModel, Owner = this, Title = "Select Left Path" };
+			browseLeft.ShowDialog();
+
+			if (browseLeft.DialogResult == false)
+			{
+				return;
+			}
+			ViewModel.Path = browseLeft.SelectedPath;
+		}
+
 		ObservableCollection<FileItem> items = [];
 
-		AnalyzeDirectory(@"c:\temp\", items, 1);
+		AnalyzeDirectory(ViewModel.Path, items, 1);
 
-		ViewModel.LeftFolder = items;
+		ViewModel.FileItems = items;
 	}
 
 	private void AnalyzeDirectory(string path, ObservableCollection<FileItem> items, int level)
@@ -70,7 +84,7 @@ public partial class MainWindow : Window
 
 			if (fileItem.IsFolder)
 			{
-				fileItem.IsExpanded = true;
+				//fileItem.IsExpanded = true;
 				{
 					AnalyzeDirectory(Path.Combine(Utils.FixRootPath(path), fileItem.Name), fileItem.Children, level + 1);
 
@@ -178,9 +192,9 @@ public partial class MainWindow : Window
 		}
 
 		LeftColumns.Width = totalWidth;
-		HorizontalScrollbar.ViewportSize = LeftFolder.ActualWidth;
-		HorizontalScrollbar.Maximum = totalWidth - LeftFolder.ActualWidth;
-		HorizontalScrollbar.LargeChange = LeftFolder.ActualWidth;
+		HorizontalScrollbar.ViewportSize = Tree.ActualWidth;
+		HorizontalScrollbar.Maximum = totalWidth - Tree.ActualWidth;
+		HorizontalScrollbar.LargeChange = Tree.ActualWidth;
 	}
 
 	#endregion
@@ -197,28 +211,28 @@ public partial class MainWindow : Window
 		Analyze();
 	}
 
-	private void FolderDiff_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+	private void TreeGrid_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
 	{
 		int lines = SystemParameters.WheelScrollLines * e.Delta / 120;
 		VerticalTreeScrollbar.Value -= lines;
 	}
 
-	private void LeftColumns_Resized(object sender, SizeChangedEventArgs e)
+	private void TreeColumns_Resized(object sender, SizeChangedEventArgs e)
 	{
 		UpdateColumnWidths();
 	}
 
-	private void LeftColumnScroll_ScrollChanged(object sender, System.Windows.Controls.ScrollChangedEventArgs e)
+	private void TreeColumns_ScrollChanged(object sender, System.Windows.Controls.ScrollChangedEventArgs e)
 	{
 		UpdateColumnWidths();
 	}
 
-	private void LeftFolderHorizontalScrollbar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+	private void HorizontalScrollbar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 	{
 
 	}
 
-	private void LeftFolder_SelectionChanged(FileItem file)
+	private void Tree_SelectionChanged(FileItem file)
 	{
 
 	}

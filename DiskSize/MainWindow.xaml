@@ -135,7 +135,7 @@
 
 		<!--  Tree  -->
 		<Border Grid.Row="3" Grid.Column="0" BorderThickness="0,1" AllowDrop="True">
-			<Grid Name="LeftFolderGrid" MouseWheel="FolderDiff_MouseWheel">
+			<Grid Name="LeftFolderGrid" MouseWheel="TreeGrid_MouseWheel">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
@@ -147,7 +147,7 @@
 				</Grid.RowDefinitions>
 
 				<Border Grid.ColumnSpan="2" BorderThickness="0,0,0,1">
-					<ScrollViewer Name="LeftColumnScroll" ScrollChanged="LeftColumnScroll_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+					<ScrollViewer Name="TreeColumns" ScrollChanged="TreeColumns_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
 						<Grid Name="LeftColumns" HorizontalAlignment="Left">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="{Binding NameColumnWidth}" />
@@ -158,21 +158,21 @@
 								<ColumnDefinition Width="4" />
 							</Grid.ColumnDefinitions>
 
-							<TextBlock Grid.Column="0" Padding="3,2" Text="Name" TextTrimming="CharacterEllipsis" SizeChanged="LeftColumns_Resized" Style="{StaticResource StyledTextBlock}" />
+							<TextBlock Grid.Column="0" Padding="3,2" Text="Name" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
 							<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
-							<TextBlock Grid.Column=" 2" Padding="3,2" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="LeftColumns_Resized" TextAlignment="Right" Style="{StaticResource StyledTextBlock}" />
+							<TextBlock Grid.Column=" 2" Padding="3,2" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" TextAlignment="Right" Style="{StaticResource StyledTextBlock}" />
 							<GridSplitter Grid.Column=" 3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
-							<TextBlock Grid.Column="4" Padding="3,2" Text="Date" TextTrimming="CharacterEllipsis" SizeChanged="LeftColumns_Resized" Style="{StaticResource StyledTextBlock}" />
+							<TextBlock Grid.Column="4" Padding="3,2" Text="Date" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
 							<GridSplitter Grid.Column=" 5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
 						</Grid>
 					</ScrollViewer>
 				</Border>
 
 				<Border Grid.Row="1" Grid.Column="0" BorderThickness="0" Background="{StaticResource Theme.Window}">
-					<local:TreeControl x:Name="LeftFolder" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="LeftFolder_SelectionChanged" Lines="{Binding LeftFolder}" HorizontalOffset="{Binding Value, ElementName=HorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" />
+					<local:TreeControl x:Name="Tree" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="Tree_SelectionChanged" Lines="{Binding FileItems}" HorizontalOffset="{Binding Value, ElementName=HorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" />
 				</Border>
-				<ScrollBar Name="HorizontalScrollbar" Grid.Row="2" ValueChanged="LeftFolderHorizontalScrollbar_ValueChanged" Orientation="Horizontal" SmallChange="10" />
-				<ScrollBar Name="VerticalTreeScrollbar" Grid.Row="1" Grid.Column="2" SmallChange="1" LargeChange="{Binding ElementName=LeftFolder, Path=VisibleLines}" ViewportSize="{Binding ElementName=LeftFolder, Path=VisibleLines, Mode=TwoWay}" Maximum="{Binding ElementName=LeftFolder, Path=MaxVerticalScroll, Mode=TwoWay}" />
+				<ScrollBar Name="HorizontalScrollbar" Grid.Row="2" ValueChanged="HorizontalScrollbar_ValueChanged" Orientation="Horizontal" SmallChange="10" />
+				<ScrollBar Name="VerticalTreeScrollbar" Grid.Row="1" Grid.Column="2" SmallChange="1" LargeChange="{Binding ElementName=Tree, Path=VisibleLines}" ViewportSize="{Binding ElementName=Tree, Path=VisibleLines, Mode=TwoWay}" Maximum="{Binding ElementName=Tree, Path=MaxVerticalScroll, Mode=TwoWay}" />
 			</Grid>
 		</Border>
 
