@@ -178,7 +178,7 @@
 
 		<!--  Status Bar  -->
 		<Border Grid.Row="4" Padding="4" BorderThickness="0">
-			<TextBlock Text="Status" />
+			<TextBlock x:Name="StatusBar" Text="Status" />
 		</Border>
 
 	</Grid>

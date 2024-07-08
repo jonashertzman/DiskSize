@@ -41,7 +41,7 @@ public partial class MainWindow : Window
 
 		if (ViewModel.Path == "")
 		{
-			BrowseFolderWindow browseLeft = new() { DataContext = ViewModel, Owner = this, Title = "Select Left Path" };
+			BrowseFolderWindow browseLeft = new() { DataContext = ViewModel, Owner = this, Title = "Select Directory to Analyze" };
 			browseLeft.ShowDialog();
 
 			if (browseLeft.DialogResult == false)
@@ -53,9 +53,17 @@ public partial class MainWindow : Window
 
 		ObservableCollection<FileItem> items = [];
 
-		AnalyzeDirectory(ViewModel.Path, items, 1);
+		currentRoot = ViewModel.Path;
+		if (!currentRoot.EndsWith('\\'))
+		{
+			currentRoot += "\\";
+		}
+
+		AnalyzeDirectory(currentRoot, items, 1);
 
 		ViewModel.FileItems = items;
+
+		UpdateStatus("", true);
 	}
 
 	private void AnalyzeDirectory(string path, ObservableCollection<FileItem> items, int level)
@@ -75,6 +83,11 @@ public partial class MainWindow : Window
 			return;
 		}
 
+		if (level > 1)
+		{
+			UpdateStatus(path);
+		}
+
 		foreach (FileItem fileItem in SearchDirectory(path, level))
 		{
 			if (analyzeCancelled)
@@ -86,7 +99,7 @@ public partial class MainWindow : Window
 			{
 				//fileItem.IsExpanded = true;
 				{
-					AnalyzeDirectory(Path.Combine(Utils.FixRootPath(path), fileItem.Name), fileItem.Children, level + 1);
+					AnalyzeDirectory(Path.Combine(path, fileItem.Name), fileItem.Children, level + 1);
 
 					long size = 0;
 					foreach (FileItem child in fileItem.Children)
@@ -128,6 +141,52 @@ public partial class MainWindow : Window
 		WinApi.FindClose(findHandle);
 
 		return items;
+	}
+
+	DateTime lastStatusUpdateTime = DateTime.UtcNow;
+	DateTime startTime = new();
+	DateTime endTime = new();
+	string currentRoot;
+	private void UpdateStatus(string currentPath, bool finalUpdate = false)
+	{
+		if (finalUpdate || (DateTime.UtcNow - lastStatusUpdateTime).TotalMilliseconds >= 100)
+		{
+			const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+			int percentageComplete;
+
+			string status;
+			if (currentPath != null)
+			{
+				char firstLetter = Char.ToUpper(currentPath[currentRoot.Length]);
+				int index = alphabet.IndexOf(firstLetter);
+				percentageComplete = index == -1 ? index : (int)((float)(index / (float)alphabet.Length) * 100.0);
+
+				status = currentPath;
+			}
+			else
+			{
+				percentageComplete = 0;
+
+				status = TimeSpanToShortString(endTime.Subtract(startTime));
+			}
+
+			StatusBar.Text = status;
+
+			lastStatusUpdateTime = DateTime.UtcNow;
+		}
+	}
+
+	private string TimeSpanToShortString(TimeSpan timeSpan)
+	{
+		if (timeSpan.TotalHours >= 1)
+		{
+			return $"{(int)timeSpan.TotalHours}h {timeSpan.Minutes}m";
+		}
+		if (timeSpan.Minutes > 0)
+		{
+			return $"{timeSpan.Minutes}m {timeSpan.Seconds}s";
+		}
+		return $"{timeSpan.Seconds}.{timeSpan.Milliseconds.ToString().PadLeft(3, '0')}s";
 	}
 
 	private void CheckForNewVersion(bool forced = false)

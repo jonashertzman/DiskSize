@@ -185,10 +185,10 @@ public partial class BrowseFolderWindow : Window
 						item.Items.Add(CreateTreeItem(subDir));
 					}
 				}
-				foreach (FileInfo file in expandedDir.GetFiles())
-				{
-					item.Items.Add(CreateTreeItem(file));
-				}
+				//foreach (FileInfo file in expandedDir.GetFiles())
+				//{
+				//	item.Items.Add(CreateTreeItem(file));
+				//}
 			}
 			catch (Exception exception)
 			{
