@@ -51,6 +51,8 @@ public partial class MainWindow : Window
 			ViewModel.Path = browseLeft.SelectedPath;
 		}
 
+		startTime = DateTime.UtcNow;
+
 		ObservableCollection<FileItem> items = [];
 
 		currentRoot = ViewModel.Path;
@@ -63,7 +65,8 @@ public partial class MainWindow : Window
 
 		ViewModel.FileItems = items;
 
-		UpdateStatus("", true);
+		endTime = DateTime.UtcNow;
+		UpdateStatus(null, true);
 	}
 
 	private void AnalyzeDirectory(string path, ObservableCollection<FileItem> items, int level)
@@ -149,7 +152,7 @@ public partial class MainWindow : Window
 	string currentRoot;
 	private void UpdateStatus(string currentPath, bool finalUpdate = false)
 	{
-		if (finalUpdate || (DateTime.UtcNow - lastStatusUpdateTime).TotalMilliseconds >= 100)
+		if (finalUpdate || (DateTime.UtcNow - lastStatusUpdateTime).TotalMilliseconds >= 500)
 		{
 			const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 			int percentageComplete;
@@ -157,7 +160,7 @@ public partial class MainWindow : Window
 			string status;
 			if (currentPath != null)
 			{
-				char firstLetter = Char.ToUpper(currentPath[currentRoot.Length]);
+				char firstLetter = char.ToUpper(currentPath[currentRoot.Length]);
 				int index = alphabet.IndexOf(firstLetter);
 				percentageComplete = index == -1 ? index : (int)((float)(index / (float)alphabet.Length) * 100.0);
 
@@ -171,6 +174,7 @@ public partial class MainWindow : Window
 			}
 
 			StatusBar.Text = status;
+			Debug.Print("---- " + status);
 
 			lastStatusUpdateTime = DateTime.UtcNow;
 		}
