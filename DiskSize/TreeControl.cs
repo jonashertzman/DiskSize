@@ -249,8 +249,7 @@ public class TreeControl : Control
 
 	#region Events
 
-	public delegate void SelectionChangedEvent(FileItem file);
-	public event SelectionChangedEvent SelectionChanged;
+	public event EventHandler<FileItemEventArgs> SelectionChanged;
 
 	#endregion
 
@@ -335,7 +334,7 @@ public class TreeControl : Control
 		MaxVerticalScroll = visibleItems.Count - VisibleLines + 1;
 		MoveItemIntoView(item);
 		SelectedFile = item;
-		SelectionChanged?.Invoke(SelectedFile);
+		SelectionChanged?.Invoke(this, new FileItemEventArgs(SelectedFile));
 		UpdateTrigger++;
 	}
 

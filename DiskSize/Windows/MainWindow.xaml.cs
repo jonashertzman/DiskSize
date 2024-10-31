@@ -295,14 +295,14 @@ public partial class MainWindow : Window
 
 	}
 
-	private void Tree_SelectionChanged(FileItem file)
+	private void Tree_SelectionChanged(object sender, FileItemEventArgs e)
 	{
 
 	}
 
 	private void Window_ContentRendered(object sender, EventArgs e)
 	{
-		if (Environment.GetCommandLineArgs().Length > 2)
+		if (Environment.GetCommandLineArgs().Length > 1)
 		{
 			ViewModel.Path = Environment.GetCommandLineArgs()[1];
 			Analyze();
