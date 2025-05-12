@@ -61,7 +61,25 @@ public partial class MainWindow : Window
 			currentRoot += "\\";
 		}
 
-		AnalyzeDirectory(currentRoot, items, 1);
+		FileItem rootItem;
+
+		IntPtr findHandle = WinApi.FindFirstFile(Path.TrimEndingDirectorySeparator(currentRoot), out WIN32_FIND_DATA findData);
+		if (findHandle != WinApi.INVALID_HANDLE_VALUE)
+		{
+			rootItem = new FileItem(Path.TrimEndingDirectorySeparator(currentRoot), 1, findData);
+			rootItem.IsExpanded = true;
+			items.Add(rootItem);
+			AnalyzeDirectory(currentRoot, rootItem.Children, 2);
+
+			long size = 0;
+			foreach (FileItem child in rootItem.Children)
+			{
+				size += child.Size;
+				child.Parent = rootItem;
+			}
+			rootItem.Size = size;
+		}
+		WinApi.FindClose(findHandle);
 
 		ViewModel.FileItems = items;
 
@@ -71,24 +89,14 @@ public partial class MainWindow : Window
 
 	private void AnalyzeDirectory(string path, ObservableCollection<FileItem> items, int level)
 	{
-		if (analyzeCancelled)
-		{
-			return;
-		}
+		if (analyzeCancelled) return;
+		if (path?.Length > 259) return;
+		if (Directory.Exists(path) && !Utils.DirectoryAllowed(path)) return;
 
-		if (path?.Length > 259)
-		{
-			return;
-		}
-
-		if (Directory.Exists(path) && !Utils.DirectoryAllowed(path))
-		{
-			return;
-		}
 
 		if (level > 1)
 		{
-			UpdateStatus(path);
+			//UpdateStatus(path);
 		}
 
 		foreach (FileItem fileItem in SearchDirectory(path, level))
@@ -123,12 +131,11 @@ public partial class MainWindow : Window
 		path = Utils.FixRootPath(path);
 		List<FileItem> items = [];
 
-		IntPtr INVALID_HANDLE_VALUE = new(-1);
 		IntPtr findHandle = WinApi.FindFirstFile(Path.Combine(path, "*"), out WIN32_FIND_DATA findData);
 
 		string newPath;
 
-		if (findHandle != INVALID_HANDLE_VALUE)
+		if (findHandle != WinApi.INVALID_HANDLE_VALUE)
 		{
 			do
 			{

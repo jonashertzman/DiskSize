@@ -53,6 +53,7 @@ internal class WinApi
 	public const int WS_MAXIMIZEBOX = 0x10000;
 	public const int WS_MINIMIZEBOX = 0x20000;
 	private const uint CF_UNICODETEXT = 13;
+	public const IntPtr INVALID_HANDLE_VALUE = -1;
 
 
 	[DllImport("kernel32", CharSet = CharSet.Unicode)]
