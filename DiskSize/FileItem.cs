@@ -27,6 +27,10 @@ public class FileItem
 		}
 
 		Date = DateTime.FromFileTime((long)Combine(findData.ftLastWriteTime.dwHighDateTime, findData.ftLastWriteTime.dwLowDateTime));
+		if (level == 1)
+		{
+			Date = null;
+		}
 	}
 
 	#endregion
@@ -50,7 +54,7 @@ public class FileItem
 
 	public string Name { get; set; } = "";
 
-	public DateTime Date { get; set; }
+	public DateTime? Date { get; set; }
 
 	public long Size { get; set; }
 

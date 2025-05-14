@@ -62,24 +62,27 @@ public partial class MainWindow : Window
 		}
 
 		FileItem rootItem;
-
-		IntPtr findHandle = WinApi.FindFirstFile(Path.TrimEndingDirectorySeparator(currentRoot), out WIN32_FIND_DATA findData);
-		if (findHandle != WinApi.INVALID_HANDLE_VALUE)
+		WIN32_FIND_DATA findData = new()
 		{
-			rootItem = new FileItem(Path.TrimEndingDirectorySeparator(currentRoot), 1, findData);
-			rootItem.IsExpanded = true;
-			items.Add(rootItem);
-			AnalyzeDirectory(currentRoot, rootItem.Children, 2);
+			dwFileAttributes = FileAttributes.Directory,
+			cFileName = currentRoot.TrimEnd('\\')
+		};
 
-			long size = 0;
-			foreach (FileItem child in rootItem.Children)
-			{
-				size += child.Size;
-				child.Parent = rootItem;
-			}
-			rootItem.Size = size;
+		rootItem = new FileItem(Path.TrimEndingDirectorySeparator(currentRoot), 1, findData)
+		{
+			IsExpanded = true
+		};
+
+		items.Add(rootItem);
+		AnalyzeDirectory(currentRoot, rootItem.Children, 2);
+
+		long size = 0;
+		foreach (FileItem child in rootItem.Children)
+		{
+			size += child.Size;
+			child.Parent = rootItem;
 		}
-		WinApi.FindClose(findHandle);
+		rootItem.Size = size;
 
 		ViewModel.FileItems = items;
 
@@ -181,7 +184,7 @@ public partial class MainWindow : Window
 			}
 
 			StatusBar.Text = status;
-			Debug.Print("---- " + status);
+			Debug.Print("---- " + status + " " + percentageComplete);
 
 			lastStatusUpdateTime = DateTime.UtcNow;
 		}

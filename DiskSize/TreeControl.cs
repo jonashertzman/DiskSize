@@ -133,7 +133,9 @@ public class TreeControl : Control
 					// Date column
 					drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine2 + textMargin, 0, AppSettings.DateColumnWidth - textMargin * 2, itemHeight)));
 					{
-						drawingContext.DrawText(new FormattedText(line.Date.ToString("g"), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine2 + textMargin, itemMargin));
+						string dateText = line.Date?.ToString("g") ?? "";
+
+						drawingContext.DrawText(new FormattedText(dateText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine2 + textMargin, itemMargin));
 					}
 					drawingContext.Pop();
 
