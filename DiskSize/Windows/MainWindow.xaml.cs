@@ -274,16 +274,6 @@ public partial class MainWindow : Window
 
 	#region Event Handlers
 
-	private void CommandExit_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-	{
-		this.Close();
-	}
-
-	private void CommandAnalyze_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-	{
-		Analyze();
-	}
-
 	private void TreeGrid_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
 	{
 		int lines = SystemParameters.WheelScrollLines * e.Delta / 120;
@@ -344,6 +334,25 @@ public partial class MainWindow : Window
 			ViewModel.Path = browseFolderWindow.SelectedPath;
 		}
 	}
+
+	#region Commands
+
+	private void CommandExit_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+		this.Close();
+	}
+
+	private void CommandAnalyze_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+		Analyze();
+	}
+
+	private void CommandUp_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+
+	}
+
+	#endregion
 
 	#endregion
 

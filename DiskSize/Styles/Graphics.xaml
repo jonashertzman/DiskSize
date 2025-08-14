@@ -66,6 +66,41 @@
 		</Viewbox>
 	</DataTemplate>
 
+	<DataTemplate x:Key="UpIcon">
+		<Viewbox>
+			<Canvas Width="16" Height="16">
+				<Path StrokeThickness="0">
+					<Path.Fill>
+						<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+							<GradientStop Offset="0" Color="#FFC4A540" />
+							<GradientStop Offset="1" Color="#FFCCA545" />
+						</LinearGradientBrush>
+					</Path.Fill>
+					<Path.Data>
+						<GeometryGroup>
+							<PathGeometry>
+								<PathGeometry.Figures>
+									<PathFigure IsClosed="True" StartPoint="1.5,6">
+										<PathFigure.Segments>
+											<LineSegment Point="5.5,1.5" />
+											<LineSegment Point="9.5,6" />
+											<LineSegment Point="7,6" />
+											<LineSegment Point="7,12" />
+											<LineSegment Point="13,12" />
+											<LineSegment Point="13,15" />
+											<LineSegment Point="4,15" />
+											<LineSegment Point="4,6" />
+										</PathFigure.Segments>
+									</PathFigure>
+								</PathGeometry.Figures>
+							</PathGeometry>
+						</GeometryGroup>
+					</Path.Data>
+				</Path>
+			</Canvas>
+		</Viewbox>
+	</DataTemplate>
+
 	<DataTemplate x:Key="DriveIcon">
 		<Viewbox>
 			<Canvas Width="16" Height="16">

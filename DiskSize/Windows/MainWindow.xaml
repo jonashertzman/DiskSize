@@ -29,36 +29,7 @@
 		<Grid.CommandBindings>
 			<CommandBinding Command="local:Commands.Analyze" Executed="CommandAnalyze_Executed" />
 			<CommandBinding Command="local:Commands.Exit" Executed="CommandExit_Executed" />
-			<!--
-			<CommandBinding Command="local:Commands.ExperimentalCompare" Executed="CommandCompare_Executed" />
-			<CommandBinding Command="local:Commands.SaveLeftFile" Executed="CommandSaveLeftFile_Executed" CanExecute="CommandSaveLeftFile_CanExecute" />
-			<CommandBinding Command="local:Commands.SaveRightFile" Executed="CommandSaveRightFile_Executed" CanExecute="CommandSaveRightFile_CanExecute" />
-			<CommandBinding Command="local:Commands.Edit" CanExecute="CommandEdit_CanExecute" />
-			<CommandBinding Command="local:Commands.Swap" Executed="CommandSwap_Executed" />
 			<CommandBinding Command="local:Commands.Up" Executed="CommandUp_Executed" />
-			<CommandBinding Command="local:Commands.PreviousDiff" Executed="CommandPreviousDiff_Executed" CanExecute="CommandPreviousDiff_CanExecute" />
-			<CommandBinding Command="local:Commands.NextDiff" Executed="CommandNextDiff_Executed" CanExecute="CommandNextDiff_CanExecute" />
-			<CommandBinding Command="local:Commands.CurrentDiff" Executed="CommandCurrentDiff_Executed" CanExecute="CommandCurrentDiff_CanExecute" />
-			<CommandBinding Command="local:Commands.FirstDiff" Executed="CommandFirstDiff_Executed" CanExecute="CommandFirstDiff_CanExecute" />
-			<CommandBinding Command="local:Commands.LastDiff" Executed="CommandLastDiff_Executed" CanExecute="CommandLastDiff_CanExecute" />
-			<CommandBinding Command="local:Commands.NextFile" Executed="CommandNextFile_Executed" CanExecute="CommandNextFile_CanExecute" />
-			<CommandBinding Command="local:Commands.PreviousFile" Executed="CommandPreviousFile_Executed" CanExecute="CommandPreviousFile_CanExecute" />
-			<CommandBinding Command="local:Commands.CopyLeftDiff" Executed="CommandCopyLeftDiff_Executed" CanExecute="CommandCopyLeftDiff_CanExecute" />
-			<CommandBinding Command="local:Commands.CopyRightDiff" Executed="CommandCopyRightDiff_Executed" CanExecute="CommandCopyRightDiff_CanExecute" />
-			<CommandBinding Command="local:Commands.About" Executed="CommandAbout_Executed" />
-			<CommandBinding Command="local:Commands.BrowseLeft" Executed="CommandBrowseLeft_Executed" />
-			<CommandBinding Command="local:Commands.BrowseRight" Executed="CommandBrowseRight_Executed" />
-			<CommandBinding Command="local:Commands.Options" Executed="CommandOptions_Executed" />
-			<CommandBinding Command="local:Commands.Find" Executed="CommandFind_Executed" />
-			<CommandBinding Command="local:Commands.FindNext" Executed="CommandFindNext_Executed" CanExecute="CommandFindNext_CanExecute" />
-			<CommandBinding Command="local:Commands.FindPrevious" Executed="CommandFindPrevious_Executed" CanExecute="CommandFindPrevious_CanExecute_1" />
-			<CommandBinding Command="local:Commands.CloseFind" Executed="CommandCloseFind_Executed" />
-			<CommandBinding Command="local:Commands.ZoomIn" Executed="CommandZoomIn_Executed" />
-			<CommandBinding Command="local:Commands.ZoomOut" Executed="CommandZoomOut_Executed" />
-			<CommandBinding Command="local:Commands.ResetZoom" Executed="CommandResetZoom_Executed" />
-			<CommandBinding Command="local:Commands.OpenContainingFolder" Executed="CommandOpenContainingFolder_Executed" CanExecute="CommandOpenContainingFolder_CanExecute" />
-			<CommandBinding Command="local:Commands.CopyPathToClipboard" Executed="CommandCopyPathToClipboard_Executed" CanExecute="CommandCopyPathToClipboard_CanExecute" />
-			-->
 		</Grid.CommandBindings>
 
 		<Grid.RowDefinitions>
@@ -79,11 +50,11 @@
 				<MenuItem Header="Find Next" Command="local:Commands.FindNext" />
 				<MenuItem Header="Find Previous" Command="local:Commands.FindPrevious" />
 			</MenuItem>
-			<MenuItem Header="View">
+			<!--<MenuItem Header="View">
 				<MenuItem Header="Zoom In" Command="local:Commands.ZoomIn" />
 				<MenuItem Header="Zoom Out" Command="local:Commands.ZoomOut" />
 				<MenuItem Header="Reset Zoom" Command="local:Commands.ResetZoom" />
-			</MenuItem>
+			</MenuItem>-->
 			<MenuItem Header="Tools">
 				<MenuItem Header="Options" Command="local:Commands.Options" />
 			</MenuItem>
@@ -108,21 +79,17 @@
 						<ContentPresenter ContentTemplate="{StaticResource AnalyzeIcon}" Style="{StaticResource CommonButtonIcon}" />
 						<TextBlock Text="Analyze" Style="{StaticResource CommonButtonLabel}" />
 					</StackPanel>
-					<Button.ToolTip>
-						<ToolTip DataContext="{Binding Path=PlacementTarget, RelativeSource={x:Static RelativeSource.Self}}">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="{Binding Path=Command.Text}" />
-								<TextBlock Text="F5" Style="{StaticResource ShortcutTooltip}" />
-							</StackPanel>
-						</ToolTip>
-					</Button.ToolTip>
 				</Button>
+
+				<Button Style="{StaticResource ToolbarButton}" Command="local:Commands.Up">
+					<ContentPresenter ContentTemplate="{StaticResource UpIcon}" Style="{StaticResource CommonButtonIcon}" />
+				</Button>
+
 
 			</StackPanel>
 		</Border>
 
 		<!--  Address Bar  -->
-
 		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />

@@ -3,6 +3,15 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="clr-namespace:DiskSize">
 
+	<local:RoutedCommandToInputGestureTextConverter x:Key="RoutedCommandToInputGestureTextConverter" />
+	<local:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
+
+	<ToolTip x:Key="TooltipPanel" DataContext="{Binding Path=PlacementTarget, RelativeSource={x:Static RelativeSource.Self}}">
+		<StackPanel Orientation="Horizontal">
+			<TextBlock Text="{Binding Path=Command.Text}" />
+			<TextBlock Margin="10,0,0,0" Visibility="{Binding Path=Text, RelativeSource={RelativeSource Self}, Converter={local:StringNullOrEmptyToVisibilityConverter}}" Text="{Binding Path=Command, Converter={StaticResource RoutedCommandToInputGestureTextConverter}}" />
+		</StackPanel>
+	</ToolTip>
 
 	<Style x:Key="MyFocusVisual">
 		<Setter Property="Control.Template">
@@ -34,18 +43,6 @@
 		<Setter Property="Background" Value="Transparent" />
 	</Style>
 
-	<Style x:Key="ToolbarButton" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-		<Setter Property="Margin" Value="2" />
-		<Setter Property="Padding" Value="3" />
-		<Setter Property="Focusable" Value="False" />
-		<Setter Property="BorderThickness" Value="0" />
-		<Style.Triggers>
-			<Trigger Property="IsEnabled" Value="False">
-				<Setter Property="Background" Value="Transparent" />
-			</Trigger>
-		</Style.Triggers>
-	</Style>
-
 	<Style x:Key="CommonTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
 		<Setter Property="VerticalAlignment" Value="Center" />
 		<Setter Property="Padding" Value="3" />
@@ -74,6 +71,32 @@
 		<Style.Triggers>
 			<Trigger Property="IsEnabled" Value="False">
 				<Setter Property="Opacity" Value="0.4" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<Style x:Key="ToolbarButton" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+		<Setter Property="Margin" Value="2" />
+		<Setter Property="Padding" Value="3" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="ToolTipService.ToolTip" Value="{StaticResource TooltipPanel}" />
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Background" Value="Transparent" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<Style x:Key="ToolbarToggleButton" TargetType="ToggleButton" BasedOn="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}">
+		<Setter Property="Margin" Value="2" />
+		<Setter Property="Padding" Value="3" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="ToolTipService.ToolTip" Value="{StaticResource TooltipPanel}" />
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Background" Value="Transparent" />
 			</Trigger>
 		</Style.Triggers>
 	</Style>
