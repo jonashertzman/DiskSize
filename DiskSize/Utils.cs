@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace DiskSize;
@@ -64,6 +66,25 @@ static class Utils
 			return path += "\\";
 		}
 		return path;
+	}
+
+	internal static Size MeasureText(string text, TextBlock control)
+	{
+		Typeface typeface = new(control.FontFamily, control.FontStyle, control.FontWeight, control.FontStretch);
+
+		FormattedText formattedText = new(
+			text,
+			CultureInfo.CurrentCulture,
+			control.FlowDirection,
+			typeface,
+			control.FontSize,
+			control.Foreground,
+			new NumberSubstitution(),
+			TextFormattingMode.Display,
+			VisualTreeHelper.GetDpi(control).PixelsPerDip
+		);
+
+		return new Size(formattedText.Width, formattedText.Height);
 	}
 
 }

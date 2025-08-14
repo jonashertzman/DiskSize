@@ -84,6 +84,8 @@ public partial class MainWindow : Window
 		}
 		rootItem.Size = size;
 
+		ViewModel.SizeColumnWidth = Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 5;
+
 		ViewModel.FileItems = items;
 
 		endTime = DateTime.UtcNow;
