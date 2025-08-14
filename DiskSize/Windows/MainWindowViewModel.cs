@@ -139,7 +139,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	public double SizeColumnWidth
 	{
 		get { return AppSettings.SizeColumnWidth; }
-		set { AppSettings.SizeColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(SizeColumnWidth)); }
+		set { AppSettings.SizeColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(SizeColumnWidth)); Debug.WriteLine(AppSettings.SizeColumnWidth); }
 	}
 
 	public double DateColumnWidth

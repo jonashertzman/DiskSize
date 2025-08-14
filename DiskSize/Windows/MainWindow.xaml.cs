@@ -358,4 +358,14 @@ public partial class MainWindow : Window
 
 	#endregion
 
+	private void Button_Click(object sender, RoutedEventArgs e)
+	{
+		ViewModel.SizeColumnWidth = 100;
+	}
+
+	private void Button_Click_1(object sender, RoutedEventArgs e)
+	{
+		ViewModel.SizeColumnWidth = 200;
+
+	}
 }

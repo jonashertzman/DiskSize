@@ -85,6 +85,9 @@
 					<ContentPresenter ContentTemplate="{StaticResource UpIcon}" Style="{StaticResource CommonButtonIcon}" />
 				</Button>
 
+				<Button Content="100" Click="Button_Click" />
+				<Button Content="200" Click="Button_Click_1" />
+
 
 			</StackPanel>
 		</Border>
