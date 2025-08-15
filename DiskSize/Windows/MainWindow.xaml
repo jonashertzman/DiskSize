@@ -19,6 +19,8 @@
 	mc:Ignorable="d">
 
 	<Window.Resources>
+		<local:GridLengthConverter x:Key="GridLengthConverter" />
+
 		<ContextMenu x:Key="ContextMenuFileItem">
 			<!--<MenuItem Command="local:Commands.OpenContainingFolder" />
 			<MenuItem Command="local:Commands.CopyPathToClipboard" />-->
@@ -109,7 +111,7 @@
 
 		<!--  Tree  -->
 		<Border Grid.Row="3" Grid.Column="0" BorderThickness="0,1" AllowDrop="True">
-			<Grid Name="LeftFolderGrid" MouseWheel="TreeGrid_MouseWheel" Background="Yellow">
+			<Grid Name="LeftFolderGrid" MouseWheel="TreeGrid_MouseWheel" >
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
@@ -122,13 +124,13 @@
 
 				<Border Grid.ColumnSpan="2" BorderThickness="0,0,0,1">
 					<ScrollViewer Name="TreeColumns" ScrollChanged="TreeColumns_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
-						<Grid Name="LeftColumns" HorizontalAlignment="Left" Background="Pink">
+						<Grid Name="LeftColumns" HorizontalAlignment="Left" >
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="{Binding NameColumnWidth, Mode=TwoWay}" MinWidth="50" />
+								<ColumnDefinition Width="{Binding NameColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
 								<ColumnDefinition Width="4" />
-								<ColumnDefinition Width="{Binding SizeColumnWidth, Mode=TwoWay}" MinWidth="50" />
+								<ColumnDefinition Width="{Binding SizeColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
 								<ColumnDefinition Width="4" />
-								<ColumnDefinition Width="{Binding DateColumnWidth, Mode=TwoWay}" MinWidth="50" />
+								<ColumnDefinition Width="{Binding DateColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
 								<ColumnDefinition Width="4" />
 							</Grid.ColumnDefinitions>
 

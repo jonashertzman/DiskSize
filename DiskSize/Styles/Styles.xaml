@@ -40,7 +40,7 @@
 
 	<Style x:Key="CommonGridSpliter" TargetType="GridSplitter">
 		<Setter Property="BorderBrush" Value="{StaticResource Theme.BorderLight}" />
-		<Setter Property="Background" Value="Blue" />
+		<Setter Property="Background" Value="Transparent" />
 	</Style>
 
 	<Style x:Key="CommonTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">

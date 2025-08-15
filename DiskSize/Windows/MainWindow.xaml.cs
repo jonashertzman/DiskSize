@@ -84,7 +84,7 @@ public partial class MainWindow : Window
 		}
 		rootItem.Size = size;
 
-		ViewModel.SizeColumnWidth = new(Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 5);
+		ViewModel.SizeColumnWidth = Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 5;
 
 		ViewModel.FileItems = items;
 
@@ -257,10 +257,6 @@ public partial class MainWindow : Window
 		if (!renderComplete)
 			return;
 
-		ViewModel.NameColumnWidth = new(Math.Max(LeftColumns.ColumnDefinitions[0].Width.Value, 50));
-		ViewModel.SizeColumnWidth = new(Math.Max(LeftColumns.ColumnDefinitions[2].Width.Value, 50));
-		ViewModel.DateColumnWidth = new(Math.Max(LeftColumns.ColumnDefinitions[4].Width.Value, 50));
-
 		double totalWidth = 0;
 
 		foreach (ColumnDefinition d in LeftColumns.ColumnDefinitions)
@@ -363,12 +359,12 @@ public partial class MainWindow : Window
 
 	private void Button_Click(object sender, RoutedEventArgs e)
 	{
-		ViewModel.SizeColumnWidth = new(100);
+		ViewModel.SizeColumnWidth = 100;
 	}
 
 	private void Button_Click_1(object sender, RoutedEventArgs e)
 	{
-		ViewModel.SizeColumnWidth = new(200);
+		ViewModel.SizeColumnWidth = 200;
 	}
 
 }

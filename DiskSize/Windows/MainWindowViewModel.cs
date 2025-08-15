@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -131,22 +130,22 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 	}
 
-	public GridLength NameColumnWidth
+	public double NameColumnWidth
 	{
-		get { return new(AppSettings.NameColumnWidth); }
-		set { AppSettings.NameColumnWidth = value.Value; OnPropertyChangedSlowRepaint(nameof(NameColumnWidth)); }
+		get { return AppSettings.NameColumnWidth; }
+		set { AppSettings.NameColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(NameColumnWidth)); }
 	}
 
-	public GridLength SizeColumnWidth
+	public double SizeColumnWidth
 	{
-		get { return new(AppSettings.SizeColumnWidth); }
-		set { AppSettings.SizeColumnWidth = value.Value; OnPropertyChangedSlowRepaint(nameof(SizeColumnWidth)); Debug.WriteLine(AppSettings.SizeColumnWidth); }
+		get { return AppSettings.SizeColumnWidth; }
+		set { AppSettings.SizeColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(SizeColumnWidth)); Debug.WriteLine(AppSettings.SizeColumnWidth); }
 	}
 
-	public GridLength DateColumnWidth
+	public double DateColumnWidth
 	{
-		get { return new(AppSettings.DateColumnWidth); }
-		set { AppSettings.DateColumnWidth = value.Value; OnPropertyChangedSlowRepaint(nameof(DateColumnWidth)); }
+		get { return AppSettings.DateColumnWidth; }
+		set { AppSettings.DateColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(DateColumnWidth)); }
 	}
 
 	double allColumnsWidth;
