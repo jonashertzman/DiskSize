@@ -88,6 +88,10 @@
 				<Button Content="100" Click="Button_Click" />
 				<Button Content="200" Click="Button_Click_1" />
 
+				<TextBox Width="100" Margin="2" Text="{Binding NameColumnWidth}" />
+				<TextBox Width="100" Margin="2" Text="{Binding SizeColumnWidth}" />
+				<TextBox Width="100" Margin="2" Text="{Binding DateColumnWidth}" />
+				<TextBox Width="100" Margin="2" Text="{Binding AllColumnsWidth}" />
 
 			</StackPanel>
 		</Border>
@@ -105,7 +109,7 @@
 
 		<!--  Tree  -->
 		<Border Grid.Row="3" Grid.Column="0" BorderThickness="0,1" AllowDrop="True">
-			<Grid Name="LeftFolderGrid" MouseWheel="TreeGrid_MouseWheel">
+			<Grid Name="LeftFolderGrid" MouseWheel="TreeGrid_MouseWheel" Background="Yellow">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
@@ -118,19 +122,19 @@
 
 				<Border Grid.ColumnSpan="2" BorderThickness="0,0,0,1">
 					<ScrollViewer Name="TreeColumns" ScrollChanged="TreeColumns_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
-						<Grid Name="LeftColumns" HorizontalAlignment="Left">
+						<Grid Name="LeftColumns" HorizontalAlignment="Left" Background="Pink">
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="{Binding NameColumnWidth}" />
+								<ColumnDefinition Width="{Binding NameColumnWidth, Mode=TwoWay}" MinWidth="50" />
 								<ColumnDefinition Width="4" />
-								<ColumnDefinition Width="{Binding SizeColumnWidth}" />
+								<ColumnDefinition Width="{Binding SizeColumnWidth, Mode=TwoWay}" MinWidth="50" />
 								<ColumnDefinition Width="4" />
-								<ColumnDefinition Width="{Binding DateColumnWidth}" />
+								<ColumnDefinition Width="{Binding DateColumnWidth, Mode=TwoWay}" MinWidth="50" />
 								<ColumnDefinition Width="4" />
 							</Grid.ColumnDefinitions>
 
 							<TextBlock Grid.Column="0" Padding="3,2" Text="Name" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
 							<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
-							<TextBlock Name="SizeColumnHeader" Grid.Column=" 2" Padding="3,2" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" TextAlignment="Right" Style="{StaticResource StyledTextBlock}" />
+							<TextBlock Name="SizeColumnHeader" Grid.Column=" 2" Padding="3,2" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
 							<GridSplitter Grid.Column=" 3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
 							<TextBlock Grid.Column="4" Padding="3,2" Text="Date" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
 							<GridSplitter Grid.Column=" 5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />

@@ -84,7 +84,7 @@ public partial class MainWindow : Window
 		}
 		rootItem.Size = size;
 
-		ViewModel.SizeColumnWidth = Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 5;
+		ViewModel.SizeColumnWidth = new(Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 5);
 
 		ViewModel.FileItems = items;
 
@@ -252,12 +252,14 @@ public partial class MainWindow : Window
 
 	private void UpdateColumnWidths()
 	{
+		return;
+
 		if (!renderComplete)
 			return;
 
-		ViewModel.NameColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[0].Width.Value, 50);
-		ViewModel.SizeColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[2].Width.Value, 50);
-		ViewModel.DateColumnWidth = Math.Max(LeftColumns.ColumnDefinitions[4].Width.Value, 50);
+		ViewModel.NameColumnWidth = new(Math.Max(LeftColumns.ColumnDefinitions[0].Width.Value, 50));
+		ViewModel.SizeColumnWidth = new(Math.Max(LeftColumns.ColumnDefinitions[2].Width.Value, 50));
+		ViewModel.DateColumnWidth = new(Math.Max(LeftColumns.ColumnDefinitions[4].Width.Value, 50));
 
 		double totalWidth = 0;
 
@@ -266,7 +268,8 @@ public partial class MainWindow : Window
 			totalWidth += d.Width.Value;
 		}
 
-		LeftColumns.Width = totalWidth;
+		ViewModel.AllColumnsWidth = totalWidth;
+
 		HorizontalScrollbar.ViewportSize = Tree.ActualWidth;
 		HorizontalScrollbar.Maximum = totalWidth - Tree.ActualWidth;
 		HorizontalScrollbar.LargeChange = Tree.ActualWidth;
@@ -360,12 +363,12 @@ public partial class MainWindow : Window
 
 	private void Button_Click(object sender, RoutedEventArgs e)
 	{
-		ViewModel.SizeColumnWidth = 100;
+		ViewModel.SizeColumnWidth = new(100);
 	}
 
 	private void Button_Click_1(object sender, RoutedEventArgs e)
 	{
-		ViewModel.SizeColumnWidth = 200;
-
+		ViewModel.SizeColumnWidth = new(200);
 	}
+
 }
