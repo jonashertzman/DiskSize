@@ -9,7 +9,7 @@ public class GridLengthConverter : IValueConverter
 	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 	{
 		double val = (double)value;
-		GridLength gridLength = new GridLength(val);
+		GridLength gridLength = new(val);
 
 		return gridLength;
 	}
