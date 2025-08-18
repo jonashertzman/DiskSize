@@ -365,4 +365,39 @@ public partial class MainWindow : Window
 		ViewModel.SizeColumnWidth = 200;
 	}
 
+	private void NameColumn_Click(object sender, RoutedEventArgs e)
+	{
+		if (ViewModel.SortBy == SortColumn.Name)
+		{
+			ViewModel.SortDirection = ViewModel.SortDirection == Asdf.Descending ? Asdf.Ascending : Asdf.Descending;
+		}
+		else
+		{
+			ViewModel.SortBy = SortColumn.Name;
+		}
+	}
+
+	private void SizeColumn_Click(object sender, RoutedEventArgs e)
+	{
+		if (ViewModel.SortBy == SortColumn.Size)
+		{
+			ViewModel.SortDirection = ViewModel.SortDirection == Asdf.Descending ? Asdf.Ascending : Asdf.Descending;
+		}
+		else
+		{
+			ViewModel.SortBy = SortColumn.Size;
+		}
+	}
+
+	private void DateColumn_Click(object sender, RoutedEventArgs e)
+	{
+		if (ViewModel.SortBy == SortColumn.Date)
+		{
+			ViewModel.SortDirection = ViewModel.SortDirection == Asdf.Descending ? Asdf.Ascending : Asdf.Descending;
+		}
+		else
+		{
+			ViewModel.SortBy = SortColumn.Date;
+		}
+	}
 }

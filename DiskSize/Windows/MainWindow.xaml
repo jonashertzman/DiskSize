@@ -133,24 +133,24 @@
 								<ColumnDefinition Width="4" />
 							</Grid.ColumnDefinitions>
 
-							<Button Grid.Column="0" Style="{StaticResource FlatButton}">
+							<Button Name="NameColumn" Grid.Column="0" Style="{StaticResource FlatButton}" Click="NameColumn_Click">
 								<TextBlock Text="Name" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
 							</Button>
 							<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
-							<Button Grid.Column="2" Style="{StaticResource FlatButton}">
-								<TextBlock Name="SizeColumnHeader"  Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
+							<Button Name="SizeColumn" Grid.Column="2" Style="{StaticResource FlatButton}" Click="SizeColumn_Click">
+								<TextBlock Name="SizeColumnHeader" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
 							</Button>
-							<GridSplitter Grid.Column=" 3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
-							<Button Grid.Column="4" Style="{StaticResource FlatButton}">
+							<GridSplitter Grid.Column="3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
+							<Button Name="DateColumn" Grid.Column="4" Style="{StaticResource FlatButton}" Click="DateColumn_Click">
 								<TextBlock Text="Date" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
 							</Button>
-							<GridSplitter Grid.Column=" 5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
+							<GridSplitter Grid.Column="5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
 						</Grid>
 					</ScrollViewer>
 				</Border>
 
 				<Border Grid.Row="1" Grid.Column="0" BorderThickness="0" Background="{StaticResource Theme.Window}">
-					<local:TreeControl x:Name="Tree" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="Tree_SelectionChanged" Lines="{Binding FileItems}" HorizontalOffset="{Binding Value, ElementName=HorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" />
+					<local:TreeControl x:Name="Tree" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="Tree_SelectionChanged" Lines="{Binding FileItems}" HorizontalOffset="{Binding Value, ElementName=HorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" SortBy="{Binding SortBy}" SortDirection="{Binding SortDirection}" />
 				</Border>
 				<ScrollBar Name="HorizontalScrollbar" Grid.Row="2" ValueChanged="HorizontalScrollbar_ValueChanged" Orientation="Horizontal" SmallChange="10" />
 				<ScrollBar Name="VerticalTreeScrollbar" Grid.Row="1" Grid.Column="2" SmallChange="1" LargeChange="{Binding ElementName=Tree, Path=VisibleLines}" ViewportSize="{Binding ElementName=Tree, Path=VisibleLines, Mode=TwoWay}" Maximum="{Binding ElementName=Tree, Path=MaxVerticalScroll, Mode=TwoWay}" />

@@ -148,6 +148,20 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		set { AppSettings.DateColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(DateColumnWidth)); }
 	}
 
+	SortColumn sortBy = SortColumn.Size;
+	public SortColumn SortBy
+	{
+		get { return sortBy; }
+		set { sortBy = value; OnPropertyChangedRepaint(nameof(SortBy)); }
+	}
+
+	Asdf sortDirection = Asdf.Descending;
+	public Asdf SortDirection
+	{
+		get { return sortDirection; }
+		set { sortDirection = value; OnPropertyChangedRepaint(nameof(SortDirection)); }
+	}
+
 
 	public Themes Theme
 	{

@@ -302,20 +302,20 @@ public class TreeControl : Control
 	}
 
 
-	public static readonly DependencyProperty SortProperty = DependencyProperty.Register("Sort", typeof(SortColumn), typeof(TreeControl), new FrameworkPropertyMetadata(SortColumn.Name, FrameworkPropertyMetadataOptions.AffectsRender));
+	public static readonly DependencyProperty SortByProperty = DependencyProperty.Register("SortBy", typeof(SortColumn), typeof(TreeControl), new FrameworkPropertyMetadata(SortColumn.Name, FrameworkPropertyMetadataOptions.AffectsRender));
 
-	public SortColumn Sort
+	public SortColumn SortBy
 	{
-		get { return (SortColumn)GetValue(SortProperty); }
-		set { SetValue(SortProperty, value); }
+		get { return (SortColumn)GetValue(SortByProperty); }
+		set { SetValue(SortByProperty, value); }
 	}
 
 
-	public static readonly DependencyProperty SortDirectionProperty = DependencyProperty.Register("SortDirection", typeof(SortColumn), typeof(TreeControl), new FrameworkPropertyMetadata(SortColumn.Name, FrameworkPropertyMetadataOptions.AffectsRender));
+	public static readonly DependencyProperty SortDirectionProperty = DependencyProperty.Register("SortDirection", typeof(Asdf), typeof(TreeControl), new FrameworkPropertyMetadata(Asdf.Descending, FrameworkPropertyMetadataOptions.AffectsRender));
 
-	public SortDirection SortDirection
+	public Asdf SortDirection
 	{
-		get { return (SortDirection)GetValue(SortDirectionProperty); }
+		get { return (Asdf)GetValue(SortDirectionProperty); }
 		set { SetValue(SortDirectionProperty, value); }
 	}
 
@@ -374,11 +374,11 @@ public class TreeControl : Control
 		{
 			IOrderedEnumerable<FileItem> sortedItems;
 
-			sortedItems = Sort switch
+			sortedItems = SortBy switch
 			{
-				SortColumn.Name => SortDirection == SortDirection.Ascending ? parent.OrderBy(item => item.Name) : parent.OrderByDescending(item => item.Name),
-				SortColumn.Size => SortDirection == SortDirection.Ascending ? parent.OrderBy(item => item.Size) : parent.OrderByDescending(item => item.Size),
-				SortColumn.Date => SortDirection == SortDirection.Ascending ? parent.OrderBy(item => item.Date) : parent.OrderByDescending(item => item.Date),
+				SortColumn.Name => SortDirection == Asdf.Ascending ? parent.OrderBy(item => item.Name) : parent.OrderByDescending(item => item.Name),
+				SortColumn.Size => SortDirection == Asdf.Ascending ? parent.OrderBy(item => item.Size) : parent.OrderByDescending(item => item.Size),
+				SortColumn.Date => SortDirection == Asdf.Ascending ? parent.OrderBy(item => item.Date) : parent.OrderByDescending(item => item.Date),
 
 				_ => throw new NotImplementedException()
 			};
