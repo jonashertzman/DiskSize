@@ -15,7 +15,7 @@ public class TreeControl : Control
 	private double itemHeight;
 	private double dpiScale = 0;
 
-	private List<FileItem> visibleItems = [];
+	private List<FileItem> expandedLines = [];
 
 	#endregion
 
@@ -73,7 +73,7 @@ public class TreeControl : Control
 		UpdateVisibleItems();
 
 		VisibleLines = (int)(ActualHeight / itemHeight + 1);
-		MaxVerticalScroll = visibleItems.Count - VisibleLines + 1;
+		MaxVerticalScroll = expandedLines.Count - VisibleLines + 1;
 		VerticalOffset = Math.Min(VerticalOffset, MaxVerticalScroll);
 
 
@@ -81,10 +81,10 @@ public class TreeControl : Control
 		{
 			int lineIndex = i + VerticalOffset;
 
-			if (lineIndex >= visibleItems.Count)
+			if (lineIndex >= expandedLines.Count)
 				break;
 
-			FileItem line = visibleItems[lineIndex];
+			FileItem line = expandedLines[lineIndex];
 
 
 			// Line Y offset
@@ -181,18 +181,18 @@ public class TreeControl : Control
 	{
 		int lineIndex = (int)(e.GetPosition(this).Y / itemHeight) + VerticalOffset;
 
-		if (lineIndex < visibleItems.Count && Lines.Count > 0)
+		if (lineIndex < expandedLines.Count && Lines.Count > 0)
 		{
 			// Item selected		
-			if (e.GetPosition(this).X > (visibleItems[lineIndex].Level * itemHeight) - HorizontalOffset || !visibleItems[lineIndex].IsFolder)
+			if (e.GetPosition(this).X > (expandedLines[lineIndex].Level * itemHeight) - HorizontalOffset || !expandedLines[lineIndex].IsFolder)
 			{
-				Select(visibleItems[lineIndex]);
+				Select(expandedLines[lineIndex]);
 			}
 
 			// Folder expander clicked
 			else if (e.LeftButton == MouseButtonState.Pressed)
 			{
-				visibleItems[lineIndex].IsExpanded = !visibleItems[lineIndex].IsExpanded;
+				expandedLines[lineIndex].IsExpanded = !expandedLines[lineIndex].IsExpanded;
 
 				UpdateVisibleItems();
 				UpdateTrigger++;
@@ -302,6 +302,24 @@ public class TreeControl : Control
 	}
 
 
+	public static readonly DependencyProperty SortProperty = DependencyProperty.Register("Sort", typeof(SortColumn), typeof(TreeControl), new FrameworkPropertyMetadata(SortColumn.Name, FrameworkPropertyMetadataOptions.AffectsRender));
+
+	public SortColumn Sort
+	{
+		get { return (SortColumn)GetValue(SortProperty); }
+		set { SetValue(SortProperty, value); }
+	}
+
+
+	public static readonly DependencyProperty SortDirectionProperty = DependencyProperty.Register("SortDirection", typeof(SortColumn), typeof(TreeControl), new FrameworkPropertyMetadata(SortColumn.Name, FrameworkPropertyMetadataOptions.AffectsRender));
+
+	public SortDirection SortDirection
+	{
+		get { return (SortDirection)GetValue(SortDirectionProperty); }
+		set { SetValue(SortDirectionProperty, value); }
+	}
+
+
 	public static readonly DependencyProperty MaxVerticalScrollProperty = DependencyProperty.Register("MaxVerticalScroll", typeof(int), typeof(TreeControl));
 
 	public int MaxVerticalScroll
@@ -333,7 +351,7 @@ public class TreeControl : Control
 	{
 		ExpandParents(item);
 		UpdateVisibleItems();
-		MaxVerticalScroll = visibleItems.Count - VisibleLines + 1;
+		MaxVerticalScroll = expandedLines.Count - VisibleLines + 1;
 		MoveItemIntoView(item);
 		SelectedFile = item;
 		SelectionChanged?.Invoke(this, new FileItemEventArgs(SelectedFile));
@@ -354,7 +372,18 @@ public class TreeControl : Control
 	{
 		void FindVisibleItems(ObservableCollection<FileItem> parent, List<FileItem> items)
 		{
-			foreach (FileItem fileItem in parent)
+			IOrderedEnumerable<FileItem> sortedItems;
+
+			sortedItems = Sort switch
+			{
+				SortColumn.Name => SortDirection == SortDirection.Ascending ? parent.OrderBy(item => item.Name) : parent.OrderByDescending(item => item.Name),
+				SortColumn.Size => SortDirection == SortDirection.Ascending ? parent.OrderBy(item => item.Size) : parent.OrderByDescending(item => item.Size),
+				SortColumn.Date => SortDirection == SortDirection.Ascending ? parent.OrderBy(item => item.Date) : parent.OrderByDescending(item => item.Date),
+
+				_ => throw new NotImplementedException()
+			};
+
+			foreach (FileItem fileItem in sortedItems)
 			{
 				items.Add(fileItem);
 				if (fileItem.IsFolder && fileItem.IsExpanded)
@@ -364,13 +393,13 @@ public class TreeControl : Control
 			}
 		}
 
-		visibleItems = [];
-		FindVisibleItems(Lines, visibleItems);
+		expandedLines = [];
+		FindVisibleItems(Lines, expandedLines);
 	}
 
 	private void MoveItemIntoView(FileItem item)
 	{
-		int itemIndex = visibleItems.IndexOf(item);
+		int itemIndex = expandedLines.IndexOf(item);
 		if (itemIndex < VerticalOffset)
 		{
 			VerticalOffset = itemIndex;

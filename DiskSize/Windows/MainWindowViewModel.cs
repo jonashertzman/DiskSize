@@ -148,12 +148,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		set { AppSettings.DateColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(DateColumnWidth)); }
 	}
 
-	double allColumnsWidth;
-	public double AllColumnsWidth
-	{
-		get { return allColumnsWidth; }
-		set { allColumnsWidth = value; OnPropertyChanged(nameof(AllColumnsWidth)); }
-	}
 
 	public Themes Theme
 	{

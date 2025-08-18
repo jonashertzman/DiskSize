@@ -264,8 +264,6 @@ public partial class MainWindow : Window
 			totalWidth += d.Width.Value;
 		}
 
-		ViewModel.AllColumnsWidth = totalWidth;
-
 		HorizontalScrollbar.ViewportSize = Tree.ActualWidth;
 		HorizontalScrollbar.Maximum = totalWidth - Tree.ActualWidth;
 		HorizontalScrollbar.LargeChange = Tree.ActualWidth;
