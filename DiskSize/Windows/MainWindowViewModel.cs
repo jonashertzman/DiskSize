@@ -155,8 +155,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		set { sortBy = value; OnPropertyChangedRepaint(nameof(SortBy)); }
 	}
 
-	Asdf sortDirection = Asdf.Descending;
-	public Asdf SortDirection
+	Sorting sortDirection = Sorting.Descending;
+	public Sorting SortDirection
 	{
 		get { return sortDirection; }
 		set { sortDirection = value; OnPropertyChangedRepaint(nameof(SortDirection)); }

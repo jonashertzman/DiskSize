@@ -369,7 +369,7 @@ public partial class MainWindow : Window
 	{
 		if (ViewModel.SortBy == SortColumn.Name)
 		{
-			ViewModel.SortDirection = ViewModel.SortDirection == Asdf.Descending ? Asdf.Ascending : Asdf.Descending;
+			ViewModel.SortDirection = ViewModel.SortDirection == Sorting.Descending ? Sorting.Ascending : Sorting.Descending;
 		}
 		else
 		{
@@ -381,7 +381,7 @@ public partial class MainWindow : Window
 	{
 		if (ViewModel.SortBy == SortColumn.Size)
 		{
-			ViewModel.SortDirection = ViewModel.SortDirection == Asdf.Descending ? Asdf.Ascending : Asdf.Descending;
+			ViewModel.SortDirection = ViewModel.SortDirection == Sorting.Descending ? Sorting.Ascending : Sorting.Descending;
 		}
 		else
 		{
@@ -393,7 +393,7 @@ public partial class MainWindow : Window
 	{
 		if (ViewModel.SortBy == SortColumn.Date)
 		{
-			ViewModel.SortDirection = ViewModel.SortDirection == Asdf.Descending ? Asdf.Ascending : Asdf.Descending;
+			ViewModel.SortDirection = ViewModel.SortDirection == Sorting.Descending ? Sorting.Ascending : Sorting.Descending;
 		}
 		else
 		{

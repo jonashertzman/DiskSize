@@ -16,7 +16,7 @@ public enum SortColumn
 }
 
 
-public enum Asdf
+public enum Sorting
 {
 	Ascending,
 	Descending

@@ -311,11 +311,11 @@ public class TreeControl : Control
 	}
 
 
-	public static readonly DependencyProperty SortDirectionProperty = DependencyProperty.Register("SortDirection", typeof(Asdf), typeof(TreeControl), new FrameworkPropertyMetadata(Asdf.Descending, FrameworkPropertyMetadataOptions.AffectsRender));
+	public static readonly DependencyProperty SortDirectionProperty = DependencyProperty.Register("SortDirection", typeof(Sorting), typeof(TreeControl), new FrameworkPropertyMetadata(Sorting.Descending, FrameworkPropertyMetadataOptions.AffectsRender));
 
-	public Asdf SortDirection
+	public Sorting SortDirection
 	{
-		get { return (Asdf)GetValue(SortDirectionProperty); }
+		get { return (Sorting)GetValue(SortDirectionProperty); }
 		set { SetValue(SortDirectionProperty, value); }
 	}
 
@@ -376,9 +376,9 @@ public class TreeControl : Control
 
 			sortedItems = SortBy switch
 			{
-				SortColumn.Name => SortDirection == Asdf.Ascending ? parent.OrderBy(item => item.Name) : parent.OrderByDescending(item => item.Name),
-				SortColumn.Size => SortDirection == Asdf.Ascending ? parent.OrderBy(item => item.Size) : parent.OrderByDescending(item => item.Size),
-				SortColumn.Date => SortDirection == Asdf.Ascending ? parent.OrderBy(item => item.Date) : parent.OrderByDescending(item => item.Date),
+				SortColumn.Name => SortDirection == Sorting.Ascending ? parent.OrderBy(item => item.Name) : parent.OrderByDescending(item => item.Name),
+				SortColumn.Size => SortDirection == Sorting.Ascending ? parent.OrderBy(item => item.Size) : parent.OrderByDescending(item => item.Size),
+				SortColumn.Date => SortDirection == Sorting.Ascending ? parent.OrderBy(item => item.Date) : parent.OrderByDescending(item => item.Date),
 
 				_ => throw new NotImplementedException()
 			};

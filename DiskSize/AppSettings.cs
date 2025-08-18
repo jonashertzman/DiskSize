@@ -444,7 +444,7 @@ public static class AppSettings
 
 	private static SettingsData ReadSettingsFromDisk()
 	{
-		DataContractSerializer xmlSerializer = new DataContractSerializer(typeof(SettingsData));
+		DataContractSerializer xmlSerializer = new(typeof(SettingsData));
 
 		if (File.Exists(SettingsPath))
 		{
@@ -466,7 +466,7 @@ public static class AppSettings
 	{
 		try
 		{
-			DataContractSerializer xmlSerializer = new DataContractSerializer(typeof(SettingsData));
+			DataContractSerializer xmlSerializer = new(typeof(SettingsData));
 			var xmlWriterSettings = new XmlWriterSettings { Indent = true, IndentChars = " " };
 
 			Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath));
