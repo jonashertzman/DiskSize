@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -78,13 +77,13 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 
 
-
-	ObservableCollection<FileItem> fileItems = [];
-	public ObservableCollection<FileItem> FileItems
+	FileItem rootItem;
+	public FileItem RootItem
 	{
-		get { return fileItems; }
-		set { fileItems = value; OnPropertyChangedSlowRepaint(nameof(FileItems)); }
+		get { return rootItem; }
+		set { rootItem = value; OnPropertyChangedRepaint(nameof(RootItem)); }
 	}
+
 
 
 

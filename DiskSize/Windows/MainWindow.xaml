@@ -143,7 +143,7 @@
 				</Border>
 
 				<Border Grid.Row="1" Grid.Column="0" BorderThickness="0" Background="{StaticResource Theme.Window}">
-					<local:TreeControl x:Name="Tree" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="Tree_SelectionChanged" Lines="{Binding FileItems}" HorizontalOffset="{Binding Value, ElementName=HorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" SortBy="{Binding SortBy}" SortDirection="{Binding SortDirection}" />
+					<local:TreeControl x:Name="Tree" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="Tree_SelectionChanged" RootItem="{Binding RootItem}" HorizontalOffset="{Binding Value, ElementName=HorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" SortBy="{Binding SortBy}" SortDirection="{Binding SortDirection}" />
 				</Border>
 				<ScrollBar Name="HorizontalScrollbar" Grid.Row="2" ValueChanged="HorizontalScrollbar_ValueChanged" Orientation="Horizontal" SmallChange="10" />
 				<ScrollBar Name="VerticalTreeScrollbar" Grid.Row="1" Grid.Column="2" SmallChange="1" LargeChange="{Binding ElementName=Tree, Path=VisibleLines}" ViewportSize="{Binding ElementName=Tree, Path=VisibleLines, Mode=TwoWay}" Maximum="{Binding ElementName=Tree, Path=MaxVerticalScroll, Mode=TwoWay}" />

@@ -1,7 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace DiskSize;
 
@@ -33,10 +31,10 @@ public partial class MainWindow : Window
 
 	#region Methods
 
-	private readonly bool analyzeCancelled = false;
-
 	private void Analyze()
 	{
+		Debug.Print($"--- {nameof(Analyze)} ---");
+
 		Tree.Focus();
 
 		if (ViewModel.Path == "")
@@ -51,145 +49,31 @@ public partial class MainWindow : Window
 			ViewModel.Path = browseLeft.SelectedPath;
 		}
 
-		startTime = DateTime.UtcNow;
+		ViewModel.GuiFrozen = true;
 
-		ObservableCollection<FileItem> newItems = [];
+		//ProgressBarCompare.Value = 0;
+		//ProgressBarCompare.Maximum = leftLines.Count + rightLines.Count;
 
-		currentRoot = ViewModel.Path;
-		if (!currentRoot.EndsWith('\\'))
-		{
-			currentRoot += "\\";
-		}
+		BackgroundAnalyze.progressHandler = new Progress<string>(AnalyzeStatusUpdate);
+		Task.Run(() => BackgroundAnalyze.Analyze(ViewModel.Path)).ContinueWith(AnalyzeFinished, TaskScheduler.FromCurrentSynchronizationContext());
+	}
 
-		FileItem rootItem;
-		WIN32_FIND_DATA findData = new()
-		{
-			dwFileAttributes = FileAttributes.Directory,
-			cFileName = currentRoot.TrimEnd('\\')
-		};
+	private void AnalyzeStatusUpdate(string currentPath)
+	{
+		StatusBar.Text = currentPath;
+	}
 
-		rootItem = new FileItem(Path.TrimEndingDirectorySeparator(currentRoot), 1, findData)
-		{
-			IsExpanded = true
-		};
+	private void AnalyzeFinished(Task<Tuple<FileItem, TimeSpan>> task)
+	{
+		Debug.Print($"--- {nameof(AnalyzeFinished)} ---");
 
-		newItems.Add(rootItem);
-		AnalyzeDirectory(currentRoot, rootItem.Children, 2);
-
-		long size = 0;
-		foreach (FileItem child in rootItem.Children)
-		{
-			size += child.Size;
-			child.Parent = rootItem;
-		}
-		rootItem.Size = size;
-
-		ViewModel.FileItems = newItems;
+		FileItem rootItem = task.Result.Item1;
 
 		ViewModel.SizeColumnWidth = Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 15;
 
-		endTime = DateTime.UtcNow;
-		UpdateStatus(null, true);
-	}
+		ViewModel.RootItem = rootItem;
 
-	private void AnalyzeDirectory(string path, ObservableCollection<FileItem> items, int level)
-	{
-		if (analyzeCancelled) return;
-		if (path?.Length > 259) return;
-		if (Directory.Exists(path) && !Utils.DirectoryAllowed(path)) return;
-
-
-		if (level > 1)
-		{
-			//UpdateStatus(path);
-		}
-
-		foreach (FileItem fileItem in SearchDirectory(path, level))
-		{
-			if (analyzeCancelled)
-			{
-				return;
-			}
-
-			if (fileItem.IsFolder)
-			{
-				//fileItem.IsExpanded = true;
-				{
-					AnalyzeDirectory(Path.Combine(path, fileItem.Name), fileItem.Children, level + 1);
-
-					long size = 0;
-					foreach (FileItem child in fileItem.Children)
-					{
-						size += child.Size;
-						child.Parent = fileItem;
-					}
-					fileItem.Size = size;
-				}
-			}
-
-			items.Add(fileItem);
-		}
-	}
-
-	private List<FileItem> SearchDirectory(string path, int level)
-	{
-		path = Utils.FixRootPath(path);
-		List<FileItem> items = [];
-
-		IntPtr findHandle = WinApi.FindFirstFile(Path.Combine(path, "*"), out WIN32_FIND_DATA findData);
-
-		string newPath;
-
-		if (findHandle != WinApi.INVALID_HANDLE_VALUE)
-		{
-			do
-			{
-				if (findData.cFileName != "." && findData.cFileName != "..")
-				{
-					newPath = Path.Combine(path, findData.cFileName);
-					items.Add(new FileItem(newPath, level, findData));
-				}
-			}
-			while (WinApi.FindNextFile(findHandle, out findData));
-		}
-
-		WinApi.FindClose(findHandle);
-
-		return items;
-	}
-
-	DateTime lastStatusUpdateTime = DateTime.UtcNow;
-	DateTime startTime = new();
-	DateTime endTime = new();
-	string currentRoot;
-	private void UpdateStatus(string currentPath, bool finalUpdate = false)
-	{
-		if (finalUpdate || (DateTime.UtcNow - lastStatusUpdateTime).TotalMilliseconds >= 500)
-		{
-			const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-			int percentageComplete;
-
-			string status;
-			if (currentPath != null)
-			{
-				char firstLetter = char.ToUpper(currentPath[currentRoot.Length]);
-				int index = alphabet.IndexOf(firstLetter);
-				percentageComplete = index == -1 ? index : (int)((float)(index / (float)alphabet.Length) * 100.0);
-
-				status = currentPath;
-			}
-			else
-			{
-				percentageComplete = 0;
-
-				status = TimeSpanToShortString(endTime.Subtract(startTime));
-			}
-
-			StatusBar.Text = status;
-			Debug.Print("---- " + status + " " + percentageComplete);
-
-			lastStatusUpdateTime = DateTime.UtcNow;
-		}
+		StatusBar.Text = TimeSpanToShortString(task.Result.Item2);
 	}
 
 	private string TimeSpanToShortString(TimeSpan timeSpan)
@@ -252,21 +136,19 @@ public partial class MainWindow : Window
 
 	private void UpdateColumnWidths()
 	{
-		return;
-
 		if (!renderComplete)
 			return;
 
-		double totalWidth = 0;
+		//double totalWidth = 0;
 
-		foreach (ColumnDefinition d in LeftColumns.ColumnDefinitions)
-		{
-			totalWidth += d.Width.Value;
-		}
+		//foreach (ColumnDefinition d in LeftColumns.ColumnDefinitions)
+		//{
+		//	totalWidth += d.Width.Value;
+		//}
 
-		HorizontalScrollbar.ViewportSize = Tree.ActualWidth;
-		HorizontalScrollbar.Maximum = totalWidth - Tree.ActualWidth;
-		HorizontalScrollbar.LargeChange = Tree.ActualWidth;
+		//HorizontalScrollbar.ViewportSize = Tree.ActualWidth;
+		//HorizontalScrollbar.Maximum = totalWidth - Tree.ActualWidth;
+		//HorizontalScrollbar.LargeChange = Tree.ActualWidth;
 	}
 
 	#endregion
@@ -330,28 +212,9 @@ public partial class MainWindow : Window
 		{
 			ViewModel.Path = browseFolderWindow.SelectedPath;
 		}
-	}
 
-	#region Commands
-
-	private void CommandExit_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-	{
-		this.Close();
-	}
-
-	private void CommandAnalyze_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-	{
 		Analyze();
 	}
-
-	private void CommandUp_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-	{
-
-	}
-
-	#endregion
-
-	#endregion
 
 	private void NameColumn_Click(object sender, RoutedEventArgs e)
 	{
@@ -388,4 +251,28 @@ public partial class MainWindow : Window
 			ViewModel.SortBy = SortColumn.Date;
 		}
 	}
+
+	#region Commands
+
+	private void CommandExit_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+		this.Close();
+	}
+
+	private void CommandAnalyze_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+		Analyze();
+	}
+
+	private void CommandUp_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+		ViewModel.Path = Path.GetDirectoryName(Path.GetFullPath(ViewModel.Path));
+
+		Analyze();
+	}
+
+	#endregion
+
+	#endregion
+
 }

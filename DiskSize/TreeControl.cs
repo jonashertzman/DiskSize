@@ -48,7 +48,7 @@ public class TreeControl : Control
 		// Fill background
 		drawingContext.DrawRectangle(AppSettings.WindowBackground, null, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
 
-		if (Lines.Count == 0)
+		if (RootItem == null)
 			return;
 
 		Matrix m = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
@@ -80,7 +80,7 @@ public class TreeControl : Control
 
 		VisibleLines = (int)(ActualHeight / itemHeight + 1);
 		MaxVerticalScroll = expandedLines.Count - VisibleLines + 1;
-		VerticalOffset = Math.Min(VerticalOffset, MaxVerticalScroll);
+		//	VerticalOffset = Math.Min(VerticalOffset, MaxVerticalScroll);
 
 
 		for (int i = 0; i < VisibleLines; i++)
@@ -192,7 +192,7 @@ public class TreeControl : Control
 	{
 		int lineIndex = (int)(e.GetPosition(this).Y / itemHeight) + VerticalOffset;
 
-		if (lineIndex < expandedLines.Count && Lines.Count > 0)
+		if (lineIndex < expandedLines.Count && RootItem != null)
 		{
 			// Item selected		
 			if (e.GetPosition(this).X > (expandedLines[lineIndex].Level * itemHeight) - HorizontalOffset || !expandedLines[lineIndex].IsFolder)
@@ -214,7 +214,7 @@ public class TreeControl : Control
 
 	protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
 	{
-		int lineIndex = (int)(e.GetPosition(this).Y / itemHeight) + VerticalOffset;
+		//int lineIndex = (int)(e.GetPosition(this).Y / itemHeight) + VerticalOffset;
 
 		//if (e.ChangedButton == MouseButton.Left && lineIndex < visibleItems.Count && Lines.Count > 0)
 		//{
@@ -252,7 +252,7 @@ public class TreeControl : Control
 		}
 		else if (e.Key == Key.End && Keyboard.Modifiers == ModifierKeys.Control)
 		{
-			VerticalOffset = Lines.Count;
+			VerticalOffset = expandedLines.Count;
 		}
 
 		base.OnKeyDown(e);
@@ -268,12 +268,12 @@ public class TreeControl : Control
 
 	#region Dependency Properties
 
-	public static readonly DependencyProperty LinesProperty = DependencyProperty.Register("Lines", typeof(ObservableCollection<FileItem>), typeof(TreeControl), new FrameworkPropertyMetadata(new ObservableCollection<FileItem>(), FrameworkPropertyMetadataOptions.None));
+	public static readonly DependencyProperty RootItemProperty = DependencyProperty.Register("RootItem", typeof(FileItem), typeof(TreeControl), new FrameworkPropertyMetadata(new FileItem(), FrameworkPropertyMetadataOptions.None));
 
-	public ObservableCollection<FileItem> Lines
+	public FileItem RootItem
 	{
-		get { return (ObservableCollection<FileItem>)GetValue(LinesProperty); }
-		set { SetValue(LinesProperty, value); }
+		get { return (FileItem)GetValue(RootItemProperty); }
+		set { SetValue(RootItemProperty, value); }
 	}
 
 
@@ -405,7 +405,7 @@ public class TreeControl : Control
 		}
 
 		expandedLines = [];
-		FindVisibleItems(Lines, expandedLines);
+		FindVisibleItems([RootItem], expandedLines);
 	}
 
 	private void MoveItemIntoView(FileItem item)
