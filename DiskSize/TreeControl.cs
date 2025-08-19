@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace DiskSize;
 
@@ -16,6 +17,8 @@ public class TreeControl : Control
 	private double dpiScale = 0;
 
 	private List<FileItem> expandedLines = [];
+
+	private readonly Stopwatch stopwatch = new();
 
 	#endregion
 
@@ -37,7 +40,10 @@ public class TreeControl : Control
 
 	protected override void OnRender(DrawingContext drawingContext)
 	{
-		Debug.Print("TreeControl OnRender");
+
+#if DEBUG
+		MeasureRenderTime();
+#endif
 
 		// Fill background
 		drawingContext.DrawRectangle(AppSettings.WindowBackground, null, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
@@ -175,6 +181,11 @@ public class TreeControl : Control
 			}
 			drawingContext.Pop();
 		}
+
+#if DEBUG
+		ReportRenderTime();
+#endif
+
 	}
 
 	protected override void OnMouseDown(MouseButtonEventArgs e)
@@ -257,7 +268,7 @@ public class TreeControl : Control
 
 	#region Dependency Properties
 
-	public static readonly DependencyProperty LinesProperty = DependencyProperty.Register("Lines", typeof(ObservableCollection<FileItem>), typeof(TreeControl), new FrameworkPropertyMetadata(new ObservableCollection<FileItem>(), FrameworkPropertyMetadataOptions.AffectsRender));
+	public static readonly DependencyProperty LinesProperty = DependencyProperty.Register("Lines", typeof(ObservableCollection<FileItem>), typeof(TreeControl), new FrameworkPropertyMetadata(new ObservableCollection<FileItem>(), FrameworkPropertyMetadataOptions.None));
 
 	public ObservableCollection<FileItem> Lines
 	{
@@ -266,7 +277,7 @@ public class TreeControl : Control
 	}
 
 
-	public static readonly DependencyProperty SelectedFileProperty = DependencyProperty.Register("SelectedFile", typeof(FileItem), typeof(TreeControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+	public static readonly DependencyProperty SelectedFileProperty = DependencyProperty.Register("SelectedFile", typeof(FileItem), typeof(TreeControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.None));
 
 	public FileItem SelectedFile
 	{
@@ -302,7 +313,7 @@ public class TreeControl : Control
 	}
 
 
-	public static readonly DependencyProperty SortByProperty = DependencyProperty.Register("SortBy", typeof(SortColumn), typeof(TreeControl), new FrameworkPropertyMetadata(SortColumn.Name, FrameworkPropertyMetadataOptions.AffectsRender));
+	public static readonly DependencyProperty SortByProperty = DependencyProperty.Register("SortBy", typeof(SortColumn), typeof(TreeControl));
 
 	public SortColumn SortBy
 	{
@@ -311,7 +322,7 @@ public class TreeControl : Control
 	}
 
 
-	public static readonly DependencyProperty SortDirectionProperty = DependencyProperty.Register("SortDirection", typeof(Sorting), typeof(TreeControl), new FrameworkPropertyMetadata(Sorting.Descending, FrameworkPropertyMetadataOptions.AffectsRender));
+	public static readonly DependencyProperty SortDirectionProperty = DependencyProperty.Register("SortDirection", typeof(Sorting), typeof(TreeControl));
 
 	public Sorting SortDirection
 	{
@@ -438,6 +449,23 @@ public class TreeControl : Control
 	private double RoundToWholePixels(double x)
 	{
 		return Math.Round(x / dpiScale) * dpiScale;
+	}
+
+	private void MeasureRenderTime()
+	{
+		stopwatch.Restart();
+	}
+
+	private void ReportRenderTime()
+	{
+		Dispatcher.BeginInvoke(
+			DispatcherPriority.Loaded,
+			new Action(() =>
+			{
+				stopwatch.Stop();
+				Debug.Print($"{nameof(TreeControl)} OnRender - {stopwatch.ElapsedMilliseconds} ms");
+			})
+		);
 	}
 
 	#endregion

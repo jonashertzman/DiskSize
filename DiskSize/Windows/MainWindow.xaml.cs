@@ -53,7 +53,7 @@ public partial class MainWindow : Window
 
 		startTime = DateTime.UtcNow;
 
-		ObservableCollection<FileItem> items = [];
+		ObservableCollection<FileItem> newItems = [];
 
 		currentRoot = ViewModel.Path;
 		if (!currentRoot.EndsWith('\\'))
@@ -73,7 +73,7 @@ public partial class MainWindow : Window
 			IsExpanded = true
 		};
 
-		items.Add(rootItem);
+		newItems.Add(rootItem);
 		AnalyzeDirectory(currentRoot, rootItem.Children, 2);
 
 		long size = 0;
@@ -84,9 +84,9 @@ public partial class MainWindow : Window
 		}
 		rootItem.Size = size;
 
-		ViewModel.SizeColumnWidth = Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 15;
+		ViewModel.FileItems = newItems;
 
-		ViewModel.FileItems = items;
+		ViewModel.SizeColumnWidth = Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 15;
 
 		endTime = DateTime.UtcNow;
 		UpdateStatus(null, true);
@@ -308,8 +308,6 @@ public partial class MainWindow : Window
 		}
 
 		renderComplete = true;
-
-		UpdateColumnWidths();
 	}
 
 	private void Window_Initialized(object sender, EventArgs e)
@@ -354,16 +352,6 @@ public partial class MainWindow : Window
 	#endregion
 
 	#endregion
-
-	private void Button_Click(object sender, RoutedEventArgs e)
-	{
-		ViewModel.SizeColumnWidth = 100;
-	}
-
-	private void Button_Click_1(object sender, RoutedEventArgs e)
-	{
-		ViewModel.SizeColumnWidth = 200;
-	}
 
 	private void NameColumn_Click(object sender, RoutedEventArgs e)
 	{

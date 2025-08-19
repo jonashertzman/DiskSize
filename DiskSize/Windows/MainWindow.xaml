@@ -87,13 +87,6 @@
 					<ContentPresenter ContentTemplate="{StaticResource UpIcon}" Style="{StaticResource CommonButtonIcon}" />
 				</Button>
 
-				<Button Content="100" Click="Button_Click" />
-				<Button Content="200" Click="Button_Click_1" />
-
-				<TextBox Width="100" Margin="2" Text="{Binding NameColumnWidth}" />
-				<TextBox Width="100" Margin="2" Text="{Binding SizeColumnWidth}" />
-				<TextBox Width="100" Margin="2" Text="{Binding DateColumnWidth}" />
-
 			</StackPanel>
 		</Border>
 

@@ -83,7 +83,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	public ObservableCollection<FileItem> FileItems
 	{
 		get { return fileItems; }
-		set { fileItems = value; OnPropertyChangedRepaint(nameof(FileItems)); }
+		set { fileItems = value; OnPropertyChangedSlowRepaint(nameof(FileItems)); }
 	}
 
 
@@ -139,7 +139,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	public double SizeColumnWidth
 	{
 		get { return AppSettings.SizeColumnWidth; }
-		set { AppSettings.SizeColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(SizeColumnWidth)); Debug.WriteLine(AppSettings.SizeColumnWidth); }
+		set { AppSettings.SizeColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(SizeColumnWidth)); }
 	}
 
 	public double DateColumnWidth
