@@ -36,17 +36,24 @@ public partial class MainWindow : Window
 		Debug.Print($"--- {nameof(Analyze)} ---");
 
 		Tree.Focus();
-
-		if (ViewModel.Path == "")
+		try
 		{
-			BrowseFolderWindow browseLeft = new() { DataContext = ViewModel, Owner = this, Title = "Select Directory to Analyze" };
-			browseLeft.ShowDialog();
-
-			if (browseLeft.DialogResult == false)
+			if (ViewModel.Path == "")
 			{
-				return;
+				BrowseFolderWindow browseLeft = new() { DataContext = ViewModel, Owner = this, Title = "Select Directory to Analyze" };
+				browseLeft.ShowDialog();
+
+				if (browseLeft.DialogResult == false)
+				{
+					return;
+				}
+				ViewModel.Path = browseLeft.SelectedPath;
 			}
-			ViewModel.Path = browseLeft.SelectedPath;
+		}
+		catch (Exception e)
+		{
+			MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			return;
 		}
 
 		ViewModel.GuiFrozen = true;
@@ -266,9 +273,14 @@ public partial class MainWindow : Window
 
 	private void CommandUp_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
 	{
-		ViewModel.Path = Path.GetDirectoryName(Path.GetFullPath(ViewModel.Path));
+		string parent = Path.GetDirectoryName(Path.GetFullPath(ViewModel.Path));
 
-		Analyze();
+		if (parent != null)
+		{
+			ViewModel.Path = parent;
+
+			Analyze();
+		}
 	}
 
 	#endregion
