@@ -19,8 +19,13 @@ public static class Commands
 		[new KeyGesture(Key.F5)]
 	);
 
+	public static readonly RoutedUICommand Cancel = new(
+		"Cancel", nameof(Cancel), typeof(Commands)
+	);
+
 	public static readonly RoutedUICommand Up = new(
-		"Go to Parent Folder", nameof(Up), typeof(Commands)
+		"Go to Parent Folder", nameof(Up), typeof(Commands),
+		[new KeyGesture(Key.U, ModifierKeys.Control)]
 	);
 
 	public static readonly RoutedUICommand BrowseLeft = new(

@@ -10,7 +10,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	#region Members
 
-	readonly DispatcherTimer timer = new();
+	readonly DispatcherTimer repaintTimer = new();
 
 	#endregion
 
@@ -18,8 +18,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	public MainWindowViewModel()
 	{
-		timer.Interval = new TimeSpan(300000);
-		timer.Tick += Timer_Tick;
+		repaintTimer.Interval = new TimeSpan(300000);
+		repaintTimer.Tick += RepaintTimer_Tick;
 	}
 
 	#endregion
@@ -72,10 +72,27 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	public bool GuiFrozen
 	{
 		get { return guiFrozen; }
-		set { guiFrozen = value; OnPropertyChanged(nameof(GuiFrozen)); }
+		set
+		{
+			guiFrozen = value;
+			if (value)
+			{
+				ProgressVisible = true;
+			}
+			else
+			{
+				ProgressVisible = false;
+			}
+			OnPropertyChanged(nameof(GuiFrozen));
+		}
 	}
 
-
+	bool progressVisible = false;
+	public bool ProgressVisible
+	{
+		get { return progressVisible; }
+		set { progressVisible = value; OnPropertyChanged(nameof(ProgressVisible)); }
+	}
 
 	FileItem rootItem;
 	public FileItem RootItem
@@ -83,9 +100,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		get { return rootItem; }
 		set { rootItem = value; OnPropertyChangedRepaint(nameof(RootItem)); }
 	}
-
-
-
 
 	public int MaxVerticalScroll
 	{
@@ -115,8 +129,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		get { return visibleLines; }
 		set { visibleLines = value; OnPropertyChanged(nameof(VisibleLines)); OnPropertyChanged(nameof(MaxVerticalScroll)); }
 	}
-
-
 
 	string path = "";
 	public string Path
@@ -160,6 +172,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		get { return sortDirection; }
 		set { sortDirection = value; OnPropertyChangedRepaint(nameof(SortDirection)); }
 	}
+
 
 
 	public Themes Theme
@@ -244,7 +257,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 
 
-
 	int updateTrigger;
 	public int UpdateTrigger
 	{
@@ -256,9 +268,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	#region Events
 
-	private void Timer_Tick(object sender, EventArgs e)
+	private void RepaintTimer_Tick(object sender, EventArgs e)
 	{
-		timer.Stop();
+		repaintTimer.Stop();
 		UpdateTrigger++;
 	}
 
@@ -272,9 +284,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	{
 		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-		if (!timer.IsEnabled)
+		if (!repaintTimer.IsEnabled)
 		{
-			timer.Start();
+			repaintTimer.Start();
 		}
 	}
 

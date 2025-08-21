@@ -20,6 +20,9 @@
 
 	<Window.Resources>
 		<local:GridLengthConverter x:Key="GridLengthConverter" />
+		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+		<local:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+		<local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
 		<ContextMenu x:Key="ContextMenuFileItem">
 			<!--<MenuItem Command="local:Commands.OpenContainingFolder" />
@@ -27,133 +30,160 @@
 		</ContextMenu>
 	</Window.Resources>
 
-	<Grid>
-		<Grid.CommandBindings>
-			<CommandBinding Command="local:Commands.Analyze" Executed="CommandAnalyze_Executed" />
-			<CommandBinding Command="local:Commands.Exit" Executed="CommandExit_Executed" />
-			<CommandBinding Command="local:Commands.Up" Executed="CommandUp_Executed" />
-		</Grid.CommandBindings>
+	<Grid IsEnabled="{Binding Path=GuiFrozen, Converter={StaticResource InverseBooleanConverter}}">
+		<Grid>
+			<Grid.CommandBindings>
+				<CommandBinding Command="local:Commands.Analyze" Executed="CommandAnalyze_Executed" />
+				<CommandBinding Command="local:Commands.Cancel" Executed="CommandCancel_Executed" CanExecute="CommandCancel_CanExecute" />
+				<CommandBinding Command="local:Commands.Exit" Executed="CommandExit_Executed" />
+				<CommandBinding Command="local:Commands.Up" Executed="CommandUp_Executed" />
+			</Grid.CommandBindings>
 
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
 
-		<!--  Menu  -->
-		<Menu Grid.Row="0" Padding="3">
-			<MenuItem Header="File">
-				<MenuItem Header="Exit" Command="local:Commands.Exit" />
-			</MenuItem>
-			<MenuItem Header="Edit">
-				<MenuItem Header="Find" Command="local:Commands.Find" />
-				<MenuItem Header="Find Next" Command="local:Commands.FindNext" />
-				<MenuItem Header="Find Previous" Command="local:Commands.FindPrevious" />
-			</MenuItem>
-			<!--<MenuItem Header="View">
+			<!--  Menu  -->
+			<Menu Grid.Row="0" Padding="3">
+				<MenuItem Header="File">
+					<MenuItem Header="Exit" Command="local:Commands.Exit" />
+				</MenuItem>
+				<MenuItem Header="Edit">
+					<MenuItem Header="Find" Command="local:Commands.Find" />
+					<MenuItem Header="Find Next" Command="local:Commands.FindNext" />
+					<MenuItem Header="Find Previous" Command="local:Commands.FindPrevious" />
+				</MenuItem>
+				<!--<MenuItem Header="View">
 				<MenuItem Header="Zoom In" Command="local:Commands.ZoomIn" />
 				<MenuItem Header="Zoom Out" Command="local:Commands.ZoomOut" />
 				<MenuItem Header="Reset Zoom" Command="local:Commands.ResetZoom" />
 			</MenuItem>-->
-			<MenuItem Header="Tools">
-				<MenuItem Header="Options" Command="local:Commands.Options" />
-			</MenuItem>
-			<MenuItem Header="Help">
-				<MenuItem Header="About" Command="local:Commands.About" />
-			</MenuItem>
-		</Menu>
+				<MenuItem Header="Tools">
+					<MenuItem Header="Options" Command="local:Commands.Options" />
+				</MenuItem>
+				<MenuItem Header="Help">
+					<MenuItem Header="About" Command="local:Commands.About" />
+				</MenuItem>
+			</Menu>
 
-		<!--  Main Toolbar  -->
-		<Border x:Name="ToolbarMain" Grid.Row="1" DockPanel.Dock="Top" BorderThickness="0,1">
-			<Border.Background>
-				<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-					<GradientStop Offset="0" Color="{Binding WindowBackground.Color, FallbackValue=White}" />
-					<GradientStop Offset="1" Color="{Binding DialogBackground.Color, FallbackValue=#FFF0F0F0}" />
-				</LinearGradientBrush>
-			</Border.Background>
+			<!--  Main Toolbar  -->
+			<Border x:Name="ToolbarMain" Grid.Row="1" DockPanel.Dock="Top" BorderThickness="0,1">
+				<Border.Background>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+						<GradientStop Offset="0" Color="{Binding WindowBackground.Color, FallbackValue=White}" />
+						<GradientStop Offset="1" Color="{Binding DialogBackground.Color, FallbackValue=#FFF0F0F0}" />
+					</LinearGradientBrush>
+				</Border.Background>
 
-			<StackPanel Orientation="Horizontal">
+				<StackPanel Orientation="Horizontal">
 
-				<Button Style="{StaticResource ToolbarButton}" Command="local:Commands.Analyze">
-					<StackPanel Orientation="Horizontal">
-						<ContentPresenter ContentTemplate="{StaticResource AnalyzeIcon}" Style="{StaticResource CommonButtonIcon}" />
-						<TextBlock Text="Analyze" Style="{StaticResource CommonButtonLabel}" />
-					</StackPanel>
-				</Button>
+					<Button Style="{StaticResource ToolbarButton}" Command="local:Commands.Analyze">
+						<StackPanel Orientation="Horizontal">
+							<ContentPresenter ContentTemplate="{StaticResource AnalyzeIcon}" Style="{StaticResource CommonButtonIcon}" />
+							<TextBlock Text="Analyze" Style="{StaticResource CommonButtonLabel}" />
+						</StackPanel>
+					</Button>
 
-				<Button Style="{StaticResource ToolbarButton}" Command="local:Commands.Up">
-					<ContentPresenter ContentTemplate="{StaticResource UpIcon}" Style="{StaticResource CommonButtonIcon}" />
-				</Button>
+					<Button Style="{StaticResource ToolbarButton}" Command="local:Commands.Up">
+						<StackPanel Orientation="Horizontal">
+							<ContentPresenter ContentTemplate="{StaticResource UpIcon}" Style="{StaticResource CommonButtonIcon}" />
+							<TextBlock Text="Go Parent Folder" Style="{StaticResource CommonButtonLabel}" />
+						</StackPanel>
+					</Button>
 
-			</StackPanel>
-		</Border>
+				</StackPanel>
+			</Border>
 
-		<!--  Address Bar  -->
-		<Grid Grid.Row="2">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="Auto" />
-			</Grid.ColumnDefinitions>
-
-			<local:ErrorTextBox x:Name="AddressTextBox" d:Text="C:\temp" Text="{Binding Path, UpdateSourceTrigger=LostFocus}" BorderThickness="0" />
-			<Button x:Name="BrowseButton" Grid.Column="1" Width="20" Height="21" HorizontalAlignment="Right" VerticalAlignment="Center" Content="..." BorderThickness="0" Click="BrowseButton_Click" />
-		</Grid>
-
-		<!--  Tree  -->
-		<Border Grid.Row="3" Grid.Column="0" BorderThickness="0,1" AllowDrop="True">
-			<Grid Name="LeftFolderGrid" MouseWheel="TreeGrid_MouseWheel">
+			<!--  Address Bar  -->
+			<Grid Grid.Row="2">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="auto" />
-					<RowDefinition Height="*" />
-					<RowDefinition Height="auto" />
-				</Grid.RowDefinitions>
 
-				<Border Grid.ColumnSpan="2" BorderThickness="0,0,0,1">
-					<ScrollViewer Name="TreeColumns" ScrollChanged="TreeColumns_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
-						<Grid Name="LeftColumns" HorizontalAlignment="Left">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="{Binding NameColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
-								<ColumnDefinition Width="4" />
-								<ColumnDefinition Width="{Binding SizeColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
-								<ColumnDefinition Width="4" />
-								<ColumnDefinition Width="{Binding DateColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
-								<ColumnDefinition Width="4" />
-							</Grid.ColumnDefinitions>
-
-							<Button Name="NameColumn" Grid.Column="0" Style="{StaticResource FlatButton}" Click="NameColumn_Click">
-								<TextBlock Text="Name" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
-							</Button>
-							<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
-							<Button Name="SizeColumn" Grid.Column="2" Style="{StaticResource FlatButton}" Click="SizeColumn_Click">
-								<TextBlock Name="SizeColumnHeader" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
-							</Button>
-							<GridSplitter Grid.Column="3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
-							<Button Name="DateColumn" Grid.Column="4" Style="{StaticResource FlatButton}" Click="DateColumn_Click">
-								<TextBlock Text="Date" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
-							</Button>
-							<GridSplitter Grid.Column="5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
-						</Grid>
-					</ScrollViewer>
-				</Border>
-
-				<Border Grid.Row="1" Grid.Column="0" BorderThickness="0" Background="{StaticResource Theme.Window}">
-					<local:TreeControl x:Name="Tree" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="Tree_SelectionChanged" RootItem="{Binding RootItem}" HorizontalOffset="{Binding Value, ElementName=HorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" SortBy="{Binding SortBy}" SortDirection="{Binding SortDirection}" />
-				</Border>
-				<ScrollBar Name="HorizontalScrollbar" Grid.Row="2" ValueChanged="HorizontalScrollbar_ValueChanged" Orientation="Horizontal" SmallChange="10" />
-				<ScrollBar Name="VerticalTreeScrollbar" Grid.Row="1" Grid.Column="2" SmallChange="1" LargeChange="{Binding ElementName=Tree, Path=VisibleLines}" ViewportSize="{Binding ElementName=Tree, Path=VisibleLines, Mode=TwoWay}" Maximum="{Binding ElementName=Tree, Path=MaxVerticalScroll, Mode=TwoWay}" />
+				<local:ErrorTextBox x:Name="AddressTextBox" d:Text="C:\temp" Text="{Binding Path, UpdateSourceTrigger=LostFocus}" BorderThickness="0" />
+				<Button x:Name="BrowseButton" Grid.Column="1" Width="20" Height="21" HorizontalAlignment="Right" VerticalAlignment="Center" Content="..." BorderThickness="0" Click="BrowseButton_Click" />
 			</Grid>
-		</Border>
 
-		<!--  Status Bar  -->
-		<Border Grid.Row="4" Padding="4" BorderThickness="0">
-			<TextBlock x:Name="StatusBar" Text="Status" />
-		</Border>
+			<!--  Tree  -->
+			<Border Grid.Row="3" Grid.Column="0" BorderThickness="0,1" AllowDrop="True">
+				<Grid Name="LeftFolderGrid" MouseWheel="TreeGrid_MouseWheel">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto" />
+						<RowDefinition Height="*" />
+						<RowDefinition Height="auto" />
+					</Grid.RowDefinitions>
+
+					<Border Grid.ColumnSpan="2" BorderThickness="0,0,0,1">
+						<ScrollViewer Name="TreeColumns" ScrollChanged="TreeColumns_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+							<Grid Name="LeftColumns" HorizontalAlignment="Left">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="{Binding NameColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
+									<ColumnDefinition Width="4" />
+									<ColumnDefinition Width="{Binding SizeColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
+									<ColumnDefinition Width="4" />
+									<ColumnDefinition Width="{Binding DateColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
+									<ColumnDefinition Width="4" />
+								</Grid.ColumnDefinitions>
+
+								<Button Name="NameColumn" Grid.Column="0" Style="{StaticResource FlatButton}" Click="NameColumn_Click">
+									<TextBlock Text="Name" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
+								</Button>
+								<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
+								<Button Name="SizeColumn" Grid.Column="2" Style="{StaticResource FlatButton}" Click="SizeColumn_Click">
+									<TextBlock Name="SizeColumnHeader" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
+								</Button>
+								<GridSplitter Grid.Column="3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
+								<Button Name="DateColumn" Grid.Column="4" Style="{StaticResource FlatButton}" Click="DateColumn_Click">
+									<TextBlock Text="Date" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
+								</Button>
+								<GridSplitter Grid.Column="5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
+							</Grid>
+						</ScrollViewer>
+					</Border>
+
+					<Border Grid.Row="1" Grid.Column="0" BorderThickness="0" Background="{StaticResource Theme.Window}">
+						<local:TreeControl x:Name="Tree" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="Tree_SelectionChanged" RootItem="{Binding RootItem}" HorizontalOffset="{Binding Value, ElementName=HorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" SortBy="{Binding SortBy}" SortDirection="{Binding SortDirection}" />
+					</Border>
+					<ScrollBar Name="HorizontalScrollbar" Grid.Row="2" ValueChanged="HorizontalScrollbar_ValueChanged" Orientation="Horizontal" SmallChange="10" />
+					<ScrollBar Name="VerticalTreeScrollbar" Grid.Row="1" Grid.Column="2" SmallChange="1" LargeChange="{Binding ElementName=Tree, Path=VisibleLines}" ViewportSize="{Binding ElementName=Tree, Path=VisibleLines, Mode=TwoWay}" Maximum="{Binding ElementName=Tree, Path=MaxVerticalScroll, Mode=TwoWay}" />
+				</Grid>
+			</Border>
+
+			<!--  Status Bar  -->
+			<Border Grid.Row="4" Padding="4" BorderThickness="0">
+				<TextBlock x:Name="StatusBar" Text="Status" />
+			</Border>
+
+		</Grid>
+
+
+		<!--  Analyze Progress  -->
+		<Grid x:Name="asdf" Background="#00000000" Cursor="Wait" Visibility="{Binding ProgressVisible}">
+			<!--  Workaround to not fuckup the cleartype rendering  -->
+			<Border Width="{Binding ActualWidth, ElementName=ProgressPanel}" Height="{Binding ActualHeight, ElementName=ProgressPanel}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Visibility, ElementName=ProgressPanel}" Background="{StaticResource Theme.Window}">
+				<Border.Effect>
+					<DropShadowEffect BlurRadius="25" ShadowDepth="0" Opacity=".35" />
+				</Border.Effect>
+			</Border>
+			<Border x:Name="ProgressPanel" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1" Cursor="Arrow">
+				<StackPanel Margin="5">
+					<Label HorizontalAlignment="Center" Content="Analyzing..." />
+					<StackPanel Orientation="Horizontal">
+						<ProgressBar x:Name="ProgressBarAnalyze" Width="300" Margin="5" Background="{StaticResource Theme.Dialog}" Value="40" />
+						<Button x:Name="ButtonCancelCompare" HorizontalAlignment="Right" Style="{StaticResource CommonButton}" Content="Cancel" Command="local:Commands.Cancel" />
+					</StackPanel>
+				</StackPanel>
+			</Border>
+		</Grid>
 
 	</Grid>
 </Window>

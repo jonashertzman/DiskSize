@@ -33,14 +33,13 @@ public static class BackgroundAnalyze
 
 		AnalyzeCancelled = false;
 
-		FileItem rootItem;
 		WIN32_FIND_DATA findData = new()
 		{
 			dwFileAttributes = FileAttributes.Directory,
 			cFileName = path,
 		};
 
-		rootItem = new FileItem(Path.TrimEndingDirectorySeparator(path), 1, findData)
+		FileItem rootItem = new FileItem(Path.TrimEndingDirectorySeparator(path), 1, findData)
 		{
 			IsExpanded = true
 		};

@@ -58,6 +58,19 @@ public partial class MainWindow : Window
 
 		ViewModel.GuiFrozen = true;
 
+		WIN32_FIND_DATA findData = new()
+		{
+			dwFileAttributes = FileAttributes.Directory,
+			cFileName = ViewModel.Path,
+		};
+
+		FileItem rootItem = new FileItem(System.IO.Path.TrimEndingDirectorySeparator(ViewModel.Path), 1, findData)
+		{
+			IsExpanded = true
+		};
+
+		ViewModel.RootItem = rootItem;
+
 		//ProgressBarCompare.Value = 0;
 		//ProgressBarCompare.Maximum = leftLines.Count + rightLines.Count;
 
@@ -81,6 +94,8 @@ public partial class MainWindow : Window
 		ViewModel.RootItem = rootItem;
 
 		StatusBar.Text = TimeSpanToShortString(task.Result.Item2);
+
+		ViewModel.GuiFrozen = false;
 	}
 
 	private string TimeSpanToShortString(TimeSpan timeSpan)
@@ -264,6 +279,16 @@ public partial class MainWindow : Window
 	private void CommandExit_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
 	{
 		this.Close();
+	}
+
+	private void CommandCancel_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+		BackgroundAnalyze.Cancel();
+	}
+
+	private void CommandCancel_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+	{
+		e.CanExecute = !BackgroundAnalyze.AnalyzeCancelled;
 	}
 
 	private void CommandAnalyze_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
