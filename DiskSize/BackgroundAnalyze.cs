@@ -8,9 +8,11 @@ public static class BackgroundAnalyze
 
 	#region Members
 
-	internal static IProgress<string> progressHandler;
+	internal static IProgress<Tuple<int, string>> progressHandler;
 
+	private static int progress;
 	private static DateTime startTime;
+	private static string rootPath;
 
 	#endregion
 
@@ -33,13 +35,15 @@ public static class BackgroundAnalyze
 
 		AnalyzeCancelled = false;
 
+		rootPath = path;
+
 		WIN32_FIND_DATA findData = new()
 		{
 			dwFileAttributes = FileAttributes.Directory,
 			cFileName = path,
 		};
 
-		FileItem rootItem = new FileItem(Path.TrimEndingDirectorySeparator(path), 1, findData)
+		FileItem rootItem = new(Path.TrimEndingDirectorySeparator(path), 1, findData)
 		{
 			IsExpanded = true
 		};
@@ -63,11 +67,13 @@ public static class BackgroundAnalyze
 		if (path?.Length > 259) return;
 		if (Directory.Exists(path) && !Utils.DirectoryAllowed(path)) return;
 
-
-		if (level > 1)
+		if (level == 3)
 		{
-			UpdateStatus(path);
+			char c = Char.ToUpper(path[rootPath.Length + 1]);
+			progress = c - 'A';
+			Debug.WriteLine($"{c} {progress}");
 		}
+		UpdateStatus(path);
 
 		foreach (FileItem fileItem in SearchDirectory(path, level))
 		{
@@ -127,10 +133,10 @@ public static class BackgroundAnalyze
 
 	private static void UpdateStatus(string currentPath, bool finalUpdate = false)
 	{
-
 		if (finalUpdate || (DateTime.UtcNow - lastStatusUpdateTime).TotalMilliseconds >= 200)
 		{
-			progressHandler.Report(currentPath);
+
+			progressHandler.Report(new(progress, currentPath));
 
 			lastStatusUpdateTime = DateTime.UtcNow;
 		}

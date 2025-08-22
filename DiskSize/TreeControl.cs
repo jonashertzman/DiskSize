@@ -268,7 +268,7 @@ public class TreeControl : Control
 
 	#region Dependency Properties
 
-	public static readonly DependencyProperty RootItemProperty = DependencyProperty.Register("RootItem", typeof(FileItem), typeof(TreeControl), new FrameworkPropertyMetadata(new FileItem(), FrameworkPropertyMetadataOptions.None));
+	public static readonly DependencyProperty RootItemProperty = DependencyProperty.Register("RootItem", typeof(FileItem), typeof(TreeControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.None));
 
 	public FileItem RootItem
 	{

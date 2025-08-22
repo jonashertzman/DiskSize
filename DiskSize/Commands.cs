@@ -20,7 +20,8 @@ public static class Commands
 	);
 
 	public static readonly RoutedUICommand Cancel = new(
-		"Cancel", nameof(Cancel), typeof(Commands)
+		"Cancel", nameof(Cancel), typeof(Commands),
+		[new KeyGesture(Key.Escape)]
 	);
 
 	public static readonly RoutedUICommand Up = new(

@@ -7,7 +7,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	Title="Disk Size - Alpha 1"
 	Width="550"
-	Height="350"
+	Height="330"
 	d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
 	UseLayoutRounding="True"
 	TextOptions.TextFormattingMode="Display"
@@ -30,11 +30,15 @@
 		</ContextMenu>
 	</Window.Resources>
 
-	<Grid IsEnabled="{Binding Path=GuiFrozen, Converter={StaticResource InverseBooleanConverter}}">
-		<Grid>
+	<Window.CommandBindings>
+		<CommandBinding Command="local:Commands.Cancel" Executed="CommandCancel_Executed" CanExecute="CommandCancel_CanExecute" />
+	</Window.CommandBindings>
+
+	<Grid>
+		<Grid  IsEnabled="{Binding Path=GuiFrozen, Converter={StaticResource InverseBooleanConverter}}">
 			<Grid.CommandBindings>
 				<CommandBinding Command="local:Commands.Analyze" Executed="CommandAnalyze_Executed" />
-				<CommandBinding Command="local:Commands.Cancel" Executed="CommandCancel_Executed" CanExecute="CommandCancel_CanExecute" />
+
 				<CommandBinding Command="local:Commands.Exit" Executed="CommandExit_Executed" />
 				<CommandBinding Command="local:Commands.Up" Executed="CommandUp_Executed" />
 			</Grid.CommandBindings>
@@ -167,7 +171,7 @@
 
 
 		<!--  Analyze Progress  -->
-		<Grid x:Name="asdf" Background="#00000000" Cursor="Wait" Visibility="{Binding ProgressVisible}">
+		<Grid x:Name="asdf" Background="#00000000" Cursor="Wait" Visibility="{Binding ProgressVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
 			<!--  Workaround to not fuckup the cleartype rendering  -->
 			<Border Width="{Binding ActualWidth, ElementName=ProgressPanel}" Height="{Binding ActualHeight, ElementName=ProgressPanel}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Visibility, ElementName=ProgressPanel}" Background="{StaticResource Theme.Window}">
 				<Border.Effect>
@@ -178,7 +182,7 @@
 				<StackPanel Margin="5">
 					<Label HorizontalAlignment="Center" Content="Analyzing..." />
 					<StackPanel Orientation="Horizontal">
-						<ProgressBar x:Name="ProgressBarAnalyze" Width="300" Margin="5" Background="{StaticResource Theme.Dialog}" Value="40" />
+						<ProgressBar x:Name="ProgressBarAnalyze" Width="300" Margin="5" Background="{StaticResource Theme.Dialog}" Value="10" Maximum="30" />
 						<Button x:Name="ButtonCancelCompare" HorizontalAlignment="Right" Style="{StaticResource CommonButton}" Content="Cancel" Command="local:Commands.Cancel" />
 					</StackPanel>
 				</StackPanel>

@@ -71,16 +71,16 @@ public partial class MainWindow : Window
 
 		ViewModel.RootItem = rootItem;
 
-		//ProgressBarCompare.Value = 0;
-		//ProgressBarCompare.Maximum = leftLines.Count + rightLines.Count;
+		ProgressBarAnalyze.Value = 0;
 
-		BackgroundAnalyze.progressHandler = new Progress<string>(AnalyzeStatusUpdate);
+		BackgroundAnalyze.progressHandler = new Progress<Tuple<int, string>>(AnalyzeStatusUpdate);
 		Task.Run(() => BackgroundAnalyze.Analyze(ViewModel.Path)).ContinueWith(AnalyzeFinished, TaskScheduler.FromCurrentSynchronizationContext());
 	}
 
-	private void AnalyzeStatusUpdate(string currentPath)
+	private void AnalyzeStatusUpdate(Tuple<int, string> result)
 	{
-		StatusBar.Text = currentPath;
+		ProgressBarAnalyze.Value = result.Item1;
+		StatusBar.Text = result.Item2;
 	}
 
 	private void AnalyzeFinished(Task<Tuple<FileItem, TimeSpan>> task)
