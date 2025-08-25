@@ -36,51 +36,55 @@ public partial class MainWindow : Window
 		Debug.Print($"--- {nameof(Analyze)} ---");
 
 		Tree.Focus();
-		try
+
+		if (ViewModel.Path == "")
 		{
-			if (ViewModel.Path == "")
+			BrowseFolderWindow browseDialog = new() { DataContext = ViewModel, Owner = this, Title = "Select Directory to Analyze" };
+			browseDialog.ShowDialog();
+
+			if (browseDialog.DialogResult == false)
 			{
-				BrowseFolderWindow browseLeft = new() { DataContext = ViewModel, Owner = this, Title = "Select Directory to Analyze" };
-				browseLeft.ShowDialog();
-
-				if (browseLeft.DialogResult == false)
-				{
-					return;
-				}
-				ViewModel.Path = browseLeft.SelectedPath;
+				return;
 			}
-		}
-		catch (Exception e)
-		{
-			MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-			return;
+			ViewModel.Path = browseDialog.SelectedPath;
 		}
 
-		ViewModel.GuiFrozen = true;
-
-		WIN32_FIND_DATA findData = new()
+		if (Directory.Exists(ViewModel.Path))
 		{
-			dwFileAttributes = FileAttributes.Directory,
-			cFileName = ViewModel.Path,
-		};
+			ViewModel.RootItem = null;
+			ViewModel.GuiFrozen = true;
 
-		FileItem rootItem = new FileItem(System.IO.Path.TrimEndingDirectorySeparator(ViewModel.Path), 1, findData)
+			string path = Path.GetFullPath(Utils.FixRootPath(ViewModel.Path));
+			if (!path.EndsWith(Path.DirectorySeparatorChar))
+			{
+				path += Path.DirectorySeparatorChar;
+			}
+
+			string[] rootFolders = [.. Directory.EnumerateDirectories(path)];
+			if (rootFolders.Length > 0)
+			{
+				//ProgressBarAnalyze.Minimum = char.ToUpper(rootFolders[0][path.Length + 1]);
+				//ProgressBarAnalyze.Maximum = char.ToUpper(rootFolders[^1][path.Length + 1]);
+			}
+
+			ProgressBarAnalyze.Value = 0;
+
+			BackgroundAnalyze.progressHandler = new Progress<string>(AnalyzeStatusUpdate);
+			Task.Run(() => BackgroundAnalyze.Analyze(path)).ContinueWith(AnalyzeFinished, TaskScheduler.FromCurrentSynchronizationContext());
+
+		}
+		else
 		{
-			IsExpanded = true
-		};
-
-		ViewModel.RootItem = rootItem;
-
-		ProgressBarAnalyze.Value = 0;
-
-		BackgroundAnalyze.progressHandler = new Progress<Tuple<int, string>>(AnalyzeStatusUpdate);
-		Task.Run(() => BackgroundAnalyze.Analyze(ViewModel.Path)).ContinueWith(AnalyzeFinished, TaskScheduler.FromCurrentSynchronizationContext());
+			MessageBox.Show("fel");
+		}
 	}
 
-	private void AnalyzeStatusUpdate(Tuple<int, string> result)
+	private void AnalyzeStatusUpdate(string path)
 	{
-		ProgressBarAnalyze.Value = result.Item1;
-		StatusBar.Text = result.Item2;
+		//char c = Char.ToUpper(path[ViewModel.RootItem.Path.Length + 1]);
+
+		//ProgressBarAnalyze.Value = c;
+		StatusBar.Text = path;
 	}
 
 	private void AnalyzeFinished(Task<Tuple<FileItem, TimeSpan>> task)

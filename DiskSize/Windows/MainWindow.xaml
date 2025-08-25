@@ -182,7 +182,7 @@
 				<StackPanel Margin="5">
 					<Label HorizontalAlignment="Center" Content="Analyzing..." />
 					<StackPanel Orientation="Horizontal">
-						<ProgressBar x:Name="ProgressBarAnalyze" Width="300" Margin="5" Background="{StaticResource Theme.Dialog}" Value="10" Maximum="30" />
+						<ProgressBar x:Name="ProgressBarAnalyze" Width="300" Margin="5" Background="{StaticResource Theme.Dialog}" Value="40" Minimum="64" Maximum="90" />
 						<Button x:Name="ButtonCancelCompare" HorizontalAlignment="Right" Style="{StaticResource CommonButton}" Content="Cancel" Command="local:Commands.Cancel" />
 					</StackPanel>
 				</StackPanel>
