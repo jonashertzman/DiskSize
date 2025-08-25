@@ -60,16 +60,18 @@ public partial class MainWindow : Window
 				path += Path.DirectorySeparatorChar;
 			}
 
+			rootPath = path;
+
 			string[] rootFolders = [.. Directory.EnumerateDirectories(path)];
+
 			if (rootFolders.Length > 0)
 			{
-				//ProgressBarAnalyze.Minimum = char.ToUpper(rootFolders[0][path.Length + 1]);
-				//ProgressBarAnalyze.Maximum = char.ToUpper(rootFolders[^1][path.Length + 1]);
+				ProgressBarAnalyze.Maximum = rootFolders.Length;
 			}
 
 			ProgressBarAnalyze.Value = 0;
 
-			BackgroundAnalyze.progressHandler = new Progress<string>(AnalyzeStatusUpdate);
+			BackgroundAnalyze.progressHandler = new Progress<Tuple<string, int>>(AnalyzeStatusUpdate);
 			Task.Run(() => BackgroundAnalyze.Analyze(path)).ContinueWith(AnalyzeFinished, TaskScheduler.FromCurrentSynchronizationContext());
 
 		}
@@ -79,12 +81,12 @@ public partial class MainWindow : Window
 		}
 	}
 
-	private void AnalyzeStatusUpdate(string path)
-	{
-		//char c = Char.ToUpper(path[ViewModel.RootItem.Path.Length + 1]);
+	string rootPath;
 
-		//ProgressBarAnalyze.Value = c;
-		StatusBar.Text = path;
+	private void AnalyzeStatusUpdate(Tuple<string, int> result)
+	{
+		ProgressBarAnalyze.Value = result.Item2;
+		StatusBar.Text = result.Item1;
 	}
 
 	private void AnalyzeFinished(Task<Tuple<FileItem, TimeSpan>> task)

@@ -8,7 +8,7 @@ public static class BackgroundAnalyze
 
 	#region Members
 
-	internal static IProgress<string> progressHandler;
+	internal static IProgress<Tuple<string, int>> progressHandler;
 
 	private static int progress;
 	private static DateTime startTime;
@@ -30,9 +30,12 @@ public static class BackgroundAnalyze
 
 	public static Tuple<FileItem, TimeSpan> Analyze(string path)
 	{
+		path = Path.TrimEndingDirectorySeparator(path);
+
 		startTime = DateTime.UtcNow;
 
 		AnalyzeCancelled = false;
+		progress = 0;
 
 		WIN32_FIND_DATA findData = new()
 		{
@@ -40,7 +43,7 @@ public static class BackgroundAnalyze
 			cFileName = path,
 		};
 
-		FileItem rootItem = new(Path.TrimEndingDirectorySeparator(path), 1, findData)
+		FileItem rootItem = new(path, 1, findData)
 		{
 			IsExpanded = true
 		};
@@ -63,6 +66,12 @@ public static class BackgroundAnalyze
 		if (AnalyzeCancelled) return;
 		if (path?.Length > 259) return;
 		if (Directory.Exists(path) && !Utils.DirectoryAllowed(path)) return;
+
+		if (level == 3)
+		{
+			progress++;
+			Debug.WriteLine(progress);
+		}
 
 		foreach (FileItem fileItem in SearchDirectory(path, level))
 		{
@@ -93,7 +102,7 @@ public static class BackgroundAnalyze
 		}
 	}
 
-	private static List<FileItem> SearchDirectory(string path, int level)
+	public static List<FileItem> SearchDirectory(string path, int level)
 	{
 		path = Utils.FixRootPath(path);
 		List<FileItem> items = [];
@@ -126,8 +135,9 @@ public static class BackgroundAnalyze
 	{
 		if (finalUpdate || (DateTime.UtcNow - lastStatusUpdateTime).TotalMilliseconds >= 200)
 		{
+			Tuple<string, int> tuple = new(currentPath, progress);
 
-			progressHandler.Report(currentPath);
+			progressHandler.Report(tuple);
 
 			lastStatusUpdateTime = DateTime.UtcNow;
 		}
