@@ -116,18 +116,13 @@ public partial class BrowseFolderWindow : Window
 
 	private static string GetItemPath(TreeViewItem item)
 	{
-		switch (item.Tag)
+		return item.Tag switch
 		{
-			case DriveInfo driveInfo:
-				return driveInfo.ToString();
-
-			case DirectoryInfo directoryInfo:
-				return directoryInfo.FullName;
-
-			case FileInfo fileInfo:
-				return fileInfo.FullName;
-		}
-		return null;
+			DriveInfo driveInfo => driveInfo.ToString(),
+			DirectoryInfo directoryInfo => directoryInfo.FullName,
+			FileInfo fileInfo => fileInfo.FullName,
+			_ => null,
+		};
 	}
 
 	private ScrollViewer GetScrollViewer(UIElement element)

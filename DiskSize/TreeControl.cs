@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -381,7 +380,7 @@ public class TreeControl : Control
 
 	private void UpdateVisibleItems()
 	{
-		void FindVisibleItems(ObservableCollection<FileItem> parent, List<FileItem> items)
+		void FindVisibleItems(List<FileItem> parent, List<FileItem> items)
 		{
 			IOrderedEnumerable<FileItem> sortedItems;
 

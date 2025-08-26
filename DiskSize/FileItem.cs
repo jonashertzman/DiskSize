@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.IO;
 
 namespace DiskSize;
 
@@ -48,7 +47,7 @@ public class FileItem
 
 	public FileItem Parent { get; set; }
 
-	public ObservableCollection<FileItem> Children { get; set; } = [];
+	public List<FileItem> Children { get; set; } = [];
 
 	public string Path { get; set; } = "";
 

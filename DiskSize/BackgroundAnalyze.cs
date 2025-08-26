@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.IO;
 
 namespace DiskSize;
 
@@ -8,10 +7,11 @@ public static class BackgroundAnalyze
 
 	#region Members
 
-	internal static IProgress<Tuple<string, int>> progressHandler;
+	public static IProgress<Tuple<string, int>> progressHandler;
 
-	private static int progress;
-	private static DateTime startTime;
+	static int progress;
+	static DateTime startTime;
+	static DateTime lastStatusUpdateTime = DateTime.MinValue;
 
 	#endregion
 
@@ -61,7 +61,7 @@ public static class BackgroundAnalyze
 		return new Tuple<FileItem, TimeSpan>(rootItem, DateTime.UtcNow.Subtract(startTime));
 	}
 
-	private static void AnalyzeDirectory(string path, ObservableCollection<FileItem> items, int level)
+	private static void AnalyzeDirectory(string path, List<FileItem> items, int level)
 	{
 		if (AnalyzeCancelled) return;
 		if (path?.Length > 259) return;
@@ -70,8 +70,9 @@ public static class BackgroundAnalyze
 		if (level == 3)
 		{
 			progress++;
-			Debug.WriteLine(progress);
 		}
+
+		UpdateStatus(path);
 
 		foreach (FileItem fileItem in SearchDirectory(path, level))
 		{
@@ -79,8 +80,6 @@ public static class BackgroundAnalyze
 			{
 				return;
 			}
-
-			UpdateStatus(fileItem.Path);
 
 			if (fileItem.IsFolder)
 			{
@@ -102,7 +101,7 @@ public static class BackgroundAnalyze
 		}
 	}
 
-	public static List<FileItem> SearchDirectory(string path, int level)
+	private static List<FileItem> SearchDirectory(string path, int level)
 	{
 		path = Utils.FixRootPath(path);
 		List<FileItem> items = [];
@@ -129,15 +128,13 @@ public static class BackgroundAnalyze
 		return items;
 	}
 
-	static DateTime lastStatusUpdateTime = DateTime.MinValue;
-
 	private static void UpdateStatus(string currentPath, bool finalUpdate = false)
 	{
 		if (finalUpdate || (DateTime.UtcNow - lastStatusUpdateTime).TotalMilliseconds >= 200)
 		{
-			Tuple<string, int> tuple = new(currentPath, progress);
+			Tuple<string, int> status = new(currentPath, progress);
 
-			progressHandler.Report(tuple);
+			progressHandler.Report(status);
 
 			lastStatusUpdateTime = DateTime.UtcNow;
 		}
