@@ -239,9 +239,8 @@ public partial class MainWindow : Window
 		if (browseFolderWindow.DialogResult == true)
 		{
 			ViewModel.Path = browseFolderWindow.SelectedPath;
+			Analyze();
 		}
-
-		Analyze();
 	}
 
 	private void NameColumn_Click(object sender, RoutedEventArgs e)
