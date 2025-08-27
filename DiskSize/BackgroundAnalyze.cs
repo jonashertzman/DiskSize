@@ -51,14 +51,6 @@ public static class BackgroundAnalyze
 
 		AnalyzeDirectory(rootItem, 2);
 
-		long size = 0;
-		foreach (FileItem child in rootItem.Children)
-		{
-			size += child.Size;
-			child.Parent = rootItem;
-		}
-		rootItem.Size = size;
-
 		return new Tuple<FileItem, TimeSpan>(rootItem, DateTime.UtcNow.Subtract(startTime));
 	}
 
@@ -92,19 +84,19 @@ public static class BackgroundAnalyze
 				//fileItem.IsExpanded = true;
 				{
 					AnalyzeDirectory(fileItem, level + 1);
-
-					long size = 0;
-					foreach (FileItem child in fileItem.Children)
-					{
-						size += child.Size;
-						child.Parent = fileItem;
-					}
-					fileItem.Size = size;
 				}
 			}
 
 			item.Children.Add(fileItem);
 		}
+
+		long size = 0;
+		foreach (FileItem child in item.Children)
+		{
+			size += child.Size;
+			child.Parent = item;
+		}
+		item.Size = size;
 	}
 
 	private static List<FileItem> SearchDirectory(string path, int level)
