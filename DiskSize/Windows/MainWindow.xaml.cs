@@ -73,7 +73,6 @@ public partial class MainWindow : Window
 
 			BackgroundAnalyze.progressHandler = new Progress<Tuple<string, int>>(AnalyzeStatusUpdate);
 			Task.Run(() => BackgroundAnalyze.Analyze(path)).ContinueWith(AnalyzeFinished, TaskScheduler.FromCurrentSynchronizationContext());
-
 		}
 		else
 		{

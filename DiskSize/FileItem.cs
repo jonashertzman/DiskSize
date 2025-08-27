@@ -58,9 +58,13 @@ public class FileItem
 
 	public long Size { get; set; }
 
+	//public long FileCount { get; set; }
+
 	public int Level { get; set; }
 
 	public bool IsFolder { get; set; }
+
+	public bool Unauthorized { get; set; }
 
 	private bool isExpanded;
 	public bool IsExpanded

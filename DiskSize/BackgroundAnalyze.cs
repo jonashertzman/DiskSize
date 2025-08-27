@@ -49,7 +49,7 @@ public static class BackgroundAnalyze
 			IsExpanded = true
 		};
 
-		AnalyzeDirectory(path, rootItem.Children, 2);
+		AnalyzeDirectory(rootItem, 2);
 
 		long size = 0;
 		foreach (FileItem child in rootItem.Children)
@@ -62,20 +62,25 @@ public static class BackgroundAnalyze
 		return new Tuple<FileItem, TimeSpan>(rootItem, DateTime.UtcNow.Subtract(startTime));
 	}
 
-	private static void AnalyzeDirectory(string path, List<FileItem> items, int level)
+	private static void AnalyzeDirectory(FileItem item, int level)
 	{
 		if (AnalyzeCancelled) return;
-		if (path?.Length > 259) return;
-		if (Directory.Exists(path) && !Utils.DirectoryAllowed(path)) return;
+		if (item.Path?.Length > 259) return;
+
+		if (!Utils.DirectoryAllowed(item.Path))
+		{
+			item.Unauthorized = true;
+			return;
+		}
 
 		if (level == 3)
 		{
 			progress++;
 		}
 
-		UpdateStatus(path);
+		UpdateStatus(item.Path);
 
-		foreach (FileItem fileItem in SearchDirectory(path, level))
+		foreach (FileItem fileItem in SearchDirectory(item.Path, level))
 		{
 			if (AnalyzeCancelled)
 			{
@@ -86,7 +91,7 @@ public static class BackgroundAnalyze
 			{
 				//fileItem.IsExpanded = true;
 				{
-					AnalyzeDirectory(Path.Combine(path, fileItem.Name), fileItem.Children, level + 1);
+					AnalyzeDirectory(fileItem, level + 1);
 
 					long size = 0;
 					foreach (FileItem child in fileItem.Children)
@@ -98,7 +103,7 @@ public static class BackgroundAnalyze
 				}
 			}
 
-			items.Add(fileItem);
+			item.Children.Add(fileItem);
 		}
 	}
 
