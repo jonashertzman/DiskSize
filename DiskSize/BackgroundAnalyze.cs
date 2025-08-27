@@ -91,12 +91,15 @@ public static class BackgroundAnalyze
 		}
 
 		long size = 0;
+		long fileCount = 0;
 		foreach (FileItem child in item.Children)
 		{
 			size += child.Size;
+			fileCount += child.FileCount;
 			child.Parent = item;
 		}
 		item.Size = size;
+		item.FileCount = fileCount;
 	}
 
 	private static List<FileItem> SearchDirectory(string path, int level)

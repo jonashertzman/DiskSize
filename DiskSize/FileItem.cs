@@ -24,6 +24,7 @@ public class FileItem
 		if (!IsFolder)
 		{
 			Size = (long)Combine(findData.nFileSizeHigh, findData.nFileSizeLow);
+			FileCount = 1;
 		}
 
 		Date = DateTime.FromFileTime((long)Combine((uint)findData.ftLastWriteTime.dwHighDateTime, (uint)findData.ftLastWriteTime.dwLowDateTime));
@@ -56,9 +57,9 @@ public class FileItem
 
 	public DateTime? Date { get; set; }
 
-	public long Size { get; set; }
+	public long Size { get; set; } = 0;
 
-	//public long FileCount { get; set; }
+	public long FileCount { get; set; } = 0;
 
 	public int Level { get; set; }
 
