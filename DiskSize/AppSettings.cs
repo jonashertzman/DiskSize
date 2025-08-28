@@ -401,10 +401,9 @@ public static class AppSettings
 
 
 	public static double NameColumnWidth { get; internal set; } = 300;
-
 	public static double SizeColumnWidth { get; internal set; } = 70;
-
 	public static double DateColumnWidth { get; internal set; } = 120;
+	public static double FilesColumnWidth { get; internal set; } = 120;
 
 	public static bool DrawGridLines { get; internal set; } = false;
 

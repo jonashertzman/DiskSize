@@ -138,9 +138,16 @@ public class TreeControl : Control
 					// Date column
 					drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine2 + textMargin, 0, AppSettings.DateColumnWidth - textMargin * 2, itemHeight)));
 					{
-						string dateText = line.Date?.ToString("g") ?? "";
-
+						string dateText = line.Date?.ToString("g");
 						drawingContext.DrawText(new FormattedText(dateText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine2 + textMargin, itemMargin));
+					}
+					drawingContext.Pop();
+
+					// Files column
+					drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine3 + textMargin, 0, AppSettings.FilesColumnWidth - textMargin * 2, itemHeight)));
+					{
+						string fileCountText = line.FileCount.ToString("N0");
+						drawingContext.DrawText(new FormattedText(fileCountText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine3 + AppSettings.FilesColumnWidth - textMargin - MeasureString(fileCountText).Width - 1, itemMargin));
 					}
 					drawingContext.Pop();
 
@@ -389,6 +396,7 @@ public class TreeControl : Control
 				SortColumn.Name => SortDirection == Sorting.Ascending ? parent.OrderBy(item => item.Name) : parent.OrderByDescending(item => item.Name),
 				SortColumn.Size => SortDirection == Sorting.Ascending ? parent.OrderBy(item => item.Size) : parent.OrderByDescending(item => item.Size),
 				SortColumn.Date => SortDirection == Sorting.Ascending ? parent.OrderBy(item => item.Date) : parent.OrderByDescending(item => item.Date),
+				SortColumn.Files => SortDirection == Sorting.Ascending ? parent.OrderBy(item => item.FileCount) : parent.OrderByDescending(item => item.FileCount),
 
 				_ => throw new NotImplementedException()
 			};

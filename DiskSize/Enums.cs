@@ -12,7 +12,8 @@ public enum SortColumn
 {
 	Name,
 	Size,
-	Date
+	Date,
+	Files
 }
 
 

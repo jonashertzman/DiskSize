@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace DiskSize;
 
@@ -242,39 +243,17 @@ public partial class MainWindow : Window
 		}
 	}
 
-	private void NameColumn_Click(object sender, RoutedEventArgs e)
+	private void GridColumn_Click(object sender, RoutedEventArgs e)
 	{
-		if (ViewModel.SortBy == SortColumn.Name)
-		{
-			ViewModel.SortDirection = ViewModel.SortDirection == Sorting.Descending ? Sorting.Ascending : Sorting.Descending;
-		}
-		else
-		{
-			ViewModel.SortBy = SortColumn.Name;
-		}
-	}
+		SortColumn clickedColumn = (SortColumn)((ButtonBase)e.OriginalSource).CommandParameter;
 
-	private void SizeColumn_Click(object sender, RoutedEventArgs e)
-	{
-		if (ViewModel.SortBy == SortColumn.Size)
+		if (ViewModel.SortBy == clickedColumn)
 		{
 			ViewModel.SortDirection = ViewModel.SortDirection == Sorting.Descending ? Sorting.Ascending : Sorting.Descending;
 		}
 		else
 		{
-			ViewModel.SortBy = SortColumn.Size;
-		}
-	}
-
-	private void DateColumn_Click(object sender, RoutedEventArgs e)
-	{
-		if (ViewModel.SortBy == SortColumn.Date)
-		{
-			ViewModel.SortDirection = ViewModel.SortDirection == Sorting.Descending ? Sorting.Ascending : Sorting.Descending;
-		}
-		else
-		{
-			ViewModel.SortBy = SortColumn.Date;
+			ViewModel.SortBy = clickedColumn;
 		}
 	}
 

@@ -159,6 +159,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		set { AppSettings.DateColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(DateColumnWidth)); }
 	}
 
+	public double FilesColumnWidth
+	{
+		get { return AppSettings.FilesColumnWidth; }
+		set { AppSettings.FilesColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(FilesColumnWidth)); }
+	}
+
 	SortColumn sortBy = SortColumn.Size;
 	public SortColumn SortBy
 	{

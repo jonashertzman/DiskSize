@@ -46,7 +46,8 @@ public static class BackgroundAnalyze
 
 		FileItem rootItem = new(path, 1, findData)
 		{
-			IsExpanded = true
+			IsExpanded = true,
+			Date = Directory.GetLastWriteTime(path),
 		};
 
 		AnalyzeDirectory(rootItem, 2);

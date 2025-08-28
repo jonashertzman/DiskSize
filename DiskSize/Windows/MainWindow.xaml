@@ -35,7 +35,7 @@
 	</Window.CommandBindings>
 
 	<Grid>
-		<Grid  IsEnabled="{Binding Path=GuiFrozen, Converter={StaticResource InverseBooleanConverter}}">
+		<Grid IsEnabled="{Binding Path=GuiFrozen, Converter={StaticResource InverseBooleanConverter}}">
 			<Grid.CommandBindings>
 				<CommandBinding Command="local:Commands.Analyze" Executed="CommandAnalyze_Executed" />
 
@@ -136,20 +136,30 @@
 									<ColumnDefinition Width="4" />
 									<ColumnDefinition Width="{Binding DateColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
 									<ColumnDefinition Width="4" />
+									<ColumnDefinition Width="{Binding FilesColumnWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}}" MinWidth="50" />
+									<ColumnDefinition Width="4" />
 								</Grid.ColumnDefinitions>
 
-								<Button Name="NameColumn" Grid.Column="0" Style="{StaticResource FlatButton}" Click="NameColumn_Click">
+								<Button Name="NameColumn" Grid.Column="0" Style="{StaticResource FlatButton}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Name}">
 									<TextBlock Text="Name" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
 								</Button>
 								<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
-								<Button Name="SizeColumn" Grid.Column="2" Style="{StaticResource FlatButton}" Click="SizeColumn_Click">
+
+								<Button Name="SizeColumn" Grid.Column="2" Style="{StaticResource FlatButton}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Size}">
 									<TextBlock Name="SizeColumnHeader" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
 								</Button>
 								<GridSplitter Grid.Column="3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
-								<Button Name="DateColumn" Grid.Column="4" Style="{StaticResource FlatButton}" Click="DateColumn_Click">
+
+								<Button Name="DateColumn" Grid.Column="4" Style="{StaticResource FlatButton}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Date}">
 									<TextBlock Text="Date" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
 								</Button>
 								<GridSplitter Grid.Column="5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
+
+								<Button Name="FilesColumn" Grid.Column="6" Style="{StaticResource FlatButton}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Files}">
+									<TextBlock Text="Files" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
+								</Button>
+								<GridSplitter Grid.Column="7" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
+
 							</Grid>
 						</ScrollViewer>
 					</Border>
@@ -182,7 +192,7 @@
 				<StackPanel Margin="5">
 					<Label HorizontalAlignment="Center" Content="Analyzing..." />
 					<StackPanel Orientation="Horizontal">
-						<ProgressBar x:Name="ProgressBarAnalyze" Width="300" Margin="5" Background="{StaticResource Theme.Dialog}" Value="40" Minimum="0" Maximum="100" />
+						<ProgressBar x:Name="ProgressBarAnalyze" Width="300" Margin="5" Background="{StaticResource Theme.Dialog}" Minimum="0" Maximum="100" Value="40" />
 						<Button x:Name="ButtonCancelCompare" HorizontalAlignment="Right" Style="{StaticResource CommonButton}" Content="Cancel" Command="local:Commands.Cancel" />
 					</StackPanel>
 				</StackPanel>
