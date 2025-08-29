@@ -126,7 +126,7 @@
 						<RowDefinition Height="auto" />
 					</Grid.RowDefinitions>
 
-					<Border Grid.ColumnSpan="2" BorderThickness="0,0,0,1">
+					<Border BorderThickness="0,0,0,1">
 						<ScrollViewer Name="TreeColumns" ScrollChanged="TreeColumns_ScrollChanged" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
 							<Grid Name="LeftColumns" HorizontalAlignment="Left">
 								<Grid.ColumnDefinitions>
@@ -146,7 +146,7 @@
 								<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
 
 								<Button Name="SizeColumn" Grid.Column="2" Style="{StaticResource FlatButton}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Size}">
-									<TextBlock Name="SizeColumnHeader" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
+									<TextBlock Name="SizeColumnHeader" Padding="0,0,2,0" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
 								</Button>
 								<GridSplitter Grid.Column="3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
 
@@ -156,13 +156,15 @@
 								<GridSplitter Grid.Column="5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
 
 								<Button Name="FilesColumn" Grid.Column="6" Style="{StaticResource FlatButton}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Files}">
-									<TextBlock Text="Files" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
+									<TextBlock Padding="0,0,2,0" Text="Files" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
 								</Button>
 								<GridSplitter Grid.Column="7" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
 
 							</Grid>
 						</ScrollViewer>
 					</Border>
+
+					<Border Grid.Column="1" BorderThickness="0,0,0,1" />
 
 					<Border Grid.Row="1" Grid.Column="0" BorderThickness="0" Background="{StaticResource Theme.Window}">
 						<local:TreeControl x:Name="Tree" ContextMenu="{StaticResource ContextMenuFileItem}" SelectionChanged="Tree_SelectionChanged" RootItem="{Binding RootItem}" HorizontalOffset="{Binding Value, ElementName=HorizontalScrollbar, Mode=TwoWay}" VerticalOffset="{Binding ElementName=VerticalTreeScrollbar, Path=Value, Mode=TwoWay}" UpdateTrigger="{Binding UpdateTrigger, Mode=TwoWay}" FocusVisualStyle="{x:Null}" SortBy="{Binding SortBy}" SortDirection="{Binding SortDirection}" />
@@ -181,7 +183,7 @@
 
 
 		<!--  Analyze Progress  -->
-		<Grid x:Name="asdf" Background="#00000000" Cursor="Wait" Visibility="{Binding ProgressVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+		<Grid d:Visibility="Hidden" Background="#00000000" Cursor="Wait" Visibility="{Binding ProgressVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
 			<!--  Workaround to not fuckup the cleartype rendering  -->
 			<Border Width="{Binding ActualWidth, ElementName=ProgressPanel}" Height="{Binding ActualHeight, ElementName=ProgressPanel}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Visibility, ElementName=ProgressPanel}" Background="{StaticResource Theme.Window}">
 				<Border.Effect>

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 namespace DiskSize;
@@ -167,16 +168,16 @@ public partial class MainWindow : Window
 		if (!renderComplete)
 			return;
 
-		//double totalWidth = 0;
+		double totalWidth = 0;
 
-		//foreach (ColumnDefinition d in LeftColumns.ColumnDefinitions)
-		//{
-		//	totalWidth += d.Width.Value;
-		//}
+		foreach (ColumnDefinition d in LeftColumns.ColumnDefinitions)
+		{
+			totalWidth += d.Width.Value;
+		}
 
-		//HorizontalScrollbar.ViewportSize = Tree.ActualWidth;
-		//HorizontalScrollbar.Maximum = totalWidth - Tree.ActualWidth;
-		//HorizontalScrollbar.LargeChange = Tree.ActualWidth;
+		HorizontalScrollbar.ViewportSize = Tree.ActualWidth;
+		HorizontalScrollbar.Maximum = totalWidth - Tree.ActualWidth;
+		HorizontalScrollbar.LargeChange = Tree.ActualWidth;
 	}
 
 	#endregion
@@ -201,7 +202,7 @@ public partial class MainWindow : Window
 
 	private void HorizontalScrollbar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 	{
-
+		TreeColumns.ScrollToHorizontalOffset(e.NewValue);
 	}
 
 	private void Tree_SelectionChanged(object sender, FileItemEventArgs e)

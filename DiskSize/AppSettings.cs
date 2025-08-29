@@ -405,7 +405,7 @@ public static class AppSettings
 	public static double DateColumnWidth { get; internal set; } = 120;
 	public static double FilesColumnWidth { get; internal set; } = 120;
 
-	public static bool DrawGridLines { get; internal set; } = false;
+	public static bool DrawGridLines { get; internal set; } = true;
 
 	#endregion
 
