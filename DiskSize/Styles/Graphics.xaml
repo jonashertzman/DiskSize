@@ -48,7 +48,7 @@
 						</PathGeometry>
 					</Path.Data>
 				</Path>
-				<Path StrokeThickness="15" Fill="#FFE093">
+				<Path StrokeThickness="16" Fill="Transparent">
 					<Path.Stroke>
 						<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
 							<GradientStop Offset="0" Color="#FF707070" />
@@ -57,8 +57,8 @@
 					</Path.Stroke>
 					<Path.Data>
 						<GeometryGroup FillRule="Nonzero">
-							<EllipseGeometry Center="75,80" RadiusX="35" RadiusY="35" />
-							<LineGeometry StartPoint="95,100" EndPoint="150,155" />
+							<EllipseGeometry Center="75,75" RadiusX="33" RadiusY="33" />
+							<LineGeometry StartPoint="100,100" EndPoint="150,150" />
 						</GeometryGroup>
 					</Path.Data>
 				</Path>

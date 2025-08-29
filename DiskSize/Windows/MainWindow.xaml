@@ -38,7 +38,7 @@
 		<Grid IsEnabled="{Binding Path=GuiFrozen, Converter={StaticResource InverseBooleanConverter}}">
 			<Grid.CommandBindings>
 				<CommandBinding Command="local:Commands.Analyze" Executed="CommandAnalyze_Executed" />
-
+				<CommandBinding Command="local:Commands.About" Executed="CommandAbout_Executed" />
 				<CommandBinding Command="local:Commands.Exit" Executed="CommandExit_Executed" />
 				<CommandBinding Command="local:Commands.Up" Executed="CommandUp_Executed" />
 			</Grid.CommandBindings>

@@ -265,6 +265,13 @@ public partial class MainWindow : Window
 		this.Close();
 	}
 
+	private void CommandAbout_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+		CheckForNewVersion(true);
+
+		AboutWindow aboutWindow = new() { Owner = this, DataContext = ViewModel };
+		aboutWindow.ShowDialog();
+	}
 	private void CommandCancel_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
 	{
 		BackgroundAnalyze.Cancel();

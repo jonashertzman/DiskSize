@@ -28,12 +28,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	public string Title
 	{
-		get { return "File Diff"; }
+		get { return "Disk Size"; }
 	}
 
 	public string Version
 	{
-		get { return "1.5"; }
+		get { return "0.5"; }
 	}
 
 	public string BuildNumber
