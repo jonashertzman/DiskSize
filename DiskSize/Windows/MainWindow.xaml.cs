@@ -86,17 +86,25 @@ public partial class MainWindow : Window
 		StatusBar.Text = result.Item1;
 	}
 
-	private void AnalyzeFinished(Task<Tuple<FileItem, TimeSpan>> task)
+	private void AnalyzeFinished(Task<Tuple<FileItem, TimeSpan, bool>> task)
 	{
 		Debug.Print($"--- {nameof(AnalyzeFinished)} ---");
 
 		FileItem rootItem = task.Result.Item1;
+		TimeSpan duration = task.Result.Item2;
+		bool analyzeCancelled = task.Result.Item3;
 
 		ViewModel.SizeColumnWidth = Math.Max(51, Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 15);
-
 		ViewModel.RootItem = rootItem;
 
-		StatusBar.Text = TimeSpanToShortString(task.Result.Item2);
+		if (analyzeCancelled)
+		{
+			StatusBar.Text = "Analyze Cancelled";
+		}
+		else
+		{
+			StatusBar.Text = "Analyze Completed " + TimeSpanToShortString(duration);
+		}
 
 		ViewModel.GuiFrozen = false;
 	}

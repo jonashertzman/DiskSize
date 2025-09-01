@@ -29,7 +29,7 @@ public static class BackgroundAnalyze
 		AnalyzeCancelled = true;
 	}
 
-	public static Tuple<FileItem, TimeSpan> Analyze(string path)
+	public static Tuple<FileItem, TimeSpan, bool> Analyze(string path)
 	{
 		path = Path.TrimEndingDirectorySeparator(path);
 
@@ -52,7 +52,7 @@ public static class BackgroundAnalyze
 
 		AnalyzeDirectory(rootItem, 2);
 
-		return new Tuple<FileItem, TimeSpan>(rootItem, DateTime.UtcNow.Subtract(startTime));
+		return new Tuple<FileItem, TimeSpan, bool>(rootItem, DateTime.UtcNow.Subtract(startTime), AnalyzeCancelled);
 	}
 
 	private static void AnalyzeDirectory(FileItem item, int level)
