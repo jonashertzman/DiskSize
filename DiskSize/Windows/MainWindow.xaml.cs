@@ -71,7 +71,7 @@ public partial class MainWindow : Window
 
 			ProgressBarAnalyze.Value = 0;
 
-			BackgroundAnalyze.progressHandler = new Progress<Tuple<string, int>>(AnalyzeStatusUpdate);
+			BackgroundAnalyze.progressHandler = new Progress<Tuple<string, int, FileItem>>(AnalyzeStatusUpdate);
 			Task.Run(() => BackgroundAnalyze.Analyze(path)).ContinueWith(AnalyzeFinished, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 		else
@@ -80,10 +80,11 @@ public partial class MainWindow : Window
 		}
 	}
 
-	private void AnalyzeStatusUpdate(Tuple<string, int> result)
+	private void AnalyzeStatusUpdate(Tuple<string, int, FileItem> result)
 	{
 		ProgressBarAnalyze.Value = result.Item2;
 		StatusBar.Text = result.Item1;
+		ViewModel.RootItem = result.Item3;
 	}
 
 	private void AnalyzeFinished(Task<Tuple<FileItem, TimeSpan, bool>> task)

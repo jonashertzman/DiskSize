@@ -8,11 +8,12 @@ public static class BackgroundAnalyze
 
 	#region Members
 
-	public static IProgress<Tuple<string, int>> progressHandler;
+	public static IProgress<Tuple<string, int, FileItem>> progressHandler;
 
 	static int progress;
 	static DateTime startTime;
 	static DateTime lastStatusUpdateTime = DateTime.MinValue;
+	static FileItem rootItem;
 
 	#endregion
 
@@ -44,7 +45,7 @@ public static class BackgroundAnalyze
 			cFileName = path,
 		};
 
-		FileItem rootItem = new(path, 1, findData)
+		rootItem = new(path, 1, findData)
 		{
 			IsExpanded = true,
 			Date = Directory.GetLastWriteTime(path),
@@ -131,7 +132,17 @@ public static class BackgroundAnalyze
 	{
 		if (finalUpdate || (DateTime.UtcNow - lastStatusUpdateTime).TotalMilliseconds >= 200)
 		{
-			Tuple<string, int> status = new(currentPath, progress);
+			long size = 0;
+			long fileCount = 0;
+			foreach (FileItem child in rootItem.Children)
+			{
+				size += child.Size;
+				fileCount += child.FileCount;
+			}
+			rootItem.Size = size;
+			rootItem.FileCount = fileCount;
+
+			Tuple<string, int, FileItem> status = new(currentPath, progress, rootItem);
 
 			progressHandler.Report(status);
 
