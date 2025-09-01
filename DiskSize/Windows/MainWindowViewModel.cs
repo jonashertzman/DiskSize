@@ -144,25 +144,25 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	public double NameColumnWidth
 	{
 		get { return AppSettings.NameColumnWidth; }
-		set { AppSettings.NameColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(NameColumnWidth)); }
+		set { AppSettings.NameColumnWidth = value; OnPropertyChangedRepaint(nameof(NameColumnWidth)); }
 	}
 
 	public double SizeColumnWidth
 	{
 		get { return AppSettings.SizeColumnWidth; }
-		set { AppSettings.SizeColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(SizeColumnWidth)); }
+		set { AppSettings.SizeColumnWidth = value; OnPropertyChangedRepaint(nameof(SizeColumnWidth)); }
 	}
 
 	public double DateColumnWidth
 	{
 		get { return AppSettings.DateColumnWidth; }
-		set { AppSettings.DateColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(DateColumnWidth)); }
+		set { AppSettings.DateColumnWidth = value; OnPropertyChangedRepaint(nameof(DateColumnWidth)); }
 	}
 
 	public double FilesColumnWidth
 	{
 		get { return AppSettings.FilesColumnWidth; }
-		set { AppSettings.FilesColumnWidth = value; OnPropertyChangedSlowRepaint(nameof(FilesColumnWidth)); }
+		set { AppSettings.FilesColumnWidth = value; OnPropertyChangedRepaint(nameof(FilesColumnWidth)); }
 	}
 
 	SortColumn sortBy = SortColumn.Size;

@@ -57,7 +57,6 @@ public static class BackgroundAnalyze
 
 	private static void AnalyzeDirectory(FileItem item, int level)
 	{
-		if (AnalyzeCancelled) return;
 		if (item.Path?.Length > 259) return;
 
 		if (!Utils.DirectoryAllowed(item.Path))
@@ -77,7 +76,7 @@ public static class BackgroundAnalyze
 		{
 			if (AnalyzeCancelled)
 			{
-				return;
+				break;
 			}
 
 			if (fileItem.IsFolder)

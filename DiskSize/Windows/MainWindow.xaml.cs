@@ -62,8 +62,6 @@ public partial class MainWindow : Window
 				path += Path.DirectorySeparatorChar;
 			}
 
-			rootPath = path;
-
 			string[] rootFolders = [.. Directory.EnumerateDirectories(path)];
 
 			if (rootFolders.Length > 0)
@@ -82,8 +80,6 @@ public partial class MainWindow : Window
 		}
 	}
 
-	string rootPath;
-
 	private void AnalyzeStatusUpdate(Tuple<string, int> result)
 	{
 		ProgressBarAnalyze.Value = result.Item2;
@@ -96,7 +92,7 @@ public partial class MainWindow : Window
 
 		FileItem rootItem = task.Result.Item1;
 
-		ViewModel.SizeColumnWidth = Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 15;
+		ViewModel.SizeColumnWidth = Math.Max(51, Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 15);
 
 		ViewModel.RootItem = rootItem;
 
@@ -272,6 +268,7 @@ public partial class MainWindow : Window
 		AboutWindow aboutWindow = new() { Owner = this, DataContext = ViewModel };
 		aboutWindow.ShowDialog();
 	}
+
 	private void CommandCancel_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
 	{
 		BackgroundAnalyze.Cancel();

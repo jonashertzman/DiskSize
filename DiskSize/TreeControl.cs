@@ -64,6 +64,7 @@ public class TreeControl : Control
 		double gridLine1 = RoundToWholePixels(AppSettings.NameColumnWidth + handleWidth - itemMargin);
 		double gridLine2 = RoundToWholePixels(AppSettings.NameColumnWidth + AppSettings.SizeColumnWidth + (handleWidth * 2) - itemMargin);
 		double gridLine3 = RoundToWholePixels(AppSettings.NameColumnWidth + AppSettings.SizeColumnWidth + AppSettings.DateColumnWidth + (handleWidth * 3) - itemMargin);
+		double gridLine4 = RoundToWholePixels(AppSettings.NameColumnWidth + AppSettings.SizeColumnWidth + AppSettings.DateColumnWidth + AppSettings.FilesColumnWidth + (handleWidth * 4) - itemMargin);
 
 		Typeface typeface = new(this.FontFamily, this.FontStyle, this.FontWeight, this.FontStretch);
 
@@ -96,9 +97,6 @@ public class TreeControl : Control
 			drawingContext.PushTransform(new TranslateTransform(0, itemHeight * i));
 			{
 
-				// Draw line background
-				drawingContext.DrawRectangle(AppSettings.WindowBackground, null, new Rect(0, 0, Math.Max(this.ActualWidth, 0), itemHeight));
-
 				// Horizontal offset
 				drawingContext.PushTransform(new TranslateTransform(-HorizontalOffset, 0));
 				{
@@ -123,15 +121,17 @@ public class TreeControl : Control
 							}
 							drawingContext.Pop();
 						}
-						drawingContext.DrawText(new FormattedText(line.Name, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(line.Level * itemHeight, itemMargin));
+						drawingContext.DrawText(new FormattedText(line.Name, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale),
+							new Point(line.Level * itemHeight, itemMargin));
 					}
 					drawingContext.Pop();
 
 					// Size column
-					drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine1 + textMargin, 0, AppSettings.SizeColumnWidth - textMargin * 2, itemHeight)));
+					drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine1 + textMargin * 2, 0, AppSettings.SizeColumnWidth - textMargin * 2, itemHeight)));
 					{
 						string sizeText = line.Size.ToString("N0");
-						drawingContext.DrawText(new FormattedText(sizeText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine1 + AppSettings.SizeColumnWidth - textMargin - MeasureString(sizeText).Width - 1, itemMargin));
+						drawingContext.DrawText(new FormattedText(sizeText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale),
+							new Point(gridLine1 + AppSettings.SizeColumnWidth - textMargin - MeasureString(sizeText).Width - 1, itemMargin));
 					}
 					drawingContext.Pop();
 
@@ -139,15 +139,17 @@ public class TreeControl : Control
 					drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine2 + textMargin, 0, AppSettings.DateColumnWidth - textMargin * 2, itemHeight)));
 					{
 						string dateText = line.Date?.ToString("g");
-						drawingContext.DrawText(new FormattedText(dateText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine2 + textMargin, itemMargin));
+						drawingContext.DrawText(new FormattedText(dateText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale),
+							new Point(gridLine2 + textMargin * 2, itemMargin));
 					}
 					drawingContext.Pop();
 
 					// Files column
-					drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine3 + textMargin, 0, AppSettings.FilesColumnWidth - textMargin * 2, itemHeight)));
+					drawingContext.PushClip(new RectangleGeometry(new Rect(gridLine3 + textMargin * 2, 0, AppSettings.FilesColumnWidth - textMargin * 2, itemHeight)));
 					{
 						string fileCountText = line.FileCount.ToString("N0");
-						drawingContext.DrawText(new FormattedText(fileCountText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale), new Point(gridLine3 + AppSettings.FilesColumnWidth - textMargin - MeasureString(fileCountText).Width - 1, itemMargin));
+						drawingContext.DrawText(new FormattedText(fileCountText, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, this.FontSize, AppSettings.WindowForeground, null, TextFormattingMode.Display, dpiScale),
+							new Point(gridLine3 + AppSettings.FilesColumnWidth - textMargin - MeasureString(fileCountText).Width - 1, itemMargin));
 					}
 					drawingContext.Pop();
 
@@ -183,6 +185,7 @@ public class TreeControl : Control
 					drawingContext.DrawLine(gridPen, new Point(gridLine1, -1), new Point(gridLine1, this.ActualHeight));
 					drawingContext.DrawLine(gridPen, new Point(gridLine2, -1), new Point(gridLine2, this.ActualHeight));
 					drawingContext.DrawLine(gridPen, new Point(gridLine3, -1), new Point(gridLine3, this.ActualHeight));
+					drawingContext.DrawLine(gridPen, new Point(gridLine4, -1), new Point(gridLine4, this.ActualHeight));
 				}
 			}
 			drawingContext.Pop();
