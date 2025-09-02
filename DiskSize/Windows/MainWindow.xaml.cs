@@ -108,6 +108,7 @@ public partial class MainWindow : Window
 		}
 
 		ViewModel.GuiFrozen = false;
+		Tree.Focus();
 	}
 
 	private string TimeSpanToShortString(TimeSpan timeSpan)
@@ -303,11 +304,6 @@ public partial class MainWindow : Window
 
 			Analyze();
 		}
-	}
-
-	private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
-	{
-		e.CanExecute = !ViewModel.GuiFrozen;
 	}
 
 	#endregion
