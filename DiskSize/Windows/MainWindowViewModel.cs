@@ -11,6 +11,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	#region Members
 
 	readonly DispatcherTimer repaintTimer = new();
+	readonly DispatcherTimer progressTimer = new();
 
 	#endregion
 
@@ -18,8 +19,11 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	public MainWindowViewModel()
 	{
-		repaintTimer.Interval = new TimeSpan(300000);
+		repaintTimer.Interval = TimeSpan.FromMilliseconds(100);
 		repaintTimer.Tick += RepaintTimer_Tick;
+
+		progressTimer.Interval = TimeSpan.FromSeconds(1);
+		progressTimer.Tick += ProgressTimer_Tick;
 	}
 
 	#endregion
@@ -77,10 +81,11 @@ public class MainWindowViewModel : INotifyPropertyChanged
 			guiFrozen = value;
 			if (value)
 			{
-				ProgressVisible = true;
+				progressTimer.Start();
 			}
 			else
 			{
+				progressTimer.Stop();
 				ProgressVisible = false;
 			}
 			OnPropertyChanged(nameof(GuiFrozen));
@@ -278,6 +283,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	{
 		repaintTimer.Stop();
 		UpdateTrigger++;
+	}
+
+	private void ProgressTimer_Tick(object sender, EventArgs e)
+	{
+		ProgressVisible = true;
+		progressTimer.Stop();
 	}
 
 	#endregion
