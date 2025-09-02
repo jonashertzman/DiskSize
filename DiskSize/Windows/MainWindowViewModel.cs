@@ -37,7 +37,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	public string Version
 	{
-		get { return "0.5"; }
+		get { return "- Alpha 1"; }
 	}
 
 	public string BuildNumber
