@@ -305,6 +305,11 @@ public partial class MainWindow : Window
 		}
 	}
 
+	private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+	{
+		e.CanExecute = !ViewModel.GuiFrozen;
+	}
+
 	#endregion
 
 	#endregion

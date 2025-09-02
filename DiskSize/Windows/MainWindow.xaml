@@ -32,16 +32,15 @@
 
 	<Window.CommandBindings>
 		<CommandBinding Command="local:Commands.Cancel" Executed="CommandCancel_Executed" CanExecute="CommandCancel_CanExecute" />
+		<CommandBinding Command="local:Commands.Analyze" Executed="CommandAnalyze_Executed" CanExecute="CommandBinding_CanExecute" />
+		<CommandBinding Command="local:Commands.About" Executed="CommandAbout_Executed" />
+		<CommandBinding Command="local:Commands.Exit" Executed="CommandExit_Executed" />
+		<CommandBinding Command="local:Commands.Up" Executed="CommandUp_Executed" CanExecute="CommandBinding_CanExecute" />	
 	</Window.CommandBindings>
 
 	<Grid>
 		<Grid IsEnabled="{Binding Path=GuiFrozen, Converter={StaticResource InverseBooleanConverter}}">
-			<Grid.CommandBindings>
-				<CommandBinding Command="local:Commands.Analyze" Executed="CommandAnalyze_Executed" />
-				<CommandBinding Command="local:Commands.About" Executed="CommandAbout_Executed" />
-				<CommandBinding Command="local:Commands.Exit" Executed="CommandExit_Executed" />
-				<CommandBinding Command="local:Commands.Up" Executed="CommandUp_Executed" />
-			</Grid.CommandBindings>
+			<Grid.CommandBindings />
 
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
@@ -61,11 +60,6 @@
 					<MenuItem Header="Find Next" Command="local:Commands.FindNext" />
 					<MenuItem Header="Find Previous" Command="local:Commands.FindPrevious" />
 				</MenuItem>
-				<!--<MenuItem Header="View">
-				<MenuItem Header="Zoom In" Command="local:Commands.ZoomIn" />
-				<MenuItem Header="Zoom Out" Command="local:Commands.ZoomOut" />
-				<MenuItem Header="Reset Zoom" Command="local:Commands.ResetZoom" />
-			</MenuItem>-->
 				<MenuItem Header="Tools">
 					<MenuItem Header="Options" Command="local:Commands.Options" />
 				</MenuItem>
