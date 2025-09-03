@@ -3,16 +3,11 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Windows.Win32.Foundation;
-using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace DiskSize;
 
 static class Utils
 {
-
-	const int WS_MAXIMIZEBOX = 0x10000;
-	const int WS_MINIMIZEBOX = 0x20000;
 
 	public static bool DirectoryAllowed(string path)
 	{
@@ -31,9 +26,10 @@ static class Utils
 	{
 		window.SourceInitialized += (sender, eventArgs) =>
 		{
-			HWND hwnd = (HWND)new System.Windows.Interop.WindowInteropHelper(window).Handle;
-			int style = PInvoke.GetWindowLong(hwnd, WINDOW_LONG_PTR_INDEX.GWL_STYLE);
-			_ = PInvoke.SetWindowLong(hwnd, WINDOW_LONG_PTR_INDEX.GWL_STYLE, style & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX);
+			IntPtr hwnd = new System.Windows.Interop.WindowInteropHelper(window).Handle;
+			int style = WinApi.GetWindowLong(hwnd, WinApi.GWL_STYLE);
+
+			_ = WinApi.SetWindowLong(hwnd, WinApi.GWL_STYLE, style & ~WinApi.WS_MAXIMIZEBOX & ~WinApi.WS_MINIMIZEBOX);
 		};
 	}
 

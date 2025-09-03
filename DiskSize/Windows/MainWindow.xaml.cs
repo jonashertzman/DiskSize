@@ -84,6 +84,8 @@ public partial class MainWindow : Window
 	{
 		ProgressBarAnalyze.Value = result.Item2;
 		StatusBar.Text = result.Item1;
+
+		ViewModel.SizeColumnWidth = Math.Max(51, Utils.MeasureText(result.Item3.Size.ToString("N0"), SizeColumnHeader).Width + 15);
 		ViewModel.RootItem = result.Item3;
 	}
 

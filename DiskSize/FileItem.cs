@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Windows.Win32.Storage.FileSystem;
 
 namespace DiskSize;
 
@@ -13,13 +12,13 @@ public class FileItem
 
 	}
 
-	internal FileItem(string path, int level, WIN32_FIND_DATAW findData)
+	public FileItem(string path, int level, WIN32_FIND_DATA findData)
 	{
-		Name = findData.cFileName.ToString();
+		Name = findData.cFileName;
 		Path = path;
 		Level = level;
 
-		IsFolder = (findData.dwFileAttributes & (int)FileAttributes.Directory) != 0;
+		IsFolder = (findData.dwFileAttributes & FileAttributes.Directory) != 0;
 
 		if (!IsFolder)
 		{
@@ -27,7 +26,7 @@ public class FileItem
 			FileCount = 1;
 		}
 
-		Date = DateTime.FromFileTime((long)Combine((uint)findData.ftLastWriteTime.dwHighDateTime, (uint)findData.ftLastWriteTime.dwLowDateTime));
+		Date = DateTime.FromFileTime((long)Combine(findData.ftLastWriteTime.dwHighDateTime, findData.ftLastWriteTime.dwLowDateTime));
 		if (level == 1)
 		{
 			Date = null;

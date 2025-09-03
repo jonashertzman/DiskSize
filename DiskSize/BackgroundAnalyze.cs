@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Windows.Win32.Storage.FileSystem;
 
 namespace DiskSize;
 
@@ -39,9 +38,9 @@ public static class BackgroundAnalyze
 		AnalyzeCancelled = false;
 		progress = 0;
 
-		WIN32_FIND_DATAW findData = new()
+		WIN32_FIND_DATA findData = new()
 		{
-			dwFileAttributes = (uint)FileAttributes.Directory,
+			dwFileAttributes = FileAttributes.Directory,
 			cFileName = path,
 		};
 
@@ -108,11 +107,11 @@ public static class BackgroundAnalyze
 		path = Utils.FixRootPath(path);
 		List<FileItem> items = [];
 
-		using var findHandle = PInvoke.FindFirstFile(Path.Combine(path, "*"), out WIN32_FIND_DATAW findData);
+		IntPtr findHandle = WinApi.FindFirstFile(Path.Combine(path, "*"), out WIN32_FIND_DATA findData);
 
 		string newPath;
 
-		if (!findHandle.IsInvalid)
+		if (findHandle != WinApi.INVALID_HANDLE_VALUE)
 		{
 			do
 			{
@@ -122,7 +121,7 @@ public static class BackgroundAnalyze
 					items.Add(new FileItem(newPath, level, findData));
 				}
 			}
-			while (PInvoke.FindNextFile(findHandle, out findData));
+			while (WinApi.FindNextFile(findHandle, out findData));
 		}
 
 		return items;

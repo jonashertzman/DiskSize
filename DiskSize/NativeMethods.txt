@@ -1,4 +1,0 @@
-FindFirstFile
-FindNextFile
-GetWindowLong
-SetWindowLong
