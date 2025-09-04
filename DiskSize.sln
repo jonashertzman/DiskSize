@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiskSize", "DiskSize\DiskSi
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{83887FE3-86B3-442B-A9C4-98A171EA5108}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateVersion", "UpdateVersion\UpdateVersion.csproj", "{3E45B055-3463-4834-A6D6-3418F0FBA7EA}"
 EndProject
