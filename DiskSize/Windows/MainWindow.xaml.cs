@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -128,7 +129,7 @@ public partial class MainWindow : Window
 		return $"{timeSpan.Seconds}.{timeSpan.Milliseconds.ToString().PadLeft(3, '0')}s";
 	}
 
-	private void CheckForNewVersion(bool forced = false)
+	private async void CheckForNewVersion(bool forced = false)
 	{
 		if (AppSettings.CheckForUpdates && AppSettings.LastUpdateTime < DateTime.Now.AddDays(-5) || forced)
 		{
@@ -136,11 +137,11 @@ public partial class MainWindow : Window
 			{
 				Debug.Print("Checking for new version...");
 
-				//HttpClient httpClient = new();
-				//string result = await httpClient.GetStringAsync("https://jonashertzman.github.io/zzzzzzzzzzz/download/version.txt");
+				HttpClient httpClient = new();
+				string result = await httpClient.GetStringAsync("https://jonashertzman.github.io/DiskSize/download/version.txt");
 
-				//Debug.Print($"Latest version found: {result}");
-				//ViewModel.NewBuildAvailable = int.Parse(result) > int.Parse(ViewModel.BuildNumber);
+				Debug.Print($"Latest version found: {result}");
+				ViewModel.NewBuildAvailable = int.Parse(result) > int.Parse(ViewModel.BuildNumber);
 			}
 			catch (Exception exception)
 			{
@@ -266,6 +267,12 @@ public partial class MainWindow : Window
 		{
 			ViewModel.SortBy = clickedColumn;
 		}
+	}
+
+	private void Hyperlink_OpenHomepage(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+	{
+		Process.Start(new ProcessStartInfo(e.Uri.ToString()) { UseShellExecute = true });
+		e.Handled = true;
 	}
 
 	#region Commands
