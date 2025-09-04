@@ -25,8 +25,8 @@
 		<local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
 		<ContextMenu x:Key="ContextMenuFileItem">
-			<!--<MenuItem Command="local:Commands.OpenContainingFolder" />
-			<MenuItem Command="local:Commands.CopyPathToClipboard" />-->
+			<MenuItem Command="local:Commands.OpenContainingFolder" />
+			<MenuItem Command="local:Commands.CopyPathToClipboard" />
 		</ContextMenu>
 	</Window.Resources>
 
@@ -41,6 +41,8 @@
 				<CommandBinding Command="local:Commands.About" Executed="CommandAbout_Executed" />
 				<CommandBinding Command="local:Commands.Exit" Executed="CommandExit_Executed" />
 				<CommandBinding Command="local:Commands.Up" Executed="CommandUp_Executed" />
+				<CommandBinding Command="local:Commands.OpenContainingFolder" Executed="CommandOpenContainingFolder_Executed" CanExecute="CommandOpenContainingFolder_CanExecute" />
+				<CommandBinding Command="local:Commands.CopyPathToClipboard" Executed="CommandCopyPathToClipboard_Executed" CanExecute="CommandCopyPathToClipboard_CanExecute" />
 			</Grid.CommandBindings>
 
 			<Grid.RowDefinitions>

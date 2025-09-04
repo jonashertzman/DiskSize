@@ -361,12 +361,6 @@ public class TreeControl : Control
 
 	#region Methods
 
-	internal void Init()
-	{
-		VerticalOffset = 0;
-		HorizontalOffset = 0;
-	}
-
 	public void Select(FileItem item)
 	{
 		ExpandParents(item);

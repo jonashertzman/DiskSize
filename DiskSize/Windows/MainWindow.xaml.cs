@@ -98,6 +98,8 @@ public partial class MainWindow : Window
 		bool analyzeCancelled = task.Result.Item3;
 
 		ViewModel.SizeColumnWidth = Math.Max(51, Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 15);
+
+		Tree.SelectedFile = null;
 		ViewModel.RootItem = rootItem;
 
 		if (analyzeCancelled)
@@ -306,6 +308,28 @@ public partial class MainWindow : Window
 
 			Analyze();
 		}
+	}
+
+	private void CommandOpenContainingFolder_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+		string args = $"/Select, {Tree.SelectedFile.Path}";
+		ProcessStartInfo pfi = new("Explorer.exe", args);
+		Process.Start(pfi);
+	}
+
+	private void CommandOpenContainingFolder_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+	{
+		e.CanExecute = Tree.SelectedFile != null;
+	}
+
+	private void CommandCopyPathToClipboard_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+	{
+		WinApi.CopyTextToClipboard(Tree.SelectedFile.Path);
+	}
+
+	private void CommandCopyPathToClipboard_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+	{
+		e.CanExecute = Tree.SelectedFile != null;
 	}
 
 	#endregion
