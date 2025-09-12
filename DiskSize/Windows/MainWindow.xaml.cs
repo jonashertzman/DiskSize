@@ -77,7 +77,7 @@ public partial class MainWindow : Window
 		}
 		else
 		{
-			MessageBox.Show($"Directory '{ViewModel.Path}' does not exist.", "Error");
+			MsgBox.Show($"Directory '{ViewModel.Path}' does not exist.", "Error");
 		}
 	}
 
