@@ -13,6 +13,7 @@
 	ShowInTaskbar="False"
 	Background="{StaticResource Theme.Dialog}"
 	SizeToContent="WidthAndHeight"
+	UseLayoutRounding="True"
 	mc:Ignorable="d">
 
 	<Window.Resources>

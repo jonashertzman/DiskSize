@@ -13,6 +13,8 @@
 	TextOptions.TextFormattingMode="Display"
 	WindowStartupLocation="CenterOwner"
 	SizeToContent="WidthAndHeight"
+	UseLayoutRounding="True"
+	ResizeMode="NoResize"
 	mc:Ignorable="d">
 
 	<StackPanel>
@@ -27,7 +29,7 @@
 				<Label d:Content="Text" Content="{Binding Text}" />
 			</StackPanel>
 		</Grid>
-		
+
 		<Border BorderThickness="0,1,0,0">
 			<StackPanel Margin="5">
 				<Button HorizontalAlignment="Right" Content="OK" Style="{StaticResource CommonButton}" IsDefault="True" IsCancel="True" />

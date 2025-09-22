@@ -52,7 +52,8 @@ internal class WinApi
 	public const int GWL_STYLE = -16;
 	public const int WS_MAXIMIZEBOX = 0x10000;
 	public const int WS_MINIMIZEBOX = 0x20000;
-	private const uint CF_UNICODETEXT = 13;
+	public const int WS_SYSMENU = 0x80000;
+	public const uint CF_UNICODETEXT = 13;
 	public const IntPtr INVALID_HANDLE_VALUE = -1;
 
 
@@ -147,5 +148,17 @@ internal class WinApi
 		_ = GetWindowText(hwnd.ToInt32(), sb, 500);
 		return sb.ToString();
 	}
+
+	public static void HideMinimizeAndMaximizeButtons(Window window)
+	{
+		window.SourceInitialized += (sender, eventArgs) =>
+		{
+			IntPtr hwnd = new System.Windows.Interop.WindowInteropHelper(window).Handle;
+			int style = GetWindowLong(hwnd, GWL_STYLE);
+
+			_ = SetWindowLong(hwnd, GWL_STYLE, style & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX);
+		};
+	}
+
 
 }

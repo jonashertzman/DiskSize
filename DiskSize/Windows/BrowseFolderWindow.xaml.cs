@@ -24,7 +24,7 @@ public partial class BrowseFolderWindow : Window
 	{
 		InitializeComponent();
 
-		Utils.HideMinimizeAndMaximizeButtons(this);
+		WinApi.HideMinimizeAndMaximizeButtons(this);
 
 		renderTimer.Interval = new TimeSpan(0, 0, 0, 0, 20);
 		renderTimer.Tick += RenderTimer_Tick;
