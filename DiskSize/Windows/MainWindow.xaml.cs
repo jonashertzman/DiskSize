@@ -240,6 +240,8 @@ public partial class MainWindow : Window
 
 	private void Window_Closed(object sender, EventArgs e)
 	{
+		BackgroundAnalyze.Cancel();
+
 		SaveSettings();
 	}
 
@@ -307,13 +309,20 @@ public partial class MainWindow : Window
 
 	private void CommandUp_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
 	{
-		string parent = Path.GetDirectoryName(Path.GetFullPath(ViewModel.Path));
-
-		if (parent != null)
+		try
 		{
-			ViewModel.Path = parent;
+			string parent = Path.GetDirectoryName(Path.GetFullPath(ViewModel.Path));
 
-			Analyze();
+			if (parent != null)
+			{
+				ViewModel.Path = parent;
+
+				Analyze();
+			}
+		}
+		catch (Exception)
+		{
+			// Ignore	
 		}
 	}
 
