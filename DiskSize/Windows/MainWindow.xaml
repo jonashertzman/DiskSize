@@ -151,24 +151,20 @@
 									<ColumnDefinition Width="4" />
 								</Grid.ColumnDefinitions>
 
-								<Button Name="NameColumn" Grid.Column="0" Style="{StaticResource FlatButton}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Name}">
-									<TextBlock Text="Name" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
-								</Button>
+								<Button Name="NameColumn" Grid.Column="0" Content="Name" SizeChanged="TreeColumns_Resized" Style="{StaticResource GridHeader}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Name}" />
+
 								<GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable="False" Style="{StaticResource CommonGridSpliter}" />
 
-								<Button Name="SizeColumn" Grid.Column="2" Style="{StaticResource FlatButton}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Size}">
-									<TextBlock Name="SizeColumnHeader" Padding="0,0,2,0" Text="Size" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
-								</Button>
+								<Button Name="SizeColumn" Grid.Column="2" HorizontalContentAlignment="Right" Content="Size" SizeChanged="TreeColumns_Resized" Style="{StaticResource GridHeader}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Size}" />
+
 								<GridSplitter Grid.Column="3" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
 
-								<Button Name="DateColumn" Grid.Column="4" Style="{StaticResource FlatButton}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Date}">
-									<TextBlock Text="Date" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" />
-								</Button>
+								<Button Name="DateColumn" Grid.Column="4" Content="Date" SizeChanged="TreeColumns_Resized" Style="{StaticResource GridHeader}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Date}" />
+
 								<GridSplitter Grid.Column="5" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
 
-								<Button Name="FilesColumn" Grid.Column="6" Style="{StaticResource FlatButton}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Files}">
-									<TextBlock Padding="0,0,2,0" Text="Files" TextTrimming="CharacterEllipsis" SizeChanged="TreeColumns_Resized" Style="{StaticResource StyledTextBlock}" TextAlignment="Right" />
-								</Button>
+								<Button Name="FilesColumn" Grid.Column="6" HorizontalContentAlignment="Right" Content="Files" SizeChanged="TreeColumns_Resized" Style="{StaticResource GridHeader}" Click="GridColumn_Click" CommandParameter="{x:Static local:SortColumn.Files}" />
+
 								<GridSplitter Grid.Column="7" Width=" 4" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Focusable=" False" Style="{StaticResource CommonGridSpliter}" />
 
 							</Grid>

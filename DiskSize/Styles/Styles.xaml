@@ -29,13 +29,29 @@
 		<Setter Property="MinWidth" Value="80" />
 	</Style>
 
-	<Style x:Key="FlatButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-		<Setter Property="BorderThickness" Value="0" />
-		<Setter Property="Background" Value="Transparent" />
-		<Setter Property="Margin" Value="0" />
-		<Setter Property="Padding" Value="6,3,3,3" />
-		<Setter Property="MinWidth" Value="1" />
+	<Style x:Key="GridHeader" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+		<Setter Property="Padding" Value="6,3,6,3" />
+		<Setter Property="MinWidth" Value="10" />
 		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Border x:Name="Border" Background="Transparent">
+						<TextBlock x:Name="Label" Padding="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" />
+					</Border>
+
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Label" Property="Foreground" Value="{StaticResource Theme.DissabledText}" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter TargetName="Border" Property="Background" Value="{StaticResource Theme.HighlightBackground}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
 	</Style>
 
 	<Style x:Key="StyledTextBlock" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">

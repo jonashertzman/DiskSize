@@ -57,7 +57,7 @@ static class Utils
 		return path;
 	}
 
-	internal static Size MeasureText(string text, TextBlock control)
+	internal static Size MeasureText(string text, Control control)
 	{
 		Typeface typeface = new(control.FontFamily, control.FontStyle, control.FontWeight, control.FontStretch);
 

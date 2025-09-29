@@ -86,7 +86,8 @@ public partial class MainWindow : Window
 		ProgressBarAnalyze.Value = result.Item2;
 		StatusBar.Text = result.Item1;
 
-		ViewModel.SizeColumnWidth = Math.Max(51, Utils.MeasureText(result.Item3.Size.ToString("N0"), SizeColumnHeader).Width + 15);
+		ViewModel.SizeColumnWidth = Math.Max(51, Utils.MeasureText(result.Item3.Size.ToString("N0"), SizeColumn).Width + 15);
+		ViewModel.FilesColumnWidth = Math.Max(51, Utils.MeasureText(result.Item3.FileCount.ToString("N0"), FilesColumn).Width + 15);
 		ViewModel.RootItem = result.Item3;
 	}
 
@@ -98,7 +99,8 @@ public partial class MainWindow : Window
 		TimeSpan duration = task.Result.Item2;
 		bool analyzeCancelled = task.Result.Item3;
 
-		ViewModel.SizeColumnWidth = Math.Max(51, Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumnHeader).Width + 15);
+		ViewModel.SizeColumnWidth = Math.Max(51, Utils.MeasureText(rootItem.Size.ToString("N0"), SizeColumn).Width + 15);
+		ViewModel.FilesColumnWidth = Math.Max(51, Utils.MeasureText(rootItem.FileCount.ToString("N0"), FilesColumn).Width + 15);
 
 		Tree.SelectedFile = null;
 		ViewModel.RootItem = rootItem;
